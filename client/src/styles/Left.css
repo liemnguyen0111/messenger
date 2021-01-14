@@ -19,6 +19,8 @@
 
 .left-comp .row-1, .left-comp .logo {
   font-size: 25px;
+  margin: 5px 0;
+  color: white;
 }
 
 .left-comp .row-2 {
@@ -33,6 +35,7 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
+  margin: 5px 0;
 }
 
 .left-comp .row-2 img, .left-comp .row-2 .compose-message {
@@ -50,6 +53,8 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  color: white;
+  font-weight: lighter;
 }
 
 .left-comp .row-2 img:hover, .left-comp .row-2 .compose-message:hover {
@@ -63,6 +68,7 @@
       -ms-flex: 1;
           flex: 1;
   font-size: 20px;
+  color: white;
 }
 
 .left-comp .row-3 {
@@ -74,13 +80,19 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
+  margin: 5px 0;
 }
 
 .left-comp .row-3 input {
+  background: rgba(128, 128, 128, 0.219);
   width: 100%;
+  border-radius: 10px;
   padding: 12px 40px 12px 12px;
+  -webkit-box-shadow: 0px 0px 22px 1px rgba(0, 0, 0, 0.43), inset 0px 0px 22px 1px rgba(0, 0, 0, 0.43);
+          box-shadow: 0px 0px 22px 1px rgba(0, 0, 0, 0.43), inset 0px 0px 22px 1px rgba(0, 0, 0, 0.43);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
+  color: white;
 }
 
 .left-comp .row-3 i {
@@ -95,7 +107,7 @@
   color: gray;
 }
 
-.left-comp .friends {
+.left-comp .row-4, .left-comp .friends {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -106,11 +118,17 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  margin: 5px 0;
   overflow-x: hidden;
   overflow: auto;
 }
 
-.left-comp .friends div {
+.left-comp .row-4 .friend:hover, .left-comp .friends .friend:hover {
+  background: rgba(145, 144, 144, 0.144);
+  cursor: pointer;
+}
+
+.left-comp .row-4 div, .left-comp .friends div {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -120,7 +138,7 @@
           flex-direction: row;
 }
 
-.left-comp .friends div .image {
+.left-comp .row-4 div .image, .left-comp .friends div .image {
   position: relative;
   height: 105px;
   white-space: nowrap;
@@ -132,25 +150,32 @@
           box-sizing: border-box;
 }
 
-.left-comp .friends div .image div:nth-child(1) {
-  display: block;
+.left-comp .row-4 div .image div:nth-child(1), .left-comp .friends div .image div:nth-child(1) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   padding: 3px;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
 }
 
-.left-comp .friends div .image div:nth-child(1) img {
+.left-comp .row-4 div .image div:nth-child(1) img, .left-comp .friends div .image div:nth-child(1) img {
   border-radius: 50%;
-  max-width: 100%;
-  min-width: 40px;
+  max-width: 80%;
+  min-width: 35px;
+  margin: auto;
+  margin-left: 5px;
 }
 
-.left-comp .friends div .image div:nth-child(2) {
+.left-comp .row-4 div .image div:nth-child(2), .left-comp .friends div .image div:nth-child(2) {
   display: block;
   -webkit-transform: translate(-22px, 24px);
           transform: translate(-22px, 24px);
   border-radius: 50%;
 }
 
-.left-comp .friends div .image div:nth-child(2) img {
+.left-comp .row-4 div .image div:nth-child(2) img, .left-comp .friends div .image div:nth-child(2) img {
   background-color: rgba(15, 15, 15, 0.87);
   padding: 2px;
   border-radius: 50%;
@@ -158,11 +183,11 @@
   min-width: 35px;
 }
 
-.left-comp .friends div .image div {
+.left-comp .row-4 div .image div, .left-comp .friends div .image div {
   display: none;
 }
 
-.left-comp .friends .name {
+.left-comp .row-4 .name, .left-comp .friends .name {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -176,9 +201,9 @@
   overflow: hidden;
 }
 
-.left-comp .friends .name .header {
+.left-comp .row-4 .name .header, .left-comp .friends .name .header {
   max-width: 240px;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: 1px;
   color: white;
@@ -186,7 +211,7 @@
   white-space: nowrap;
 }
 
-.left-comp .friends .name .sub-header {
+.left-comp .row-4 .name .sub-header, .left-comp .friends .name .sub-header {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -195,14 +220,13 @@
   white-space: nowrap;
 }
 
-.left-comp .friends .name .sub-header .message {
+.left-comp .row-4 .name .sub-header span, .left-comp .row-4 .name .sub-header .message, .left-comp .friends .name .sub-header span, .left-comp .friends .name .sub-header .message {
   overflow: hidden;
   max-width: 170px;
-  font-weight: 1px;
   color: #888282;
 }
 
-.left-comp .friends .name .sub-header .time {
+.left-comp .row-4 .name .sub-header .time, .left-comp .friends .name .sub-header .time {
   font-weight: 1px;
   margin-left: 5px;
   color: #6d6b6b;
@@ -216,6 +240,10 @@
   opacity: 1;
   -webkit-animation: show .2s ease;
           animation: show .2s ease;
+}
+
+.active {
+  background: rgba(128, 128, 128, 0.144);
 }
 
 @-webkit-keyframes show {

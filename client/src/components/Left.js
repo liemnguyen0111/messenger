@@ -56,7 +56,7 @@ class Left extends Component
                     </div>
                     <div className="row-2">
                         <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-                        <div className="app-name">Messager</div>
+                        <div className="app-name">Messenger</div>
                         <i className="fas fa-edit compose-message"/>
                     </div>
 
@@ -78,8 +78,8 @@ class Left extends Component
                     {/* Friends list container*/}
                     <div className="friends row-4">
 
-                    {/* image container */}
-                    <div>
+                    {/* friend container */}
+                    <div className='friend active'>
                     <div className="image">
                         <div>
                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
@@ -90,30 +90,37 @@ class Left extends Component
                     </div>
                     
                     {/* Name and latest message container*/}
-                    <div className="name active">
-                        <div className="header">Tim Nguyen wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</div>
+                    <div className="name">
+                        <div className="header">những con bè nhạt nhẽo</div>
                         <div className="sub-header">
                            <span  className="message" >Hello Tim wwwwwwwwwwwwwwwwwwwwwwwwwwwwweaefawegwwwww</span> 
                            <span  className="time"> • 1:06 PM</span></div>
                     </div>
                     </div>
 
-                    <div>
+                    {[...new Array(30)]
+            .map(
+              (key) => 
+              <div className='friend'>
                     <div className="image">
-                    <div>
+                        <div>
                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
                     </div>
-                    <div>
+                    {/* <div>
                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-                    </div>
+                    </div> */}
                     </div>
                     
                     {/* Name and latest message container*/}
                     <div className="name">
-                        <div className="header">Tim Nguyen</div>
-                        <div className="sub-header">Hello Tim <span> • 1:06 PM</span></div>
+                        <div className="header">những con bè nhạt nhẽo</div>
+                        <div className="sub-header">
+                           <span  className="message" >Hello Tim www</span> 
+                           <span  className="time"> • 1:06 PM</span></div>
                     </div>
                     </div>
+            )}
+                  
 
                     </div>
                 </div>   

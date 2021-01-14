@@ -16,11 +16,12 @@
     opacity: .9;
     // overflow: auto;
 
-
     // Row 1 app logo
     .row-1, .logo
     {
         font-size: 25px;
+        margin: 5px 0;
+        color: white;
     }
 
     // Row 2 user info and compose new message
@@ -30,6 +31,7 @@
         flex-direction: row;
         align-items: center;
         text-align: center;
+        margin: 5px 0;
 
         img, .compose-message
         {
@@ -41,6 +43,8 @@
             background-color: rgba(128, 128, 128, 0.377);
             justify-content: center;
             align-items: center;
+            color: white;
+            font-weight: lighter;
 
             &:hover
             {
@@ -54,6 +58,7 @@
         {
             flex: 1;
             font-size: 20px;
+            color: white;
         }
     }
     
@@ -64,11 +69,18 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+        margin: 5px 0;
+
         input
         {
+            background: rgba(128, 128, 128, 0.219);
             width: 100%;  
+            border-radius: 10px;
             padding: 12px 40px 12px 12px;  
+            box-shadow: 0px 0px 22px 1px rgba(0,0,0,0.43), 
+            inset 0px 0px 22px 1px rgba(0,0,0,0.43);
             box-sizing: border-box;  
+            color: white;
         }
 
         i
@@ -86,19 +98,31 @@
     }
 
     // Row 4 Friends
-    .friends
+    .row-4 , .friends
     {
         flex: 1;
         display: flex;
         flex-direction: column;
+        margin: 5px 0;
         overflow-x: hidden;
         overflow: auto;
+
+        //   on hover
+          .friend 
+          {
+            &:hover 
+            {
+                background: rgba(145, 144, 144, 0.144);
+                cursor: pointer;
+            }
+          }
 
         // images and latest message
         div
         {
            display: flex;
            flex-direction: row;
+
            .image
            {
             position: relative;
@@ -112,14 +136,16 @@
 
             div:nth-child(1)
             {
-                display: block;
+                display: flex;
                 padding: 3px;
-           
+                justify-content: left;
                 img
                 {
                      border-radius: 50%;
-                     max-width: 100%;
-                     min-width: 40px;
+                     max-width: 80%;
+                     min-width: 35px;
+                    margin: auto;
+                    margin-left: 5px;
                 }
 
             }
@@ -161,7 +187,7 @@
             .header
             {
                 max-width: 240px;
-                font-size: 17px;
+                font-size: 15px;
                 font-weight: 500;
                 letter-spacing: 1px;
                 color: white;
@@ -172,17 +198,14 @@
             .sub-header
             {
                 display: flex;
-                // flex-direction: row;
                 max-width: 270px;
-                // background: green;
                 overflow: hidden;
                 white-space: nowrap;
                 
-                   .message
+                   span, .message
                     {
                        overflow: hidden;
                        max-width: 170px;
-                       font-weight: 1px;
                        color: rgb(136, 130, 130);
                     }
               
@@ -195,7 +218,6 @@
                 
             }
         }
-
        
     }
 }
@@ -210,6 +232,11 @@
 {
     opacity: 1;
     animation: show .2s ease;
+}
+
+.active
+{
+    background: rgba(128, 128, 128, 0.144);
 }
 
 @keyframes show
