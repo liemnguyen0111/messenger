@@ -1,0 +1,11 @@
+.right-comp {
+  height: 100%;
+  width: 100%;
+  background-color: #19191a;
+  -webkit-box-shadow: 0 4px 12px 0   #19191a;
+          box-shadow: 0 4px 12px 0   #19191a;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  opacity: .9;
+}
+/*# sourceMappingURL=Right.css.map */

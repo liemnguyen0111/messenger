@@ -1,0 +1,115 @@
+@import 'config';
+@import 'utils';
+
+body
+{
+    // background-image: radial-gradient(circle at 84% 82%, rgba(0,65,112, 0.16) 0%, rgba(0,65,112, 0.16) 21%,transparent 21%, transparent 100%),radial-gradient(circle at 75% 56%, rgba(0,65,112, 0.04) 0%, rgba(0,65,112, 0.04) 30%,transparent 30%, transparent 100%),radial-gradient(circle at 74% 53%, rgba(153, 153, 153,0.03) 0%, rgba(153, 153, 153,0.03) 95%,transparent 95%, transparent 100%),radial-gradient(circle at 86% 43%, rgba(0,65,112, 0.04) 0%, rgba(0,65,112, 0.04) 83%,transparent 83%, transparent 100%),radial-gradient(circle at 64% 88%, rgba(192,192,192, 0.09) 0%, rgba(192,192,192, 0.09) 2%,transparent 2%, transparent 100%),radial-gradient(circle at 73% 77%, rgba(0,65,112, 0.04) 0%, rgba(0,65,112, 0.04) 18%,transparent 18%, transparent 100%),radial-gradient(circle at 57% 51%, rgba(0,140,240, 0.08) 0%, rgba(0,140,240, 0.08) 64%,transparent 64%, transparent 100%),radial-gradient(circle at 40% 84%, rgba(0,65,112, 0.27) 0%, rgba(0,65,112, 0.27) 14%,transparent 14%, transparent 100%),linear-gradient(90deg, rgb(0,30,60),rgb(0,30,60));
+    // box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+
+    background-image: repeating-linear-gradient(90deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 91px),repeating-linear-gradient(45deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 91px),repeating-linear-gradient(0deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 61px),repeating-linear-gradient(90deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 61px),repeating-linear-gradient(90deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 16px),repeating-linear-gradient(0deg, rgba(25,91,162, 0.05) 0px, rgba(25,91,162, 0.05) 1px,transparent 1px, transparent 16px),linear-gradient(90deg, rgb(23,30,51),rgb(23,30,51));
+
+    font-family: $font;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.background
+{
+   
+    height: 100%;
+}
+
+.square{
+
+    position: absolute;
+
+    @for $i from 1 to $n-square + 1 {
+        &:nth-child(#{$i})
+        {
+            top: random(90) * $n-percentage;
+            left:  random(90) * $n-percentage;
+            width: 5 * ($i * .3) + px;
+            height: 5 * ($i * .3) + px;
+
+            animation-delay: $i*2s/ 1;
+        }
+    }
+
+    border-radius: 10%;
+    background-color: $light-color;
+    box-shadow: 0 4px 12px 0  $light-color;
+    backdrop-filter: blur( 4.0px );
+    opacity: .8;
+    border: .1px solid rgba( 255, 255, 255, 0.18 );
+    animation: play 20s ease-in-out infinite;
+    transform-style: preserve-3d;
+    z-index: -1;
+}
+
+@keyframes play
+{
+    0%{
+        transform: translate(0,0) translateZ(-10);
+        background-color: $light-color;
+        box-shadow: 0 4px 12px 0  $light-color;
+        border-radius: 10%;
+
+    }
+    20%{
+        background-color: $bg;
+        transform: translate(random(90) * $n-percentage,random(90) * $n-percentage) translateZ(random(90));
+    }
+    40%{
+        transform: translate(random(150) * $n-percentage,random(90) * $n-percentage);
+    }
+    60%{
+        border-radius: 50%;
+        background-color: lightnen($primary-color, .5);
+        box-shadow: 0 1px 2px 0  $light-color;
+        transform: translate(random(90) * $n-percentage,random(90) * $n-percentage);
+    }
+    80%{
+        background-color: $secondary-color;
+        transform: translate(random(150) * $n-percentage,random(90) * $n-percentage)  translateZ(random(90));
+    }
+    100%{
+        border-radius: 10%;
+        background-color: $light-color;
+        box-shadow: 0 4px 12px 0  $light-color;
+        transform: translate(0,0)  translateZ(-10);
+    }
+}
+
+
+.wrapper
+{
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    height: 80vh;
+    min-height: 600px;
+    width: 70vw;
+    min-width: 365px;
+    border-radius:  20px;
+    background-color: #001E3C;
+    opacity: .9;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.left
+{
+    display: flex;
+    width: 365px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    overflow: hidden;
+}
+
+.right
+{
+    flex: 1;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+}

@@ -1,0 +1,13 @@
+@import 'config';
+@import 'utils';
+
+.right-comp
+{
+    height: 100%;
+    width: 100%;
+    // border-radius: 0 20px 20px 0;
+    background-color: #19191a;
+    box-shadow: 0 4px 12px 0   #19191a;
+    backdrop-filter: blur( 4.0px );
+    opacity: .9;
+}

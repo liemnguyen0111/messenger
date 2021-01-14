@@ -1,0 +1,11 @@
+{
+    "version": 3,
+    "mappings": "AAGA,AAAA,WAAW,CACX;EACI,MAAM,EAAE,IAAI;EACZ,KAAK,EAAE,IAAI;EAEX,gBAAgB,EAAE,OAAO;EACzB,UAAU,EAAE,sBAAsB;EAClC,eAAe,EAAE,SAAa;EAC9B,OAAO,EAAE,EAAE;CACd",
+    "sources": [
+        "Right.scss",
+        "_config.scss",
+        "_utils.scss"
+    ],
+    "names": [],
+    "file": "Right.css"
+}

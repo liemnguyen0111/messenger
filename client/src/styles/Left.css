@@ -1,0 +1,246 @@
+.left-comp {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
+  padding: 2.5%;
+  background-color: #19191a;
+  -webkit-box-shadow: 0 4px 12px 0   #19191a;
+          box-shadow: 0 4px 12px 0   #19191a;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  opacity: .9;
+}
+
+.left-comp .row-1, .left-comp .logo {
+  font-size: 25px;
+}
+
+.left-comp .row-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.left-comp .row-2 img, .left-comp .row-2 .compose-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: rgba(128, 128, 128, 0.377);
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.left-comp .row-2 img:hover, .left-comp .row-2 .compose-message:hover {
+  cursor: pointer;
+  -webkit-transform: scale(0.98);
+          transform: scale(0.98);
+}
+
+.left-comp .row-2 .app-name {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: 20px;
+}
+
+.left-comp .row-3 {
+  position: relative;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+}
+
+.left-comp .row-3 input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.left-comp .row-3 i {
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  color: gray;
+}
+
+.left-comp .friends {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow-x: hidden;
+  overflow: auto;
+}
+
+.left-comp .friends div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.left-comp .friends div .image {
+  position: relative;
+  height: 105px;
+  white-space: nowrap;
+  min-width: 29px;
+  max-width: 70px;
+  height: 70px;
+  background: transparent;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.left-comp .friends div .image div:nth-child(1) {
+  display: block;
+  padding: 3px;
+}
+
+.left-comp .friends div .image div:nth-child(1) img {
+  border-radius: 50%;
+  max-width: 100%;
+  min-width: 40px;
+}
+
+.left-comp .friends div .image div:nth-child(2) {
+  display: block;
+  -webkit-transform: translate(-22px, 24px);
+          transform: translate(-22px, 24px);
+  border-radius: 50%;
+}
+
+.left-comp .friends div .image div:nth-child(2) img {
+  background-color: rgba(15, 15, 15, 0.87);
+  padding: 2px;
+  border-radius: 50%;
+  max-width: 100%;
+  min-width: 35px;
+}
+
+.left-comp .friends div .image div {
+  display: none;
+}
+
+.left-comp .friends .name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+}
+
+.left-comp .friends .name .header {
+  max-width: 240px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: white;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.left-comp .friends .name .sub-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 270px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.left-comp .friends .name .sub-header .message {
+  overflow: hidden;
+  max-width: 170px;
+  font-weight: 1px;
+  color: #888282;
+}
+
+.left-comp .friends .name .sub-header .time {
+  font-weight: 1px;
+  margin-left: 5px;
+  color: #6d6b6b;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  opacity: 1;
+  -webkit-animation: show .2s ease;
+          animation: show .2s ease;
+}
+
+@-webkit-keyframes show {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-50%) scale(0.8);
+            transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(-50%) scale(1);
+            transform: translateY(-50%) scale(1);
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    -webkit-transform: translateY(-50%) scale(0.8);
+            transform: translateY(-50%) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: translateY(-50%) scale(1);
+            transform: translateY(-50%) scale(1);
+  }
+}
+/*# sourceMappingURL=Left.css.map */
