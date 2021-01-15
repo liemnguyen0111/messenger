@@ -1,4 +1,11 @@
 .right-comp {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   height: 100%;
   width: 100%;
   background-color: #19191a;
@@ -6,6 +13,303 @@
           box-shadow: 0 4px 12px 0   #19191a;
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
-  opacity: .9;
+}
+
+.r-row-1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.r-row-1 .log-out {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #49acf2;
+  -webkit-box-shadow: 0 4px 12px 0 #49ACF2;
+          box-shadow: 0 4px 12px 0 #49ACF2;
+  -webkit-backdrop-filter: blur(4px);
+          backdrop-filter: blur(4px);
+  color: #12222e;
+  width: 80px;
+  height: 30px;
+  padding: 2px;
+  margin: 5px;
+  border-radius: 20px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transition: 2s ease;
+  transition: 2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.r-row-2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 5px 5px 5px 5px;
+}
+
+.r-row-2 .r-image {
+  position: relative;
+  height: 105px;
+  min-width: 29px;
+  max-width: 50px;
+  height: 50px;
+  background: transparent;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow: hidden;
+}
+
+.r-row-2 .r-image div:nth-child(1) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 3px;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+}
+
+.r-row-2 .r-image div:nth-child(1) img {
+  border-radius: 50%;
+  max-width: 80%;
+  min-width: 35px;
+  margin: auto;
+  margin-left: 5px;
+}
+
+.r-row-2 .r-image div:nth-child(2) {
+  display: block;
+  border-radius: 50%;
+}
+
+.r-row-2 .r-image div:nth-child(2) img {
+  background-color: rgba(15, 15, 15, 0.87);
+  padding: 2px;
+  border-radius: 50%;
+  max-width: 100%;
+  min-width: 35px;
+}
+
+.r-row-2 .r-image div {
+  display: none;
+}
+
+.r-row-2 .room-name {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 5px 5px 5px 15px;
+}
+
+.r-row-3 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+}
+
+.r-row-4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  bottom: 0;
+  text-align: center;
+}
+
+.r-row-4 i {
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  border: none;
+  font-size: 25px;
+  margin: 10px 10px;
+  color: gray;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.r-row-4 i:hover {
+  cursor: pointer;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.r-row-4 .like {
+  color: #49ACF2;
+}
+
+.r-row-4 .send {
+  color: #49ACF2;
+}
+
+.input-message {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin: 5px 0;
+}
+
+.input-message div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 2px 75px 2px 10px;
+  border-radius: 20px;
+  font-weight: 16px;
+  background: rgba(128, 128, 128, 0.219);
+}
+
+.input-message textarea {
+  width: 100%;
+  min-width: 120px;
+  min-height: 41px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  border-radius: 15px;
+  margin-right: 5px;
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: white;
+  resize: none;
+  font-size: 15px;
+}
+
+.input-message textarea::-webkit-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea:-ms-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea::-ms-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea::placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea:focus, .input-message textarea :active, .input-message textarea :hover {
+  outline: none;
+}
+
+.input-message i {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  position: absolute;
+  right: 3px;
+  bottom: -2px;
+}
+
+.input-message i:nth-child(2) {
+  right: 40px;
+}
+
+.r-hide {
+  display: none;
+}
+
+.r-show {
+  -webkit-animation: like-send .2s ease;
+          animation: like-send .2s ease;
+}
+
+@-webkit-keyframes like-send {
+  from {
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes like-send {
+  from {
+    -webkit-transform: scale(0.8);
+            transform: scale(0.8);
+  }
+  to {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+.out {
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  -webkit-animation: logout 2s ease;
+          animation: logout 2s ease;
+}
+
+@-webkit-keyframes logout {
+  from {
+    opacity: 1;
+    width: 84px;
+  }
+  to {
+    opacity: 0;
+    width: 0;
+  }
+}
+
+@keyframes logout {
+  from {
+    opacity: 1;
+    width: 84px;
+  }
+  to {
+    opacity: 0;
+    width: 0;
+  }
 }
 /*# sourceMappingURL=Right.css.map */

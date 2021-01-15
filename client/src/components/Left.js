@@ -51,16 +51,20 @@ class Left extends Component
             <>
                 <div className="left-comp">
             
-                    <div className="logo row-1">
+                    {/* Left row 1 */}
+                    <div className="logo l-row-1">
                     <i className="far fa-comments"></i>
                     </div>
-                    <div className="row-2">
+
+                     {/* Left row 2 */}
+                    <div className="l-row-2">
                         <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
                         <div className="app-name">Messenger</div>
                         <i className="fas fa-edit compose-message"/>
                     </div>
 
-                    <div className="search row-3">
+                     {/* Left row 3 */}
+                    <div className="search l-row-3">
                         <input 
                         ref={(input) => { this.searchInput = input;}}
                         type="text" 
@@ -75,13 +79,14 @@ class Left extends Component
 
                     </div>
                
+                     {/* Left row 4 */}
                     {/* Friends list container*/}
-                    <div className="friends row-4">
+                    <div className="friends l-row-4">
 
                     {/* friend container */}
                     <div className='friend active'>
                     <div className="image">
-                        <div>
+                    <div>
                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
                     </div>
                     <div>
@@ -101,14 +106,13 @@ class Left extends Component
                     {[...new Array(30)]
             .map(
               (key) => 
-              <div className='friend'>
+              <div className='friend' key={this.getKey()}>
                     <div className="image">
-                        <div>
+
+                    <div>
                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
                     </div>
-                    {/* <div>
-                    <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-                    </div> */}
+
                     </div>
                     
                     {/* Name and latest message container*/}

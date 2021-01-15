@@ -3,11 +3,250 @@
 
 .right-comp
 {
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 100%;
-    // border-radius: 0 20px 20px 0;
     background-color: #19191a;
     box-shadow: 0 4px 12px 0   #19191a;
     backdrop-filter: blur( 4.0px );
-    opacity: .9;
 }
+
+.r-row-1
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    .log-out
+    {
+        display: flex;
+        background-color: #49acf2;
+        box-shadow: 0 4px 12px 0  $light-color;
+        backdrop-filter: blur( 4.0px );
+        color: $dark-color;
+        width: 80px;
+        height: 30px;
+        padding: 2px;
+        margin: 5px;
+        border-radius: 20px;
+        justify-content: center;
+        align-items: center;
+        transition: 2s ease;
+        white-space: nowrap;
+        cursor: pointer;
+        
+    }
+}
+
+.r-row-2
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    // text-align: center;
+    margin: 5px 5px 5px 5px;
+
+         .r-image
+         {
+          position: relative;
+          height: 105px;
+        //   white-space: nowrap;
+          min-width: 29px;
+          max-width: 50px;
+          height: 50px;
+          background: transparent;
+          box-sizing: border-box;
+          overflow: hidden;
+
+          div:nth-child(1)
+          {
+              display: flex;
+              padding: 3px;
+              justify-content: left;
+              img
+              {
+                   border-radius: 50%;
+                   max-width: 80%;
+                   min-width: 35px;
+                  margin: auto;
+                  margin-left: 5px;
+              }
+
+          }
+          
+          div:nth-child(2)
+          {
+
+              display: block;
+            //   transform: translate(-22px, 24px);
+              border-radius: 50%;
+              
+              img
+              {
+              background-color: rgba(15, 15, 15, 0.87);
+              padding: 2px;
+               border-radius: 50%;
+               max-width: 100%;
+               min-width: 35px;
+              }
+
+          }
+          
+          div
+          {
+              display: none;
+          }
+      }
+    
+
+    // img, i
+    // {
+    //     display: flex;
+    //     font-size: 20px;
+    //     width: 40px;
+    //     height: 40px;
+    //     border-radius: 50%;
+    //     background-color: rgba(128, 128, 128, 0.377);
+    //     justify-content: center;
+    //     align-items: center;
+    //     color: white;
+    //     font-weight: lighter;
+
+    //     &:hover
+    //     {
+    //         cursor: pointer;
+    //         transform: scale(.98);
+    //     }
+
+    // }
+
+    .room-name
+    {
+        flex: 1;
+        padding: 5px 5px 5px 15px;
+    }
+}
+.r-row-3
+{
+    flex: 1;
+}
+.r-row-4
+{
+    display: flex;
+    align-items: flex-end;
+    bottom: 0;
+    text-align: center;
+
+    i
+    {
+        overflow: hidden;
+        width: 30px;
+        height: 30px;
+        border: none;
+        font-size: 25px;
+        margin: 10px 10px;
+        color: gray; 
+        transition: .2s ;
+        &:hover
+        {
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+    }
+
+    .like
+    {
+        color:  $light-color;
+    }
+
+    .send
+    {
+        color: $light-color;
+    }
+
+}
+
+.input-message
+{
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    margin: 5px 0;
+
+    div
+    {
+
+        display: flex;
+        flex: 1;
+        padding: 2px 75px 2px 10px;
+        border-radius: 20px;
+        // border: 1px solid black;
+        font-weight: 16px;
+        background: rgba(128, 128, 128, 0.219);
+    }
+    textarea
+    {
+
+        width: 100%;
+        min-width: 120px;
+        min-height: 41px;
+        flex: 1;
+        border-radius: 15px;
+        margin-right: 5px;
+        background: transparent;
+        border: none;
+        padding: 12px 0;  
+        box-sizing: border-box;  
+        color: white;
+        resize: none;font-size: 15px;
+
+        &::placeholder {
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+        &:focus, :active , :hover
+        {
+            outline: none;
+        }
+    }
+
+    i
+    {
+
+        justify-content: flex-end;
+        position: absolute; 
+        right: 3px; 
+        bottom: -2px;
+    
+        &:nth-child(2)
+        {
+            right: 40px;
+        }
+    }
+}
+
+.r-hide
+{
+    display: none;
+}
+
+.r-show
+{
+    animation: like-send .2s ease;
+}
+
+@keyframes like-send
+{
+    from
+    {
+        transform: scale(.8);
+    }
+    to
+    {
+        transform: scale(1);
+    }
+}
+
