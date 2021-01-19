@@ -1,4 +1,5 @@
 import React ,  { Component } from "react"
+// import Friend from './Friend'
 import '../styles/Left.css'
 
 class Left extends Component
@@ -82,7 +83,9 @@ class Left extends Component
                      {/* Left row 4 */}
                     {/* Friends list container*/}
                     <div className="friends l-row-4">
-
+                    {/* {[...new Array(30)]
+            .map((key) => <Friend/>)}
+                     */}
                     {/* friend container */}
                     <div className='friend active'>
                     <div className="image">
@@ -103,7 +106,7 @@ class Left extends Component
                     </div>
                     </div>
 
-                    {[...new Array(30)]
+                   {[...new Array(30)]
             .map(
               (key) => 
               <div className='friend' key={this.getKey()}>
@@ -123,7 +126,7 @@ class Left extends Component
                            <span  className="time"> • 1:06 PM</span></div>
                     </div>
                     </div>
-            )}
+            )} 
                   
 
                     </div>

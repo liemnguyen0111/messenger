@@ -1,0 +1,129 @@
+.input {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  bottom: 0;
+  text-align: center;
+}
+
+.input i {
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  border: none;
+  font-size: 25px;
+  margin: 10px 10px;
+  color: gray;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+
+.input i:hover {
+  cursor: pointer;
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.input .like {
+  color: #49ACF2;
+}
+
+.input .send {
+  color: #49ACF2;
+}
+
+.input-message {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin: 5px 0;
+}
+
+.input-message div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding: 2px 75px 2px 10px;
+  border-radius: 20px;
+  font-weight: 16px;
+  background: rgba(128, 128, 128, 0.219);
+}
+
+.input-message textarea {
+  width: 100%;
+  min-width: 120px;
+  min-height: 41px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  border-radius: 15px;
+  margin-right: 5px;
+  background: transparent;
+  border: none;
+  padding: 12px 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  color: white;
+  resize: none;
+  font-size: 15px;
+}
+
+.input-message textarea::-webkit-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea:-ms-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea::-ms-input-placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea::placeholder {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.input-message textarea:focus, .input-message textarea :active, .input-message textarea :hover {
+  outline: none;
+}
+
+.input-message i {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  position: absolute;
+  right: 3px;
+  bottom: -2px;
+}
+
+.input-message i:nth-child(2) {
+  right: 40px;
+}
+
+.r-hide {
+  display: none;
+}
+
+.r-show {
+  -webkit-animation: like-send .2s ease;
+          animation: like-send .2s ease;
+}
+/*# sourceMappingURL=Input.css.map */

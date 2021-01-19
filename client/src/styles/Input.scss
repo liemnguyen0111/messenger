@@ -1,0 +1,109 @@
+@import 'config';
+@import 'utils';
+
+.input
+{
+    display: flex;
+    align-items: flex-end;
+    bottom: 0;
+    text-align: center;
+
+    i
+    {
+        overflow: hidden;
+        width: 30px;
+        height: 30px;
+        border: none;
+        font-size: 25px;
+        margin: 10px 10px;
+        color: gray; 
+        transition: .2s ;
+        &:hover
+        {
+            cursor: pointer;
+            transform: scale(1.1);
+        }
+    }
+
+    .like
+    {
+        color:  $light-color;
+    }
+
+    .send
+    {
+        color: $light-color;
+    }
+
+}
+
+.input-message
+{
+    position: relative;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    margin: 5px 0;
+
+    div
+    {
+
+        display: flex;
+        flex: 1;
+        padding: 2px 75px 2px 10px;
+        border-radius: 20px;
+        // border: 1px solid black;
+        font-weight: 16px;
+        background: rgba(128, 128, 128, 0.219);
+    }
+    textarea
+    {
+
+        width: 100%;
+        min-width: 120px;
+        min-height: 41px;
+        flex: 1;
+        border-radius: 15px;
+        margin-right: 5px;
+        background: transparent;
+        border: none;
+        padding: 12px 0;  
+        box-sizing: border-box;  
+        color: white;
+        resize: none;font-size: 15px;
+
+        &::placeholder {
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+        &:focus, :active , :hover
+        {
+            outline: none;
+        }
+    }
+
+    i
+    {
+
+        justify-content: flex-end;
+        position: absolute; 
+        right: 3px; 
+        bottom: -2px;
+    
+        &:nth-child(2)
+        {
+            right: 40px;
+        }
+    }
+}
+
+.r-hide
+{
+    display: none;
+}
+
+.r-show
+{
+    animation: like-send .2s ease;
+}

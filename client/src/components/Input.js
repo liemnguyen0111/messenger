@@ -1,8 +1,7 @@
 import React ,  { Component } from "react"
-import Input from './Input'
-import '../styles/Right.css'
+import '../styles/Input.css'
 
-class Right extends Component
+class Input extends Component
 {
 
     constructor( props ) {
@@ -14,7 +13,6 @@ class Right extends Component
             value : false,
             like : 'r-hide',
             send : 'r-show',
-            out : ''
         }
 
         this.getKey = this.getKey.bind(this);
@@ -35,9 +33,8 @@ class Right extends Component
             value : false,
             like : 'r-hide',
             send : 'r-show',
-            out : 'out'
         })
-        // this.searchInput.value = ''
+ 
     }
 
     show()
@@ -46,7 +43,6 @@ class Right extends Component
             value : true,
             like : 'r-show',
             send : 'r-hide',
-            out : ''
         })
     }
 
@@ -67,42 +63,7 @@ class Right extends Component
     {
         return (
             <>
-                <div className="right-comp">
-
-                {/* Right row 1  */}
-                    <div className="r-row-1">  
-                        {/* logout button */}
-                         <div className={`log-out`}>Log out</div>
-                        </div>
-
-                {/* Right row 2 */}
-                    <div className="r-row-2">
-              
-                    <div className="r-image">
-                    <div>
-                    <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-                    </div>
-                    <div>
-                    <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-                    </div>
-                    </div>
-                
-                    
-                        <div className="room-name">room name</div>
-                        <i className="fas fa-phone-alt"></i>
-                        <i className="fas fa-video"></i>
-                        <i className="fas fa-search"></i>
-                        <i className="fas fa-search"></i>
-                    </div>
-
-                {/* Right row 3 */}
-                    <div className="r-row-3">
-                        <div className="messages"></div>
-                    </div>
-
-                {/* Right row 4 */}
-                <Input/>
-                    {/* <div className="r-row-4">
+                    <div className="input">
                     <i className="fas fa-plus-circle"></i>
 
                     <div className="input-message">
@@ -129,13 +90,12 @@ class Right extends Component
                     <i className= {`fas fa-paper-plane send ${this.state.like}`}></i>
                     </div>
                     
-                    </div> */}
-                        {/* End of right-comp */}
-                </div>   
+                    </div>
+
             </>
         )
     }
  
 }
 
-export default Right
+export default Input
