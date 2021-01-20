@@ -1,43 +1,127 @@
 import React ,  { Component } from "react"
-import Left from './Left'
-import Right from './Right'
-import '../styles/Home.css'
+import Logo from './Logo'
+import Images from './Images'
+import Search from './Search'
+import Friend from './Friend'
+import Button from './Button'
+import Message from './Message'
+import Input from './Input'
 
 class Home extends Component
 {
 
     constructor( props ) {
         super( props );
-    
-        this.keyCount = 0;
-        this.getKey = this.getKey.bind(this);
+        
+        this.state = {
+            profile : 40,
+            group : 60,
+            image : 'https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc',
+            currentTag : "1"
+        }
+      
+        this.onClick = this.onClick.bind(this);
     }
-    
-    getKey(){
-        return this.keyCount++ * Math.random(10);
+
+    onClick(e)
+    {
+        document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
+        document.querySelector(`[data-tag="${e.target.dataset.tag}"]`).classList.add('on-active')
+        this.setState({currentTag : e.target.dataset.tag})
+        // console.log(this.state)
     }
+
+    // componentDidMount()
+    // {
+    //     console.log('did mount')
+    // }
+
+    // componentDidUpdate()
+    // {
+    //     console.log('did update')
+    // }
 
     render()
     {
         return (
-            <div>
-                <div className="wrapper">
-                    <div className="left">
-                        <Left></Left>
-                    </div>
-                    <div className="right">
-                    <Right></Right>
-                    </div>
-                </div>
-
-                {/* background squares */}
-                {[...new Array(30)]
-            .map(
-              (key) => 
-              <div className="square" key={this.getKey()}></div>
-            )}
-
+            <>
+            <div className="plate">
+            <div className="left">
+            <Logo/>
+            {/* {console.log('render')} */}
+            {/* Profile image and compose new message */}
+            <div className="row-2">
+            <Images 
+            width={this.state.profile} 
+            height={this.state.profile} 
+            images={[this.state.image]}
+            />
+            <p className="title">Chat-Box</p>
+            <i className="default-size fas fa-edit compose-message"/>
             </div>
+         
+            {/* Search bar */}
+            <Search/>
+
+            {/* Friends list */}
+            <div className="row-3">
+
+            {[...new Array(30)]
+            .map(
+              (tag, i) => 
+              <Friend 
+              key={i}
+              images={[this.state.image]}
+              width={this.state.group} 
+              height={this.state.group}
+              tag={++i}
+              onClick={this.onClick}
+              />
+                
+            )} 
+            </div>
+
+                {/* ------- End of left --------- */}
+            </div>
+
+
+
+
+            <div className="right">
+            <section className="row-1">
+            <Button 
+            name='Sign Out'
+            type='sign-out'
+            width = {90}
+            height = {30}
+            />
+            </section>
+        
+    
+            {/* <Button 
+            name='Sign In'
+            type='sign-in'
+            width = {180}
+            height = {30}
+            /> */}
+            {/* <Logo/> */}
+            <section className="row-2">
+            <Images 
+            width={this.state.group} 
+            height={this.state.group}
+            images={[this.state.image,this.state.image]}/>
+            <div className="r-g-name">Nhung con be nhat nheo</div>
+
+            <i className="fas fa-phone-alt call"></i>
+            <i className="fas fa-video video"></i>
+            <i className="fas fa-search m-search"></i>
+            </section>
+            {/* <Search></Search>  */}
+            <Message/>
+            <Input/>
+            </div>
+            </div>
+            </>
         )
     }
  

@@ -1,0 +1,474 @@
+@import 'config';
+@import 'utils';
+
+body
+{
+    font-family :$font-roboto;
+    color: white;
+    filter: contrast(1.1) ;
+}
+// Default size icon
+.default-size
+{
+    font-size: 18px;
+    font-weight: lighter;
+}
+
+// Logo
+.logo
+{
+    font-size: $logo;
+    margin: 5px;
+}
+
+// Button
+.button
+{
+ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    backdrop-filter: blur(4px);
+    margin: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.sign-out
+{
+    background: $red;
+    box-shadow: 0 2px 5px 0   $red,
+    0px -2px 5px 0  $red;
+}
+
+.sign-in
+{
+    background: $secondary-color;
+    box-shadow: 0 2px 5px 0  $secondary-color,
+    0px -2px 5px 0 $secondary-color;
+}
+
+
+// Images
+.images
+{
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto auto;
+    max-width: 100%;
+    box-sizing: border-box;
+    // border: .1px solid red;
+    // clear: both;
+    pointer-events: none;
+    padding: 3px;
+
+    img
+    {
+        max-width: 100%;
+        box-sizing: border-box;
+        border-radius: 50%;
+        display: flex;
+      
+    
+        &:nth-child(1)
+        {
+            max-width: 100%;
+            z-index: 1;
+            padding: 2px;
+        }
+        
+        &:nth-child(2)
+        {
+             background-color: $dark-color;
+             transform: translate(-50%,27%);
+             padding: 2px;
+             z-index: 2;
+
+        }
+    }
+}
+
+// Search input
+.search
+{
+    // display: flex;
+    position: relative;
+    align-items: center;
+    margin: 5px  0 5px 0;
+    
+    input
+    {
+        background: $dark-color;
+        opacity: .8;
+        width: 100%;  
+        height: 30px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 12px 40px 12px 12px;  
+        box-shadow: 0px 0px 22px 1px rgba(0,0,0,0.43), 
+        inset 0px 0px 22px 1px rgba(0,0,0,0.43);
+        box-sizing: border-box;  
+        color: white;
+
+        &:focus, :active , :hover
+        {
+            outline: none;
+            border: 1px solid rgb(111, 111, 156);
+        }
+    }
+
+    i
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 22px;
+        height: 22px;
+        font-size: 100%;
+        font-weight: lighter;
+        position: absolute; 
+        right: 10px; 
+        top: 50%;
+        transform-origin: center;
+        transform: translateY(-50%);
+        color: gray; 
+        transition: 2s ease;
+        animation: show .2s ease;
+    }
+}
+
+// Animation on search box
+@keyframes show
+{
+    from{
+       opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+
+
+// Hide
+.hide
+{
+    display: none !important;
+}
+
+// Plate contains left and right components
+.plate
+{
+    position: absolute;  
+    display: grid;
+    grid-template-columns: minmax(80px,300px) minmax(190px,auto);
+    width: 95%;
+    height: 80vh;
+    top: 50%;
+    left: 50%;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.493);
+    backdrop-filter: blur( 4.0px );
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+
+    // border only while in development
+    .left, .right
+    {
+        display: flex;
+        flex-direction: column;
+        padding: 5px;
+        // border: 1px solid black;
+        overflow: hidden;
+    }
+    .left
+    {
+        background: rgba(51, 48, 48, 0.781);
+    }
+
+}
+
+// Row ------------------
+
+// Left column
+.left
+{
+// Row 2 
+.row-2
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+
+    .title
+    {
+        flex: 1;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    i
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $dark-color;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+}
+
+.row-3
+{
+    flex: 1;
+    overflow: auto;
+}
+
+.friend
+{
+    display: flex;
+    flex-direction: row;
+
+    .g-info
+    {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        margin: 0 1px 0 5px;
+        pointer-events: none;
+    }
+
+    .g-name
+    {
+        max-width: 190px;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 1px;
+        color: white;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .l-message-info
+    {
+        display: flex;
+        max-width: 270px;
+        overflow: hidden;
+        white-space: nowrap;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+
+           .l-message
+            {
+               overflow: hidden;
+               max-width: 170px;
+               color: $light-text;
+               text-overflow: ellipsis;
+
+            }
+      
+            .time
+            {
+                font-weight: 1px;
+                font-size: 13px;
+                flex: 1;
+                margin-left: 5px;
+                color: $dark-text;
+            }
+        
+    }
+    transition: .2s ease;
+    &:hover
+    {
+        cursor: pointer;
+        background: $dark-color;
+    }
+
+
+}
+}
+
+// Right column
+.right
+{
+    .row-1
+    {
+        display: flex;
+        // grid-template-columns: auto 90px;
+       
+        .button { 
+            // flex: 1;
+            margin-left: auto;
+        }
+    }
+
+    .row-2
+    {
+        // background: green;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .r-g-name
+        {
+            flex: 1;
+            margin-left: 10px;
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    
+    }
+
+    .call, .video, .m-search{
+        color: $secondary-color;
+        margin: 0 10px;
+        cursor: pointer;
+    }   
+
+}
+
+.messages
+{
+    background: green;
+    flex: 1;
+}
+
+.input
+{
+    display: flex;
+    position: relative;
+    align-items: flex-end;
+    flex-direction: row;
+    margin: 5px 0 5px 0;
+  
+    i{
+        
+        margin: 0 5px 5px 5px;
+        font-size: 22px;
+        color: $secondary-color;
+    }
+}
+
+.text
+{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 28px;
+    justify-content: center;
+    margin: 0 5px;
+    padding: 2px 80px 2px 2px;
+    border-radius: 10px;
+    background: $dark-color;
+
+    textarea
+    {
+        display: flex;
+        width: 100%;
+        border-radius: 15px;
+        padding-left: 10px;
+        border: none;
+        justify-content: center;
+        box-sizing: border-box;  
+        background: transparent;
+        resize: none;
+        font-size: 17px;
+        color: white;
+        transition: .2s ease;
+        &::placeholder {
+            white-space: nowrap;
+            overflow: hidden;
+          }
+
+        &:focus, :active , :hover
+        {
+            outline: none;
+        }
+    }
+    
+    i
+    {
+        position: absolute; 
+        right: 3px; 
+        bottom: 0px;
+    
+        &:nth-child(2)
+        {
+            right: 40px;
+        }
+    }
+}
+
+.like, .send
+{
+
+    font-size: 30px !important;
+    animation : show .1s ease-in;
+}
+
+// On active / Not Active
+.not-active
+{
+    background: transparent;
+}
+
+.on-active
+{
+    background: $dark-color;
+}
+
+// Scroll bar styling
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+    border-radius: 500px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    // background: #f1f1f128; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 500px;
+    background: #888; 
+
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+//   Media query
+  @media only screen and (max-width : 600px)
+  {
+
+// Set left to 90px
+.plate
+{
+    grid-template-columns: 90px auto;
+}
+
+// Display none
+.g-name, .l-message-info, .time, .title
+{
+    display: none;
+}
+  }

@@ -1,79 +1,48 @@
-// import React ,  { Component } from "react"
-// import '../styles/Friend.css'
+import React ,  { Component } from "react"
+import Images from './Images'
 
-// class Friend extends Component
-// {
+class Friend extends Component
+{
 
-//     constructor( props ) {
-//         super( props );
-    
-//         this.keyCount = 0;
-   
-//         this.state = {
-//             value : false,
-//             search : 'show',
-//             exit : 'hide'
-//         }
+    onClick(e) 
+    {
+       console.log( e.target)
+    }
 
-//         this.getKey = this.getKey.bind(this);
-//     }
-    
-//     getKey(){
-//         return this.keyCount++ * Math.random(10);
-//     }
 
-//     onChange(e)
-//     {
-//         e.target.value? this.show() : this.clear()
-//     }
+    render()
+    {
+        return ( 
+            <div 
+            className='friend'
+            onClick={(e) => this.props.onClick(e)}
+            ref={(f) => { this.f = f;}}
+            data-tag={this.props.tag }
+            >
+            <Images 
+            images={this.props.images}
+            width= {this.props.width}
+            height={this.props.height}
+            ></Images>
+            <section className="g-info">
+            <div className="g-name">Nhung con be nhat nheo oawienfaweoifn </div>
+            <section className="l-message-info">
+            <div className="l-message">this is a   </div>
+            <span className='time'> • 12:16 AM</span> 
+            <Images 
+            images={this.props.images}
+            width= {20}
+            height={20}
+            ></Images>
 
-//     clear()
-//     {
-//         this.setState({
-//             value : false,
-//             search : 'show',
-//             exit : 'hide'
-//         })
-//         this.searchInput.value = ''
-//     }
-
-//     show()
-//     {
-//         this.setState({
-//             value : true,
-//             search : 'hide',
-//             exit : 'show'
-//         })
-//     }
-//     render()
-//     {
-//         return (
-//             <>
-
-//                     {/* friend container */}
-//                     <div className='friend'>
-//                     <div className="image">
-//                     <div>
-//                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-//                     </div>
-//                     <div>
-//                     <img src="https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc" alt="" srcSet=""/>
-//                     </div>
-//                     </div>
-                    
-//                     {/* Name and latest message container*/}
-//                     <div className="name">
-//                         <div className="header">những con bè nhạt nhẽo</div>
-//                         <div className="sub-header">
-//                            <span  className="message" >Hello Tim wwwwwwwwwwwwwwwwwwwwwwwwwwwwweaefawegwwwww</span> 
-//                            <span  className="time"> • 1:06 PM</span></div>
-//                     </div>
-//                     </div>
-
-//             </>
-//         )
-//     }
+            </section>
+           
+            </section>
+           
+            </div>
+        )
+    }
  
-// }
+}
 
-// export default Friend
+export default Friend

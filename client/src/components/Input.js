@@ -1,101 +1,119 @@
-import React ,  { Component } from "react"
-import '../styles/Input.css'
+import React, { Component } from 'react'
 
 class Input extends Component
 {
-
     constructor( props ) {
         super( props );
-    
-        this.keyCount = 0;
-   
+
         this.state = {
-            value : false,
-            like : 'r-hide',
-            send : 'r-show',
+            key : 0,
+            message : '',
+            like : 'hide',
+            send : ''
         }
 
-        this.getKey = this.getKey.bind(this);
+        // Bind handleKeyUp function to state
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
     
-    getKey(){
-        return this.keyCount++ * Math.random(10);
-    }
-
+    // Storing value from input to message
     onChange(e)
     {
-        e.target.value? this.show() : this.hide()
+        if(this.state.key !== 13)
+        this.setState({
+            message : e.target.value
+        })
     }
 
+    // Hide send button and show like button and reset message 
     hide()
     {
         this.setState({
-            value : false,
-            like : 'r-hide',
-            send : 'r-show',
+            message : '',
+            like : '',
+            send : 'hide'
         })
  
     }
 
+    // Show send button and hide like button
     show()
     {
         this.setState({
-            value : true,
-            like : 'r-show',
-            send : 'r-hide',
+            like : 'hide',
+            send : ''
         })
     }
 
-    handleKeyDown(e) {
-        let temp = parseInt(e.target.style.height.split('px')[0]) === 42
-        // e.target.style.height = `${temp ? 35 : e.target.scrollHeight}px`;
-        e.target.style.height =  'inherit';
-        // console.log(e.target.style.height)
-        // e.target.style.height = `${temp ? 35 : e.target.scrollHeight}px`;
-        // console.log(e.target.scrollHeight) 
-        // e.target.style.height = `${e.target.scrollHeight}px`; 
-        // In case you have a limitation
-        e.target.style.height = `${Math.min(e.target.scrollHeight, 100)}px`;
-      }
-    
+    // Check if value exist, then show send button and hide the other 
+    // Then increase or decrease the height base on line of text
+    // Maximum height 200px
+    handleKeyUp(e) {
 
+        this.state.message ?  this.show() : this.hide()
+
+        if(e.keyCode === 13 && !this.state.message )
+        {
+            this.setState({
+                key : 13
+            })
+        }
+        else
+        {
+            this.setState({
+                key : 0
+            })
+        }
+        
+        // return to original size when hit enter 
+        if((e.keyCode === 13 && e.shiftKey === false) || !this.state.message )
+        {
+            e.target.style.height =  '24px';
+            this.hide()
+
+        }
+        else
+        {
+              // Set max height for input (maxHeight : 200px)
+            e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+        }
+
+      }
+
+
+    componentDidUpdate()
+    {
+        
+    }
+    
     render()
     {
-        return (
-            <>
-                    <div className="input">
-                    <i className="fas fa-plus-circle"></i>
-
-                    <div className="input-message">
-
-                    <div>
-                    <textarea type="text"
-                     wrap="hard"
-                    //  ref={(input) => { this.searchInput = input;}}
-                    rows= '1'
+        return(
+            <section className="input">
+                <i className="fas fa-plus-circle"/>
+                <div className="text">
+                <form onSubmit={this.onSubmit}>
+                <textarea type="text"
+                     ref={(input) => { this.messageInput = input;}}
+                     rows= '1'
+                     value = {this.state.message}
                      placeholder='Type a message...' 
                      onChange={(e) => this.onChange(e)}
-                     onKeyDown= {this.handleKeyDown}
-                     onKeyUp= {this.handleKeyDown}
+                     onKeyUp = {this.handleKeyUp}
+                     onKeyDown = {this.handleKeyUp}
                     />
-                    </div>
-
-
-                    <i className= "far fa-image"></i>
-                    <i className= "far fa-laugh-beam"></i>
-                    </div>
+                <i className= "far fa-image"/>
+                <i className= "far fa-laugh-beam"/>
+                </form>
                
-                    <div className="like-send">
-                    <i className= {`fas fa-thumbs-up like ${this.state.send}`}></i>
-                    <i className= {`fas fa-paper-plane send ${this.state.like}`}></i>
-                    </div>
-                    
-                    </div>
-
-            </>
+                </div>
+               
+               <i className= {`fas fa-thumbs-up like ${this.state.like}`}/>
+               <i className= {`fas fa-paper-plane send ${this.state.send} `}/>
+             
+            </section>
         )
     }
- 
 }
 
 export default Input
