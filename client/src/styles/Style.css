@@ -172,7 +172,6 @@ body {
   top: 50%;
   left: 50%;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.493);
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
   -webkit-transform: translate(-50%, -50%);
@@ -194,6 +193,10 @@ body {
 
 .plate .left {
   background: rgba(51, 48, 48, 0.781);
+}
+
+.plate .right {
+  background: rgba(31, 31, 36, 0.918);
 }
 
 .left .row-2 {
@@ -336,6 +339,7 @@ body {
 }
 
 .right .row-2 {
+  margin: 5px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -369,10 +373,66 @@ body {
 }
 
 .messages {
-  background: green;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 100%;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  overflow: auto;
+  border-radius: 10px;
+}
+
+.messages .images img {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.f-message, .y-message {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 20px;
+  max-width: 500px;
+}
+
+.f-message {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  margin-right: 80px;
+}
+
+.f-message .message {
+  background: rgba(128, 128, 128, 0.219);
+}
+
+.y-message {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  text-align: right;
+  margin-left: 100px;
+  margin-right: 30px;
+}
+
+.y-message .message {
+  background: #008CF0;
 }
 
 .input {

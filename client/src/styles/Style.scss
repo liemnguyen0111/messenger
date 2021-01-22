@@ -169,7 +169,7 @@ body
     top: 50%;
     left: 50%;
     border-radius: 5px;
-    background: rgba(0, 0, 0, 0.493);
+    // background: rgba(0, 0, 0, 0.493);
     backdrop-filter: blur( 4.0px );
     transform: translate(-50%, -50%);
     overflow: hidden;
@@ -186,8 +186,13 @@ body
     .left
     {
         background: rgba(51, 48, 48, 0.781);
+        // background: rgba(31, 31, 36, 0.918);
     }
 
+    .right
+    {
+        background: rgba(31, 31, 36, 0.918);
+    }
 }
 
 // Row ------------------
@@ -301,6 +306,7 @@ body
 // Right column
 .right
 {
+
     .row-1
     {
         display: flex;
@@ -315,6 +321,7 @@ body
     .row-2
     {
         // background: green;
+        margin: 5px 0;
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -343,8 +350,63 @@ body
 
 .messages
 {
-    background: green;
+    // background: red;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
     flex: 1;
+    overflow: auto;
+    // box-shadow:inset 0px 2px 15px $dark-color,
+    //  5px 5px 15px $dark-color;
+     border-radius: 10px;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr;
+
+    .images
+    {
+        img
+        {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+    }
+}
+
+.f-message, .y-message
+{
+    display: flex;
+    // flex: 1;
+    margin-bottom: 20px;
+}
+
+.message
+{
+    // backdrop-filter: blur(4px);
+    padding: 10px;
+    border-radius: 20px;
+    max-width: 500px;
+}
+.f-message { 
+    // background: green;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-right: 80px;
+
+    .message {
+        background: $dark-color;
+    }
+}
+.y-message { 
+
+    // background: yellow;
+    flex-direction: row-reverse;
+    text-align: right;
+    margin-left: 100px;
+    margin-right: 30px;
+
+    .message {
+        background: $secondary-color;
+    }
 }
 
 .input

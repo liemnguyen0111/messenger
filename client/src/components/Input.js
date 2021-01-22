@@ -70,7 +70,6 @@ class Input extends Component
         {
             e.target.style.height =  '24px';
             this.hide()
-
         }
         else
         {
@@ -92,7 +91,8 @@ class Input extends Component
             <section className="input">
                 <i className="fas fa-plus-circle"/>
                 <div className="text">
-                <form onSubmit={this.onSubmit}>
+                {/* <div></div> */}
+                <form >
                 <textarea type="text"
                      ref={(input) => { this.messageInput = input;}}
                      rows= '1'
