@@ -13,12 +13,15 @@ class Input extends Component
         }
 
         // Bind handleKeyUp function to state
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleKeyUp = this.handleKeyUp.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
     
     // Storing value from input to message
     onChange(e)
     {
+        // console.log(this.state.key)
         if(this.state.key !== 13)
         this.setState({
             message : e.target.value
@@ -31,7 +34,8 @@ class Input extends Component
         this.setState({
             message : '',
             like : '',
-            send : 'hide'
+            send : 'hide',
+            key : 13
         })
  
     }
@@ -48,11 +52,14 @@ class Input extends Component
     // Check if value exist, then show send button and hide the other 
     // Then increase or decrease the height base on line of text
     // Maximum height 200px
-    handleKeyUp(e) {
+    handleKeyDown(e) {
 
         this.state.message ?  this.show() : this.hide()
+       
+        let isMessage = !this.state.message
+        isMessage = !isMessage
 
-        if(e.keyCode === 13 && !this.state.message )
+        if(e.keyCode === 13 && e.shiftKey === false)
         {
             this.setState({
                 key : 13
@@ -65,11 +72,12 @@ class Input extends Component
             })
         }
         
+        // console.log()
         // return to original size when hit enter 
-        if((e.keyCode === 13 && e.shiftKey === false) || !this.state.message )
+        if((e.keyCode === 13 && e.shiftKey === false) && isMessage)
         {
             e.target.style.height =  '24px';
-            this.hide()
+            this.onSubmit()
         }
         else
         {
@@ -79,6 +87,26 @@ class Input extends Component
 
       }
 
+    handleKeyUp(e)
+    {
+        let isMessage = !this.state.message
+        isMessage = !isMessage
+        if((e.keyCode === 13 && e.shiftKey === false) || !isMessage)
+        {
+            e.target.style.height =  '24px';
+        }
+        else
+        {
+              // Set max height for input (maxHeight : 200px)
+            e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+        }
+    }
+    
+    onSubmit()
+    {
+        this.props.onSubmit(this.state.message)
+        this.hide()
+    }
 
     componentDidUpdate()
     {
@@ -93,14 +121,16 @@ class Input extends Component
                 <div className="text">
                 {/* <div></div> */}
                 <form >
-                <textarea type="text"
+                <textarea 
+                    wrap = 'hard'
+                    type="text"
                      ref={(input) => { this.messageInput = input;}}
                      rows= '1'
                      value = {this.state.message}
                      placeholder='Type a message...' 
                      onChange={(e) => this.onChange(e)}
                      onKeyUp = {this.handleKeyUp}
-                     onKeyDown = {this.handleKeyUp}
+                     onKeyDown = {this.handleKeyDown}
                     />
                 <i className= "far fa-image"/>
                 <i className= "far fa-laugh-beam"/>
@@ -109,7 +139,10 @@ class Input extends Component
                 </div>
                
                <i className= {`fas fa-thumbs-up like ${this.state.like}`}/>
-               <i className= {`fas fa-paper-plane send ${this.state.send} `}/>
+               <i 
+               className= {`fas fa-paper-plane send ${this.state.send} `}
+               onClick={this.onSubmit}
+               />
              
             </section>
         )

@@ -16,11 +16,50 @@ class Home extends Component
         this.state = {
             profile : 40,
             group : 60,
-            image : 'https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1610672400&v=beta&t=rlLJcz_CeRLcWZ3ZYU-vMBrAoPgMKNqR0CK9t7iDIxc',
-            currentTag : "1"
+            image : 'https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530',
+            currentTag : "1",
+            messages: [
+                { 
+                    isYours : false, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:42 PM'
+                },
+                { 
+                    isYours : false, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:42 PM'
+                },
+                { 
+                    isYours : true, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:02 PM'
+                },
+                { 
+                    isYours : false, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:32 PM'
+                },
+                { 
+                    isYours : true, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:42 PM'
+                },
+                { 
+                    isYours : true, 
+                    message : 'hello',
+                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                    time : '12:12 PM'
+                },
+            ]
         }
       
         this.onClick = this.onClick.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onClick(e)
@@ -31,6 +70,20 @@ class Home extends Component
         // console.log(this.state)
     }
 
+    onSubmit(e)
+    {
+        // console.log(e)
+
+        this.setState( { messages : [...this.state.messages, 
+            {
+            
+                isYours : true, 
+                message : e,
+                image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
+                time : '12:12 PM' }
+        ] })
+
+    }
     // componentDidMount()
     // {
     //     console.log('did mount')
@@ -38,7 +91,7 @@ class Home extends Component
 
     // componentDidUpdate()
     // {
-    //     console.log('did update')
+    //     console.log('did update',  this.state.messages)
     // }
 
     render()
@@ -117,8 +170,8 @@ class Home extends Component
             <i className="fas fa-search m-search"></i>
             </section>
             {/* <Search></Search>  */}
-            <Message/>
-            <Input/>
+            <Message messages={this.state.messages}/>
+            <Input onSubmit={this.onSubmit}/>
             </div>
             </div>
             </>
