@@ -1,0 +1,20 @@
+Create new user
+{
+    "data" : {
+    "firstName" : "Tim",
+    "lastName" : "Nguyen",
+    "email" : "timnguyen@gmail.com",
+    "age" : 26,
+    "address" : "test 123",
+    "username" : "test121345622e817"
+    },
+    "password" : "test12"
+}
+
+Login user
+
+{
+    "username" : "test121345622e817",
+    "password" : "test12"
+}
+

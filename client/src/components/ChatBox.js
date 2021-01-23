@@ -7,57 +7,21 @@ import Button from './Button'
 import Message from './Message'
 import Input from './Input'
 
-class Home extends Component
+class ChatBox extends Component
 {
 
     constructor( props ) {
         super( props );
         
         this.state = {
+            test: true,
             profile : 40,
             group : 60,
             image : 'https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530',
             currentTag : "1",
-            messages: [
-                { 
-                    isYours : false, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:42 PM'
-                },
-                { 
-                    isYours : false, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:42 PM'
-                },
-                { 
-                    isYours : true, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:02 PM'
-                },
-                { 
-                    isYours : false, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:32 PM'
-                },
-                { 
-                    isYours : true, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:42 PM'
-                },
-                { 
-                    isYours : true, 
-                    message : 'hello',
-                    image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                    time : '12:12 PM'
-                },
-            ]
+            messages: []
         }
-      
+        
         this.onClick = this.onClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
@@ -67,12 +31,10 @@ class Home extends Component
         document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
         document.querySelector(`[data-tag="${e.target.dataset.tag}"]`).classList.add('on-active')
         this.setState({currentTag : e.target.dataset.tag})
-        // console.log(this.state)
     }
 
     onSubmit(e)
     {
-        // console.log(e)
 
         this.setState( { messages : [...this.state.messages, 
             {
@@ -82,24 +44,14 @@ class Home extends Component
                 image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
                 time : '12:12 PM' }
         ] })
-
     }
-    // componentDidMount()
-    // {
-    //     console.log('did mount')
-    // }
-
-    // componentDidUpdate()
-    // {
-    //     console.log('did update',  this.state.messages)
-    // }
 
     render()
     {
         return (
             <>
-            <div className="plate">
-            <div className="left">
+            <div className={`chat-box`}>
+            <div className={`left `} >
             <Logo/>
             {/* {console.log('render')} */}
             {/* Profile image and compose new message */}
@@ -140,7 +92,7 @@ class Home extends Component
 
 
 
-            <div className="right">
+            <div className={`right`}>
             <section className="row-1">
             <Button 
             name='Sign Out'
@@ -150,13 +102,6 @@ class Home extends Component
             />
             </section>
         
-    
-            {/* <Button 
-            name='Sign In'
-            type='sign-in'
-            width = {180}
-            height = {30}
-            /> */}
             {/* <Logo/> */}
             <section className="row-2">
             <Images 
@@ -180,4 +125,4 @@ class Home extends Component
  
 }
 
-export default Home
+export default ChatBox

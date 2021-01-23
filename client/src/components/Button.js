@@ -11,6 +11,7 @@ class Button extends Component
                 height : this.props.height,
                 width : this.props.width
             }}
+            onClick={this.props.onClick}
             >
                 {this.props.name}
             </div>

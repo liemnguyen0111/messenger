@@ -1,10 +1,13 @@
 @import 'config';
 @import 'utils';
-
+:root{
+    overflow: hidden;
+}
 body
 {
     font-family :$font-roboto;
     color: white;
+    overflow: hidden;
     filter: contrast(1.1) ;
 }
 // Default size icon
@@ -158,8 +161,169 @@ body
     display: none !important;
 }
 
+// Main conntains models and welcome message
+.main
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+// Models contains sign-in and sign-up models
+.models
+{
+    position: absolute;  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgb(25, 25, 26);
+    max-width: 18rem;
+    min-width: 10rem;
+    height: auto;
+    padding: 20px 20px;
+    top: 50%;
+    left: 50%;
+    border-radius: 30px;
+    box-shadow: inset -3px -3px 10px rgb(95, 93, 93),
+     0 0 4px rgb(95, 93, 93);
+    backdrop-filter: blur( 4.0px );
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    transition: all 2s ease;
+
+    input
+    {
+        background: $dark-color;
+        opacity: .8;
+        width: 100%;  
+        height: 30px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 12px 12px 12px 40px;  
+        box-shadow: 0px 0px 22px 1px rgba(0,0,0,0.43), 
+        inset 0px 0px 22px 1px rgba(0,0,0,0.43);
+        box-sizing: border-box;  
+        margin: 10px 0;
+        color: white;
+
+        &:focus, :active , :hover
+        {
+            outline: none;
+            border: 1px solid rgb(111, 111, 156);
+        }
+        &:visited{
+            background: red;
+        }
+        &::placeholder{
+            color: white;
+        }
+    }
+
+    i
+    {
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+
+    }
+    .main-input
+    {
+       position: relative;
+       transition: 2s ease;
+    //    animation: expand 1s ease;
+    }
+}
+
+.t
+{
+    transition: all 2s ease;
+}
+@keyframes expand {
+    from{ 
+        opacity: 0;
+        height:  inherit;
+    }
+    to{
+        opacity: 1;
+        height: 50px;
+
+    }
+}
+.form
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 50px;
+    transition: all 2s ease;
+}
+
+.or
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    // height: 2px;
+    // width: 100%;
+    // background: white;
+    // margin: 20px 0;
+    &::before, &::after
+    {
+        content: '';
+        display: block;
+        height: 2px;
+        width: 100px;
+        flex: 1;
+        background: white;
+    }
+
+    &::before{
+        margin-right: 10px;
+    }
+    &::after{
+        margin-left: 10px;
+    }
+}
+
+.link{
+    margin: 5px 0;
+    cursor: pointer;
+}
+
+.welcome
+{
+    display: inline-block;
+    font-size: 1.3rem;
+    font-family: 'Open Sans Condensed', sans-serif;
+    margin-bottom: 30px;
+    text-align: center;
+
+    i
+    {
+        display: inline;
+        position: static;
+        margin-right: 5px;
+    }
+
+    span
+    {
+        font-size: 1.5rem;
+        font-weight: bolder;
+        color: rgb(53, 53, 56);
+        letter-spacing: 2px;
+    }
+}
+
 // Plate contains left and right components
-.plate
+.chat-box
 {
     position: absolute;  
     display: grid;
@@ -169,12 +333,11 @@ body
     top: 50%;
     left: 50%;
     border-radius: 5px;
-    // background: rgba(0, 0, 0, 0.493);
     backdrop-filter: blur( 4.0px );
     transform: translate(-50%, -50%);
     overflow: hidden;
+    transition: all 2s ease;
 
-    // border only while in development
     .left, .right
     {
         display: flex;
@@ -195,6 +358,11 @@ body
     }
 }
 
+// @keyframes expand
+// {
+//     from{width: 20%;}
+//     to{width: 95%;}
+// }
 // Row ------------------
 
 // Left column
@@ -356,11 +524,9 @@ body
     width: 100%;
     flex: 1;
     overflow: auto;
-    // box-shadow:inset 0px 2px 15px $dark-color,
-    //  5px 5px 15px $dark-color;
+    transition:all 2s ease;
      border-radius: 10px;
-    // display: grid;
-    // grid-template-columns: 1fr 1fr;
+
 
     .images
     {
@@ -521,7 +687,23 @@ body
     background: #555; 
   }
 
-//   Media query
+//   autofill styling ------------ 
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid rgb(17, 108, 194);
+  -webkit-text-fill-color:  rgb(246, 251, 255);
+  -webkit-box-shadow: 0 0 10px 100px rgba(26, 25, 31, 0.877) inset;
+//   transition: background-color 5000s ease-in-out 0s;
+}
+
+//   Media query ---------------
   @media only screen and (max-width : 600px)
   {
 
@@ -537,3 +719,31 @@ body
     display: none;
 }
   }
+
+
+.test
+{
+    flex: 1;
+    // width: inherit;
+    // width: calc(100% - 10px);
+    // width: 0px;
+    padding: 0 !important;
+    margin: 0 !important;
+    // width: auto;
+    // .left
+    // {
+    //     width: inherit;
+    // }
+}
+
+.test2
+{
+    width: 0;
+    flex: 0;
+
+}
+
+.left, .right
+{
+    transition: all 2s ease;
+}
