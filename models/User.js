@@ -10,7 +10,7 @@ const User = new Schema({
   },
   address: {
     type: String,
-    default: "",
+    default: "N/A",
   },
   username: {
     type: String,
@@ -27,7 +27,16 @@ const User = new Schema({
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-  ]
+  ],
+  group : [{
+    type : Schema.Types.ObjectId,
+    ref : "Group"
+  }],
+  image : {
+    type : String,
+    default : 'http://example.com'
+  },
+  date: { type : String , default : new Date(Date.now()  )}
 });
 
 User.plugin(require("passport-local-mongoose"));

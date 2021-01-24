@@ -25,6 +25,14 @@ router.get('/authorize/user', passport.authenticate("jwt"), (req,res) =>
     res.sendStatus(200)
 })
 
+// Initialize route
+router.get('/init/user', passport.authenticate("jwt"), (req,res) =>
+{
+    User.userInit( req.user ,(data) => {
+       res.json(data)
+    })
+})
+
 // Update user info, only allow if logged in
 router.put('/update/info/user', passport.authenticate("jwt") ,(req, res) =>
 {

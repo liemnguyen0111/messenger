@@ -9,7 +9,9 @@ let socket;
 const ENDPOINT = 'localhost:5000'
 socket = io(ENDPOINT)
 
-const { isAuthorized, loginUser, registerUser, getUserInfo } = UserAPI
+const { isAuthorized, loginUser, 
+    // registerUser, getUserInfo 
+} = UserAPI
 
 class Home extends Component
 {
@@ -22,38 +24,41 @@ class Home extends Component
         }
         
         this.loginUser = loginUser
+        this.setState = this.setState.bind(this)
     }
 
     componentDidMount()
     {
         socket.emit('join', {}, err => console.error(err))
 
-        // this.loginUser({
-        //     username : 'ab',
-        //     password : '123'
-        // }).then(({data}) =>
-        //     {
-        //         localStorage.setItem('user', data)
-        //     }) 
-        //     .catch(err => console.error(err));
-
        isAuthorized()
        .then(() =>
         {
-            this.setState({ isAuthorized : false })
+            this.setState({ isAuthorized : true })
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+            this.setState({ isAuthorized : false })
+        });
     }
 
+    componentDidUpdate()
+    {
+        console.log('home')
+    }
   
     render()
     {
         return (
             <>
             {
-                this.state.isAuthorized ? <ChatBox/> : 
+                this.state.isAuthorized ? 
+                <ChatBox
+                setState= {this.setState}
+                isAuthorized = {this.state.isAuthorized}
+                /> : 
                 <Main
                 login={this.loginUser}
+                setState= {this.setState}
                 />
             }
             </>

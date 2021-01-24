@@ -175,6 +175,7 @@ body
 {
     position: absolute;  
     display: flex;
+    opacity: 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -190,8 +191,8 @@ body
      0 0 4px rgb(95, 93, 93);
     backdrop-filter: blur( 4.0px );
     transform: translate(-50%, -50%);
+    transition: 1s ease-out;
     overflow: hidden;
-    transition: all 2s ease;
 
     input
     {
@@ -231,28 +232,48 @@ body
     }
     .main-input
     {
-       position: relative;
-       transition: 2s ease;
-    //    animation: expand 1s ease;
+    //    position: relative;
+    transform: translateY(0);
+    //    transition: 1s ease;
+    //    opacity: 0;
+    //    animation: fade-in 2s ease;
     }
 }
 
-.t
+.form
 {
-    transition: all 2s ease;
+    transition: all .4s ease;
 }
-@keyframes expand {
+
+.validated{
+    // background: rgba(0, 128, 0, 0.308);
+    background: $secondary-color;
+    opacity: 0;
+}
+
+.disabled {
+    pointer-events: none;
+}
+
+.required-input
+{
+    color: red;
+    &::placeholder{
+        color: red !important;
+    }
+}
+
+@keyframes fade-in {
     from{ 
+        transform: translate(-50px,0);
         opacity: 0;
-        height:  inherit;
     }
     to{
+        transform: translate(0px,0);
         opacity: 1;
-        height: 50px;
-
     }
 }
-.form
+.form-container
 {
     display: flex;
     flex-direction: column;
@@ -264,6 +285,22 @@ body
     transition: all 2s ease;
 }
 
+.error-message{
+    display: none;
+    color: rgb(197, 74, 74);
+    text-align: center;
+    width: 80%;
+    transition: 1s ease;
+}
+
+.succes-message{
+    display: none;
+    color: green;
+    font-size: 1rem;
+    text-align: center;
+    width: 80%;
+    transition: 1s ease;
+}
 .or
 {
     position: relative;
@@ -322,10 +359,83 @@ body
     }
 }
 
+.authorized{
+    opacity: 1 !important;
+}
+
+// User Info ---------------
+.user-info{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 80px 0 20px 0;
+    overflow: auto;
+
+    .u-row1{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.bottom-right{
+    margin: auto 10px 0 auto;
+    // justify-content: flex-end;
+}
+
+.buttons{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+}
+.info{
+    display: grid;
+    // grid-auto-flow:row ;
+    grid-template-columns: minmax(10rem,1fr) 2fr;
+    // max-width: 500px;
+    // height: 40px;
+    // justify-content: center;
+    // align-items: center;
+    // flex-direction: row;
+    margin: 10px;
+    p{
+        // flex: 1;
+        margin: 0;
+        text-align: right;
+        // padding: 10px;
+    }
+
+    div{
+     padding-left: 10px;
+     max-width: 500px;
+    //  max-width: inherit;
+     white-space: pre-wrap;
+     word-break: break-all;
+     overflow: hidden;
+     margin-left: 10px;
+
+        br{
+            display: none;
+        }
+    }
+}
+
+.editable{
+    // display: inline-block;
+    div{
+        box-shadow: 0px 0px 5px $dark-color;
+    }
+    
+
+}
+
 // Plate contains left and right components
 .chat-box
 {
     position: absolute;  
+    opacity: 0;
     display: grid;
     grid-template-columns: minmax(80px,300px) minmax(190px,auto);
     width: 95%;
@@ -336,7 +446,7 @@ body
     backdrop-filter: blur( 4.0px );
     transform: translate(-50%, -50%);
     overflow: hidden;
-    transition: all 2s ease;
+    transition: all 1s ease;
 
     .left, .right
     {
@@ -471,6 +581,41 @@ body
 }
 }
 
+.options{
+    display: flex;
+    box-shadow: 0 0 5px $dark-color,
+    inset 0 0 3px $dark-color;
+    padding: 5px;
+    // justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    p{
+        margin-left: 10px;
+        pointer-events: none;
+    }
+
+    &:hover{
+        box-shadow: 0 0 10px $dark-color,
+        inset 0 0 8px $dark-color;
+    }
+
+    &:hover .add-friend{
+        box-shadow: 0 0 10px $dark-color,
+        inset 0 0 8px $dark-color;
+    }
+
+}
+.add-friend{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $dark-color;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    pointer-events: none;
+}
 // Right column
 .right
 {
@@ -708,7 +853,7 @@ select:-webkit-autofill:focus {
   {
 
 // Set left to 90px
-.plate
+.chat-box
 {
     grid-template-columns: 90px auto;
 }
@@ -721,29 +866,4 @@ select:-webkit-autofill:focus {
   }
 
 
-.test
-{
-    flex: 1;
-    // width: inherit;
-    // width: calc(100% - 10px);
-    // width: 0px;
-    padding: 0 !important;
-    margin: 0 !important;
-    // width: auto;
-    // .left
-    // {
-    //     width: inherit;
-    // }
-}
 
-.test2
-{
-    width: 0;
-    flex: 0;
-
-}
-
-.left, .right
-{
-    transition: all 2s ease;
-}

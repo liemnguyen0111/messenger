@@ -1,4 +1,6 @@
 import React ,  { Component } from "react"
+import UserAPI from '../utils/UserAPI'
+import UserInfo from './UserInfo'
 import Logo from './Logo'
 import Images from './Images'
 import Search from './Search'
@@ -7,6 +9,8 @@ import Button from './Button'
 import Message from './Message'
 import Input from './Input'
 
+const { userInit } = UserAPI
+
 class ChatBox extends Component
 {
 
@@ -14,16 +18,19 @@ class ChatBox extends Component
         super( props );
         
         this.state = {
-            test: true,
             profile : 40,
             group : 60,
-            image : 'https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530',
             currentTag : "1",
-            messages: []
+            messages: [],
+            status : 'chat',
+            info : {
+                group : []
+            }
         }
         
         this.onClick = this.onClick.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.signOut = this.signOut.bind(this);
     }
 
     onClick(e)
@@ -46,6 +53,30 @@ class ChatBox extends Component
         ] })
     }
 
+    signOut(){
+        document.querySelector('.chat-box').classList.remove('authorized')
+        setTimeout(() => {
+        this.props.setState({isAuthorized: false})
+        localStorage.removeItem('user')
+        }, 1000);
+
+    }
+
+    componentDidMount(){
+
+            document.querySelector('.chat-box').classList.add('authorized')
+    }
+
+    componentWillMount(){
+  
+        userInit()
+        .then(  ({data}) => {
+            console.log('render info')
+            this.setState({ info : data })
+            console.log(this.state)
+        })
+        .catch(err => console.error(err))
+    }
     render()
     {
         return (
@@ -56,10 +87,11 @@ class ChatBox extends Component
             {/* {console.log('render')} */}
             {/* Profile image and compose new message */}
             <div className="row-2">
+            {console.log('render image')}
             <Images 
             width={this.state.profile} 
             height={this.state.profile} 
-            images={[this.state.image]}
+            images={[this.state.info.image]}
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
@@ -68,10 +100,28 @@ class ChatBox extends Component
             {/* Search bar */}
             <Search/>
 
+            {/* Add friend icon */}
+            <div className="options">
+            <i className="fas fa-user-plus add-friend"></i>
+            <p>Add friend</p>
+            </div>
+            
             {/* Friends list */}
             <div className="row-3">
 
-            {[...new Array(30)]
+            {this.state.info["group"].map( (val, index ) =>{
+                      <Friend 
+                      key={index}
+                      val={val}
+                      images={[this.state.image]}
+                      width={this.state.group} 
+                      height={this.state.group}
+                      tag={++index}
+                      onClick={this.onClick}/>
+            }) 
+        }
+
+            {/* {[...new Array(30)]
             .map(
               (tag, i) => 
               <Friend 
@@ -83,7 +133,7 @@ class ChatBox extends Component
               onClick={this.onClick}
               />
                 
-            )} 
+            )}  */}
             </div>
 
                 {/* ------- End of left --------- */}
@@ -93,17 +143,22 @@ class ChatBox extends Component
 
 
             <div className={`right`}>
-            <section className="row-1">
+            <UserInfo
+             info = {this.state.info}
+             signOut = {this.signOut}
+            />
+            {/* <section className="row-1">
             <Button 
             name='Sign Out'
             type='sign-out'
             width = {90}
             height = {30}
+            onClick={this.signOut}
             />
-            </section>
+            </section> */}
         
             {/* <Logo/> */}
-            <section className="row-2">
+            {/* <section className="row-2">
             <Images 
             width={this.state.group} 
             height={this.state.group}
@@ -113,10 +168,11 @@ class ChatBox extends Component
             <i className="fas fa-phone-alt call"></i>
             <i className="fas fa-video video"></i>
             <i className="fas fa-search m-search"></i>
-            </section>
+            </section> */}
             {/* <Search></Search>  */}
-            <Message messages={this.state.messages}/>
-            <Input onSubmit={this.onSubmit}/>
+            {/* <Message messages={this.state.info.group}/> */}
+            {/* <Input onSubmit={this.onSubmit}/> */}
+
             </div>
             </div>
             </>

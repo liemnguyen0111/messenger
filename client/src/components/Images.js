@@ -5,10 +5,6 @@ class Images extends Component
 {
     constructor( props ) {
         super( props );
-        
-        this.images = this.props.images;
-        this.width = this.props.width;
-        this.height = this.props.height;
         this.min = [1.8,1.4];
     }
     
@@ -30,13 +26,13 @@ class Images extends Component
             <div 
             className='images'
             style={{ 
-                height : `${this.height}px` ,
-                width : `${this.width}px`,
-                minHeight : `${this.height}px` ,
-                minWidth : `${this.width}px`
+                height : `${this.props.height}px` ,
+                width : `${this.props.width}px`,
+                minHeight : `${this.props.height}px` ,
+                minWidth : `${this.props.width}px`
             }}>
             {
-                this.images.map((v, i) => {
+                this.props.images.map((v, i) => {
                  return  <img 
                  key ={i}
                  style={{

@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 
 module.exports  = {
 
+    userInit(user, cb){
+        console.log(user)
+        cb(user)
+    },
     // Add new user 
     addUser(data, cb) {
         User.register(new User(data["data"]), data["password"], (err) => 
@@ -13,7 +17,7 @@ module.exports  = {
                 data["data"].username,
                 data["password"],
                 (err, user) => {
-                    if(e) cb(err)
+                    if(err) cb(err)
                     else { cb(user ? jwt.sign({ id : user._id }, process.env.SECRET) : null) }
                 }
             )                          

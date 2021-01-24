@@ -36,7 +36,7 @@
     backdrop-filter: blur( 4.0px );
     opacity: .8;
     border: .1px solid rgba( 255, 255, 255, 0.18 );
-    animation: play 12s ease-in-out infinite;
+    animation: play 30s ease infinite;
     transform-style: preserve-3d;
     z-index: -1;
 }
@@ -47,7 +47,7 @@
 @keyframes play
 {
     0%{
-        transform: translate3d(0,0,-90px) ;
+        transform: translate3d(0,0,-90px) rotate3d(2, -1, -1, -0.2turn);
         background-color: $light-color;
         box-shadow: 0 4px 5px 0  $light-color;
         border-radius: 10%;
@@ -64,14 +64,14 @@
         border-radius: 30%;
         background-color: lightnen($primary-color, .5);
         box-shadow: 0 1px 8px 0  $light-color;
-        transform: translate3d(- random(50) * $n-percentage,random(90) * $n-percentage,10px);
+        transform: translate3d(- random(50) * $n-percentage,random(90) * $n-percentage,10px)  rotate3d(-20, 1, -20, 1turn);
     }
     80%{
         background-color: $secondary-color;
         transform: translate3d(- random(150) * $n-percentage,random(90) * $n-percentage,60px)  ;
     }
     100%{
-        transform: translate3d(0,0,-90px) ;
+        transform: translate3d(0,0,-90px)  rotate3d(2, -1, -1, -0.2turn);
         background-color: $light-color;
         box-shadow: 0 4px 5px 0  $light-color;
         border-radius: 10%;

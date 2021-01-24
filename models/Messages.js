@@ -1,6 +1,6 @@
 const { model, Schema } = require('mongoose')
 
-const Messages = new Schema({
+const Group = new Schema({
     group : 
     [{
         uuID : { type : Schema.Types.ObjectId, ref : "User"},
@@ -19,8 +19,12 @@ const Messages = new Schema({
 }
 )
 
-Messages.virtual("totalMessages").get(function () {
+Group.virtual("totalMessages").get(function () {
     return this.messages.length
   })
 
-module.exports = model("Messages", Messages)
+Group.virtual("lastestMessage").get(function () {
+    return this.messages[this.messages.length - 1]
+})
+
+module.exports = model("Group", Group)

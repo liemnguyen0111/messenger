@@ -6,7 +6,7 @@ class Button extends Component
     {
         return (
             <div 
-            className = {`button ${this.props.type}`}
+            className = {`button ${this.props.type} ${this.props.name}`}
             style={{
                 height : this.props.height,
                 width : this.props.width

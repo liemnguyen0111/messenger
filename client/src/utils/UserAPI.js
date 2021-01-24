@@ -7,7 +7,7 @@ const UserAPI = {
     isAuthorized : () => axios.get('/api/authorize/user', { 
         headers : { 'Authorization' : `Bearer ${localStorage.getItem("user")}`}
     }),
-    getUserInfo : (userID) => axios.get('/api/info/user', userID, {
+    userInit : () => axios.get('/api/init/user', {
         headers : { 'Authorization' : `Bearer ${localStorage.getItem("user")}`}
     })
 }
