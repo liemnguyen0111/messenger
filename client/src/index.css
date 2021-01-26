@@ -1,0 +1,10 @@
+
+/* Set overflow to hidden, margin to 0 and full size according to browser size */
+body
+{
+    position: relative;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+}

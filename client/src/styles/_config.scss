@@ -1,11 +1,15 @@
-$font: 'Ubuntu', sans-serif;
+$font-ubuntu: 'Ubuntu', sans-serif;
+$font-roboto: 'Roboto', sans-serif;
 $primary-color : #004170;
 $secondary-color : #008CF0;
 $light-color : #49ACF2;
-$dark-color: #12222e;
-// $light-color : #49ACF2;
+$dark-color: rgba(128, 128, 128, 0.219);
+$light-text :  rgb(109, 107, 107);
+$dark-text :  rgb(168, 168, 168);
+$red : rgb(255, 111, 111);
 $bg : #586B79;
 
+$logo : 30px;
 $n-square : 30;
 $n-dimension : 30px;
 $n-percentage : 1%;

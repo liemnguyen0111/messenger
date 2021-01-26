@@ -37,7 +37,7 @@
           box-shadow: 0 4px 12px 0 #49ACF2;
   -webkit-backdrop-filter: blur(4px);
           backdrop-filter: blur(4px);
-  color: #12222e;
+  color: rgba(128, 128, 128, 0.219);
   width: 80px;
   height: 30px;
   padding: 2px;
