@@ -38,13 +38,13 @@ body {
   cursor: pointer;
 }
 
-.sign-out {
+.red {
   background: #ff6f6f;
   -webkit-box-shadow: 0 2px 5px 0 #ff6f6f, 0px -2px 5px 0 #ff6f6f;
           box-shadow: 0 2px 5px 0 #ff6f6f, 0px -2px 5px 0 #ff6f6f;
 }
 
-.sign-in {
+.blue {
   background: #008CF0;
   -webkit-box-shadow: 0 2px 5px 0 #008CF0, 0px -2px 5px 0 #008CF0;
           box-shadow: 0 2px 5px 0 #008CF0, 0px -2px 5px 0 #008CF0;
@@ -349,7 +349,7 @@ body {
   display: none;
   color: #c54a4a;
   text-align: center;
-  width: 80%;
+  margin: 0 10%;
   -webkit-transition: 1s ease;
   transition: 1s ease;
 }
@@ -428,6 +428,7 @@ body {
 }
 
 .user-info {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -454,16 +455,24 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  font-weight: bold;
 }
 
-.bottom-right {
-  margin: auto 10px 0 auto;
+.user-info .u-row1 p {
+  font-size: 1.5rem;
+}
+
+.top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }
 
 .buttons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: minmax(10rem, 1fr) 2fr;
+      grid-template-columns: minmax(10rem, 1fr) 2fr;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -474,6 +483,30 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
+  margin-left: 1fr;
+}
+
+.buttons div:nth-child(2) {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.disabled-button {
+  pointer-events: none;
+  background: rgba(128, 128, 128, 0.219) !important;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: #a8a8a8;
+}
+
+.save-changes, .cancel-changes {
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
 }
 
 .info {
@@ -487,6 +520,8 @@ body {
 .info p {
   margin: 0;
   text-align: right;
+  font-size: 1.1rem;
+  color: #a8a8a8;
 }
 
 .info div {
@@ -503,8 +538,14 @@ body {
 }
 
 .editable div {
-  -webkit-box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.219);
-          box-shadow: 0px 0px 5px rgba(128, 128, 128, 0.219);
+  -webkit-box-shadow: 0px -2px 5px rgba(128, 128, 128, 0.219);
+          box-shadow: 0px -2px 5px rgba(128, 128, 128, 0.219);
+}
+
+.editable div:focus, .editable div:active, .editable div:hover {
+  outline: none;
+  -webkit-box-shadow: 0px 0px 5px #49ACF2;
+          box-shadow: 0px 0px 5px #49ACF2;
 }
 
 .chat-box {
@@ -721,6 +762,108 @@ body {
   height: 30px;
   border-radius: 50%;
   pointer-events: none;
+}
+
+.find-friends {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+}
+
+.friend-options-list {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin: 10px 0;
+}
+
+.friend-options-list div {
+  margin-left: 10px;
+  margin-right: 20px;
+  border-bottom: 2px solid #49ACF2;
+}
+
+.friend-options-list::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(128, 128, 128, 0.219);
+  bottom: 0;
+}
+
+.user-container {
+  background: #0d0e0d;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: hidden;
+}
+
+.user-container .user {
+  background: rgba(128, 128, 128, 0.219);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 1;
+          flex: 0 1;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 5px 0;
+  padding: 5px;
+}
+
+.user-container .user .user-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.add, .accept {
+  background: #008CF0;
+}
+
+.pending {
+  background: rgba(128, 128, 128, 0.219);
+}
+
+.reject {
+  background: #ff6f6f;
+}
+
+.status-buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  margin-left: auto;
 }
 
 .right .row-1 {
@@ -979,13 +1122,79 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 10px 100px rgba(26, 25, 31, 0.877) inset;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 700px) {
   .chat-box {
     -ms-grid-columns: 90px auto;
         grid-template-columns: 90px auto;
   }
+  .options {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .options p {
+    display: none;
+  }
   .g-name, .l-message-info, .time, .title {
     display: none;
+  }
+  .info {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .info p {
+    margin: 0;
+    text-align: center;
+    margin-bottom: 10px;
+    text-decoration: underline;
+  }
+  .info div {
+    padding-left: 10px;
+    max-width: 500px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow: hidden;
+    margin-left: 0px;
+  }
+  .info div br {
+    display: none;
+  }
+  .buttons {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    margin-left: 1fr;
+  }
+  .buttons div:nth-child(2) {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+  }
+  .find-friends {
+    font-size: 14px;
+  }
+  .status-buttons .button {
+    max-width: 65px;
+    font-size: 12px;
   }
 }
 /*# sourceMappingURL=Style.css.map */

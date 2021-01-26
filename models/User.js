@@ -34,9 +34,16 @@ const User = new Schema({
   }],
   image : {
     type : String,
-    default : 'http://example.com'
+    default : 'http://test'
   },
-  date: { type : String , default : new Date(Date.now()  )}
+  createdOn: { type : String , default : new Date(Date.now())},
+  updatedOn : { type : String , default : new Date(Date.now())},
+  loggedInRecord : [
+    {
+      from : { type : Object },
+      date : { type : String , default : new Date(Date.now())}
+    }
+  ]
 });
 
 User.plugin(require("passport-local-mongoose"));

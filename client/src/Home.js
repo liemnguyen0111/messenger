@@ -40,11 +40,6 @@ class Home extends Component
             this.setState({ isAuthorized : false })
         });
     }
-
-    componentDidUpdate()
-    {
-        console.log('home')
-    }
   
     render()
     {

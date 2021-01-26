@@ -44,7 +44,7 @@ class Search extends Component
          <div className='search'>
         <input 
         type="text"
-        placeholder='Search'
+        placeholder={this.props.placeholder}
         ref={(input) => { this.searchInput = input;}}
         onChange={()=> this.onChange()}
         /> 

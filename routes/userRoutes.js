@@ -2,18 +2,36 @@ const router = require('express').Router()
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
 const User = require('../controllers/User')
+const ipInfo = require("ipinfo")
 
-// Login route
-router.post('/login/user', (req, res ) =>
-{
-    User.loginUser(req.body, (data) => {
+// Get users
+router.get('/user/:type', passport.authenticate("jwt"), (req, res) =>{
+    // console.log(req.params)
+    User.getUsers(req.params.type, req.user, (data) =>{
+        // console.log(req.params)
         res.json(data)
     })
+})
+
+// Login route
+router.post('/login/user', async (req, res ) =>
+{
+ 
+// Use user ip to keep a record of where the account has logged.
+ipInfo(req.body["ivp6"],(err, cLoc) => {
+
+    // login user
+    User.loginUser(req.body, cLoc , (data) => {
+        res.json(data)
+    })
+})
+    
 })
 
 // Register route
 router.post('/register/user', (req, res) =>
 {   
+  
     User.addUser(req.body, (data) => {
         res.json(data)
     })
@@ -34,7 +52,7 @@ router.get('/init/user', passport.authenticate("jwt"), (req,res) =>
 })
 
 // Update user info, only allow if logged in
-router.put('/update/info/user', passport.authenticate("jwt") ,(req, res) =>
+router.put('/update/user', passport.authenticate("jwt") ,(req, res) =>
 {
     User.updateUser(req.user._id, req.body, (data) =>
     {
@@ -59,9 +77,9 @@ router.put('/update/password/user/:ticket', (req, res) =>
     // console.log(req.params.ticket)
     setTimeout(() => {
         test = test.filter(t => t !== req.params.ticket)
-        console.log(test)
+        // console.log(test)
     }, 10000);
-    res.json(200)
+    res.sendStatus(200)
     // User.updateUserPassword(req.body, req.body, (data) =>{
     //     // res.json(data)
     // })

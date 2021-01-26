@@ -1,6 +1,7 @@
 import React ,  { Component } from "react"
 import UserAPI from '../utils/UserAPI'
 import UserInfo from './UserInfo'
+import FindFriends from './FindFriends'
 import Logo from './Logo'
 import Images from './Images'
 import Search from './Search'
@@ -98,7 +99,7 @@ class ChatBox extends Component
             </div>
          
             {/* Search bar */}
-            <Search/>
+            <Search   placeholder={'Search for message'}/>
 
             {/* Add friend icon */}
             <div className="options">
@@ -143,10 +144,12 @@ class ChatBox extends Component
 
 
             <div className={`right`}>
-            <UserInfo
+            {/* <UserInfo
              info = {this.state.info}
              signOut = {this.signOut}
-            />
+            /> */}
+
+            <FindFriends></FindFriends>
             {/* <section className="row-1">
             <Button 
             name='Sign Out'

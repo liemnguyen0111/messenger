@@ -47,18 +47,18 @@
 @keyframes play
 {
     0%{
-        transform: translate3d(0,0,-90px) rotate3d(2, -1, -1, -0.2turn);
+        transform: translate3d(0,0,-90px) ;
         background-color: $light-color;
         box-shadow: 0 4px 5px 0  $light-color;
         border-radius: 10%;
     }
     20%{
         background-color: $bg;
-        transform: translate3d(- random(90) * $n-percentage,random(90) * $n-percentage,90px) ;
+        transform: translate3d(- random(90) * $n-percentage,random(90) * $n-percentage,90px) rotate3d(2, -1, -1, -0.2turn);
     }
     40%{
         background-color: $secondary-color;
-        transform: translate3d(random(150) * $n-percentage,random(90) * $n-percentage,50px)  ;
+        transform: translate3d(random(150) * $n-percentage,random(90) * $n-percentage,50px) ;
     }
     60%{
         border-radius: 30%;
@@ -68,10 +68,10 @@
     }
     80%{
         background-color: $secondary-color;
-        transform: translate3d(- random(150) * $n-percentage,random(90) * $n-percentage,60px)  ;
+        transform: translate3d(- random(150) * $n-percentage,random(90) * $n-percentage,60px)  rotate3d(2, -1, -1, -0.2turn);
     }
     100%{
-        transform: translate3d(0,0,-90px)  rotate3d(2, -1, -1, -0.2turn);
+        transform: translate3d(0,0,-90px) rotate3d(0, 0, 0, 1turn);
         background-color: $light-color;
         box-shadow: 0 4px 5px 0  $light-color;
         border-radius: 10%;

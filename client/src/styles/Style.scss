@@ -38,14 +38,14 @@ body
     cursor: pointer;
 }
 
-.sign-out
+.red
 {
     background: $red;
     box-shadow: 0 2px 5px 0   $red,
     0px -2px 5px 0  $red;
 }
 
-.sign-in
+.blue
 {
     background: $secondary-color;
     box-shadow: 0 2px 5px 0  $secondary-color,
@@ -289,7 +289,8 @@ body
     display: none;
     color: rgb(197, 74, 74);
     text-align: center;
-    width: 80%;
+    // width: 100%;
+    margin: 0 10%;
     transition: 1s ease;
 }
 
@@ -365,6 +366,7 @@ body
 
 // User Info ---------------
 .user-info{
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -376,35 +378,57 @@ body
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        font-weight: bold;
+
+        p{
+            font-size: 1.5rem;
+        }
     }
 }
 
-.bottom-right{
-    margin: auto 10px 0 auto;
+.top-right{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    // margin: 0 0 auto auto;
     // justify-content: flex-end;
 }
 
 .buttons{
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(10rem,1fr) 2fr;
     flex: 1;
     flex-direction: row;
     justify-content: center;
+    margin-left: 1fr;
+
+    div:nth-child(2){
+        display: flex;
+        flex-direction: row;
+    }
 }
+
+.disabled-button{
+    pointer-events: none;
+    background: $dark-color !important;
+    box-shadow: none;
+    color: $dark-text;
+}
+
+.save-changes, .cancel-changes {
+    transition: .2s ease;
+}
+
 .info{
     display: grid;
     // grid-auto-flow:row ;
     grid-template-columns: minmax(10rem,1fr) 2fr;
-    // max-width: 500px;
-    // height: 40px;
-    // justify-content: center;
-    // align-items: center;
-    // flex-direction: row;
     margin: 10px;
     p{
-        // flex: 1;
         margin: 0;
         text-align: right;
-        // padding: 10px;
+        font-size: 1.1rem;
+        color: $dark-text;
     }
 
     div{
@@ -425,10 +449,14 @@ body
 .editable{
     // display: inline-block;
     div{
-        box-shadow: 0px 0px 5px $dark-color;
-    }
-    
+        box-shadow: 0px -2px 5px $dark-color;
 
+        &:focus, &:active , &:hover
+        {
+            outline: none;
+            box-shadow: 0px 0px 5px $light-color,
+        }
+    }
 }
 
 // Plate contains left and right components
@@ -616,6 +644,80 @@ body
     border-radius: 50%;
     pointer-events: none;
 }
+
+.find-friends{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.friend-options-list{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+    div{
+        margin-left: 10px;
+        margin-right: 20px;
+        border-bottom: 2px solid $light-color;
+    }
+
+    &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background: $dark-color;
+        bottom: 0;
+    }
+}
+
+.user-container{
+    background: rgb(13, 14, 13);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+
+    // flex-direction: column;
+
+    .user{
+        background: $dark-color;
+        display: flex;
+        flex: 0 1;
+        flex-direction: row;
+        align-items: center;
+        margin: 5px 0;
+        padding: 5px;
+
+        .user-name {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            // max-width: 100px;
+        }
+    }
+}
+
+
+.add, .accept{
+    background: $secondary-color;
+}
+
+.pending{
+    background: $dark-color;
+}
+
+.reject{
+    background: $red;
+}
+
+.status-buttons{
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+}
+
 // Right column
 .right
 {
@@ -849,7 +951,7 @@ select:-webkit-autofill:focus {
 }
 
 //   Media query ---------------
-  @media only screen and (max-width : 600px)
+  @media only screen and (max-width : 700px)
   {
 
 // Set left to 90px
@@ -858,10 +960,66 @@ select:-webkit-autofill:focus {
     grid-template-columns: 90px auto;
 }
 
+.options{
+    justify-content: center;
+    p{
+        display: none;
+    }
+}
 // Display none
 .g-name, .l-message-info, .time, .title
 {
     display: none;
+}
+
+// User info
+.info{
+    display: flex;
+    flex-direction: column;
+    
+    p{
+        margin: 0;
+        text-align: center;
+        margin-bottom: 10px;
+        text-decoration: underline;
+    }
+
+    div{
+     padding-left: 10px;
+     max-width: 500px;
+     white-space: pre-wrap;
+     word-break: break-all;
+     overflow: hidden;
+     margin-left: 0px;
+
+        br{
+            display: none;
+        }
+    }
+}
+
+
+.buttons{
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 1fr;
+
+    div:nth-child(2){
+        display: flex;
+        flex-direction: row;
+    }
+}
+.find-friends{
+    font-size: 14px;
+}
+
+.status-buttons{
+    .button{
+        max-width: 65px;
+        font-size: 12px;
+    }
 }
   }
 

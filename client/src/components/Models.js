@@ -4,7 +4,7 @@ import UserAPI from '../utils/UserAPI'
 
 const { registerUser } = UserAPI
 
-class SignUp extends Component{
+class Models extends Component{
 
     constructor( props ) {
         super( props );
@@ -66,14 +66,21 @@ class SignUp extends Component{
     }
 
     // Handle sign in user
-    handleSignIn(){
+   async handleSignIn(){
    console.log('sign in')
+
         if(this.handleFieldsCheck()){
      let [ username , password ] = [this.form.username.value, this.form.password.value]
         this.form.reset()
+
+        // use to get user location login record
+        const publicIp = require("react-public-ip");
+        const ipv6 = await publicIp.v6() || "";
+
         this.props.login({
             username : username,
-            password : password
+            password : password,
+            ipv6 :  ipv6
         }).then(({data}) =>   {
             if(data)
             {
@@ -226,7 +233,7 @@ class SignUp extends Component{
             <Button 
             className = 'models-button'
             name={ this.props.current["button"] }
-            type='sign-in'
+            style='blue'
             width = {250}
             height = {30}
             onClick={this.onSubmit}
@@ -241,4 +248,4 @@ class SignUp extends Component{
     }
 }
 
-export default SignUp
+export default Models
