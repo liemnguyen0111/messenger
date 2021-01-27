@@ -1,6 +1,9 @@
 import React , { Component } from 'react'
+import UserAPI from '../utils/UserAPI'
 import Images from './Images'
 import Button from './Button'
+
+const { putUser } = UserAPI
 
 class User extends Component{
 
@@ -8,22 +11,85 @@ class User extends Component{
         super( props );
         
         this.state = {
-            user : 60,
-            style : ''
+            user : 60
         }
 
+        this.onClick = this.onClick.bind(this)
+        this.rejectFriend = this.rejectFriend.bind(this)
     }
 
-    componentDidMount(){
-        if(this.props.status === "Add Friend"){
-            this.setState({style : 'add'})
+    updateStatus(val){
+        if(val === "Add Friend"){
+          return 'add'
         }
-        if(this.props.status === "Pending"){
-            this.setState({style : 'pending'})
+        if(val === "Pending"){
+           return 'pending-status'
         }
-        if(this.props.status === "Accept"){
-            this.setState({style : 'accept'})
+        if(val === "Accept"){
+           return 'accept'
         }
+        if(val === "Unfriend"){
+            return 'unfriend'
+         }
+    }
+    onClick(){
+        if(this.props.status === "Add Friend") {
+            this.addFriend()
+        }
+        if(this.props.status === "Accept") {
+            this.acceptFriend()
+        }
+        if(this.props.status === "Unfriend") {
+            this.unfriend()
+        }
+        console.log(this.props.status)
+    }
+
+    addFriend(){
+        console.log(this.props.id)
+        let data = {
+            id : this.props.id
+        }
+        putUser('send-request', data)
+        .then( data => { 
+            console.log(data)
+        })
+        .catch(err => console.error(err))
+    }
+
+    acceptFriend(){
+        let data = {
+            id : this.props.id,
+            image : this.props.image[0],
+            name :  `${this.props.name[0]} ${this.props.name[1]}`
+        }
+        putUser('accept-request', data)
+        .then( data => { 
+            console.log(data)
+        })
+        .catch(err => console.error(err))
+    }
+
+    rejectFriend(){
+        let data = {
+            id : this.props.id
+        }
+        putUser('reject-request', data)
+        .then( data => { 
+            console.log(data)
+        })
+        .catch(err => console.error(err))
+    }
+
+    unfriend(){
+        let data = {
+            id : this.props.id
+        }
+        putUser('unfriend', data)
+        .then( data => { 
+            console.log(data)
+        })
+        .catch(err => console.error(err))
     }
 
     render(){
@@ -41,10 +107,10 @@ class User extends Component{
         <div className="status-buttons">
         <Button
         name={this.props.status}
-        style ={`${this.state.style}`}
+        style ={this.updateStatus(this.props.status)}
         width = {130}
         height = {30}
-        // onClick={this.onSaveChanges}
+        onClick={this.onClick}
         />
 
         {this.props.status === "Accept" ? 
@@ -53,9 +119,10 @@ class User extends Component{
          style ={`reject`}
          width = {130}
          height = {30}
-         // onClick={this.onSaveChanges}
+         onClick={this.rejectFriend}
          /> : ''
         }
+
         </div>
       
             </div>

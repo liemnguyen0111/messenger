@@ -15,7 +15,10 @@ const UserAPI = {
     }),
     getUsers: (params) => axios.get(`/api/user/${params}`, {
         headers : { 'Authorization' : `Bearer ${localStorage.getItem("user")}`}
-    })
+    }),
+    putUser: (params, user) => axios.put(`/api/user/${params}`, user,{
+        headers : { 'Authorization' : `Bearer ${localStorage.getItem("user")}`}
+    } )
 }
 
 export default UserAPI

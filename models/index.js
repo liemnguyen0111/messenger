@@ -1,4 +1,5 @@
 module.exports = {
     User: require("./User.js"),
-    Messages : require('./Messages.js')
+    Group : require('./Group.js'),
+    Count : require('./Count')
 };

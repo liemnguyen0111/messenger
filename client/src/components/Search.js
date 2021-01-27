@@ -16,6 +16,7 @@ class Search extends Component
     
     onChange()
     {
+        this.props.onSearch(this.searchInput.value)
         this.searchInput.value? this.show() : this.hide()
     }
 
@@ -36,6 +37,7 @@ class Search extends Component
             hide : 'hide'
         })
         this.searchInput.value = ''
+        this.props.onSearch(this.searchInput.value)
     }
 
     render()

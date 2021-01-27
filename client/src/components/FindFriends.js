@@ -17,6 +17,8 @@ class FindFriends extends Component{
             userList : []
         }
 
+        this.onSearch = this.onSearch.bind(this)
+
     }
 
     componentDidMount(){
@@ -26,9 +28,21 @@ class FindFriends extends Component{
 
     updateView(view){
         getUsers(view)
-        .then(({data}) => this.setState({userList : data}))
+        .then(({data}) => {
+            this.setState({userList : data[0], ...data[1]})
+            console.log(this.state)
+        })
         .catch(err => console.error(err))
         console.log('update')
+    }
+
+    onSearch(val){
+        getUsers(val? val : 'all')
+        .then(({data}) => {
+            this.setState({userList : data[0], ...data[1]})
+            console.log(this.state)
+        })
+        .catch(err => console.error(err))
     }
 
     render()
@@ -36,24 +50,26 @@ class FindFriends extends Component{
         return ( 
         <div className="find-friends">
             <div className="friend-options-list">
-                <div className="all"
+                <div className="all-user"
                 onClick={() => this.updateView('all')}
                 >All</div>
-                <div className="pending"
+                <div className="pending-user"
                 onClick={() => this.updateView('pending')}
                 >Pending</div>
-                <div className="request"
+                <div className="request-user"
                 onClick={() => this.updateView('request')}
                 >Request</div>
             </div>
             <Search
             placeholder={'Search for user'}
+            onSearch={this.onSearch}
             ></Search>
             <div className="user-container">
 
             {
-                this.state.userList.map(user =>{
+                this.state.userList.map((user, index) =>{
                   return  <User
+                    key={index}
                     name={[user.data.firstName, user.data.lastName]}
                     image={[user.data.image]}
                     status={user.status}

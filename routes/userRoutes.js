@@ -6,9 +6,7 @@ const ipInfo = require("ipinfo")
 
 // Get users
 router.get('/user/:type', passport.authenticate("jwt"), (req, res) =>{
-    // console.log(req.params)
-    User.getUsers(req.params.type, req.user, (data) =>{
-        // console.log(req.params)
+    User.getUsers(req.params.type, req.user, (...data) =>{
         res.json(data)
     })
 })
@@ -52,9 +50,9 @@ router.get('/init/user', passport.authenticate("jwt"), (req,res) =>
 })
 
 // Update user info, only allow if logged in
-router.put('/update/user', passport.authenticate("jwt") ,(req, res) =>
+router.put('/user/:type', passport.authenticate("jwt") ,(req, res) =>
 {
-    User.updateUser(req.user._id, req.body, (data) =>
+    User.updateUser(req.params.type, req.user, req.body, (data) =>
     {
         res.json(data)
     })

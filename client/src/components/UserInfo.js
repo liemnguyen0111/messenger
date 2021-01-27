@@ -3,7 +3,7 @@ import UserAPI from '../utils/UserAPI'
 import Images from './Images'
 import Button from './Button'
 
-const { updateUser } = UserAPI
+const { putUser } = UserAPI
 class UserInfo extends Component{
 
     constructor( props ) {
@@ -39,7 +39,7 @@ class UserInfo extends Component{
         }
 
         if(!this.checkSpaceBetween(this.username.innerText)){
-         updateUser(userInfo)
+        putUser('update-info', userInfo)
         .then(data => {
             console.log(data)
             this.errorMessage.style.display = 'none'

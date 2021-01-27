@@ -804,7 +804,6 @@ body {
 }
 
 .user-container {
-  background: #0d0e0d;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -815,7 +814,7 @@ body {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .user-container .user {
@@ -843,12 +842,17 @@ body {
   white-space: nowrap;
 }
 
-.add, .accept {
+.add, .accept, .friend {
   background: #008CF0;
 }
 
-.pending {
+.unfriend {
+  background: #ff6f6f;
+}
+
+.pending-status {
   background: rgba(128, 128, 128, 0.219);
+  pointer-events: none;
 }
 
 .reject {

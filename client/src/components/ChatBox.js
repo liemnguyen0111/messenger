@@ -72,9 +72,9 @@ class ChatBox extends Component
   
         userInit()
         .then(  ({data}) => {
-            console.log('render info')
+            // console.log('render info')
             this.setState({ info : data })
-            console.log(this.state)
+            // console.log(this.state)
         })
         .catch(err => console.error(err))
     }
