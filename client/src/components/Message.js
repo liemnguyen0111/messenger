@@ -1,4 +1,5 @@
 import React , { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import Images from './Images'
 
 class Message extends Component
@@ -47,12 +48,19 @@ class Message extends Component
 
     // }
 
+    // Shallow compare, only update when receive new props
+    shouldComponentUpdate(nextProps, nextState){
+        return shallowCompare(this, nextProps,nextState)
+    }
+
     componentDidUpdate()
     {
-         if(this.props.messages[this.props.messages.length - 1].isYours)
+        if(this.props.messages.length)
+            {  
+           if(this.props.messages[this.props.messages.length - 1].isYours)
             {
                this.lastMessage.scrollIntoView();
-            }
+            }}
 
             const scrollTop = this.container.scrollTop
             const current = this.container.scrollHeight - this.container.offsetHeight
@@ -68,9 +76,9 @@ class Message extends Component
         {console.log('render')}
             <div className='messages' 
             ref={(c) => { this.container = c;}}>
-            {
-               
-                this.props.messages.map((message, index) =>
+                  {console.log(this.props)}
+            {/* {
+                this.props.messages.messages.map((message, index) =>
                         <div 
                         className={message.isYours? 'y-message' : 'f-message'}
                         key={index}
@@ -98,7 +106,7 @@ class Message extends Component
 
                     )
                
-            }
+            } */}
             <div  ref={(last) => { this.lastMessage = last;}}></div>
             </div>
         </>)

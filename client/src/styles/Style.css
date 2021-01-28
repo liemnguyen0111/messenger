@@ -538,14 +538,15 @@ body {
 }
 
 .editable div {
-  -webkit-box-shadow: 0px -2px 5px rgba(128, 128, 128, 0.219);
-          box-shadow: 0px -2px 5px rgba(128, 128, 128, 0.219);
+  -webkit-box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.219);
+          box-shadow: 0 0 1px 1px rgba(128, 128, 128, 0.219);
+  border-radius: 5px;
 }
 
 .editable div:focus, .editable div:active, .editable div:hover {
+  -webkit-box-shadow: 0 0 3px 3px rgba(128, 128, 128, 0.219), inset 0 0 3px rgba(128, 128, 128, 0.219);
+          box-shadow: 0 0 3px 3px rgba(128, 128, 128, 0.219), inset 0 0 3px rgba(128, 128, 128, 0.219);
   outline: none;
-  -webkit-box-shadow: 0px 0px 5px #49ACF2;
-          box-shadow: 0px 0px 5px #49ACF2;
 }
 
 .chat-box {
@@ -607,6 +608,11 @@ body {
   color: white;
 }
 
+.left .row-2 .images {
+  cursor: pointer;
+  pointer-events: auto;
+}
+
 .left .row-2 .title {
   -webkit-box-flex: 1;
       -ms-flex: 1;
@@ -629,6 +635,14 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  -webkit-transition: .3s ease;
+  transition: .3s ease;
+  cursor: pointer;
+}
+
+.left .row-2 i:hover {
+  -webkit-box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
+          box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
 }
 
 .left .row-3 {
@@ -638,7 +652,7 @@ body {
   overflow: auto;
 }
 
-.left .friend {
+.left .group {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -646,17 +660,14 @@ body {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-transition: .2s ease;
-  transition: .2s ease;
+  -webkit-transition: .1s ease;
+  transition: .1s ease;
 }
 
-.left .friend .g-info {
+.left .group .g-info {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -667,9 +678,14 @@ body {
   overflow: hidden;
   margin: 0 1px 0 5px;
   pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
 }
 
-.left .friend .g-name {
+.left .group .g-name {
+  display: inline;
   max-width: 190px;
   font-size: 15px;
   font-weight: 500;
@@ -680,11 +696,22 @@ body {
   white-space: nowrap;
 }
 
-.left .friend .l-message-info {
+.left .group .l-message-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 2px 0;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.left .group .l-message-info {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   max-width: 270px;
+  height: 14px;
   overflow: hidden;
   white-space: nowrap;
   -webkit-box-pack: center;
@@ -696,14 +723,14 @@ body {
   font-size: 14px;
 }
 
-.left .friend .l-message-info .l-message {
+.left .group .l-message-info .l-message {
   overflow: hidden;
   max-width: 170px;
   color: #6d6b6b;
   text-overflow: ellipsis;
 }
 
-.left .friend .l-message-info .time {
+.left .group .l-message-info .time {
   font-weight: 1px;
   font-size: 13px;
   -webkit-box-flex: 1;
@@ -713,9 +740,18 @@ body {
   color: #a8a8a8;
 }
 
-.left .friend:hover {
+.left .group:hover {
   cursor: pointer;
   background: rgba(128, 128, 128, 0.219);
+}
+
+.is-read {
+  background: rgba(128, 128, 128, 0.219);
+}
+
+.is-read .l-message {
+  color: white !important;
+  font-weight: bold;
 }
 
 .options {
@@ -725,25 +761,15 @@ body {
   -webkit-box-shadow: 0 0 5px rgba(128, 128, 128, 0.219), inset 0 0 3px rgba(128, 128, 128, 0.219);
           box-shadow: 0 0 5px rgba(128, 128, 128, 0.219), inset 0 0 3px rgba(128, 128, 128, 0.219);
   padding: 5px;
+  margin-bottom: 5px;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  cursor: pointer;
 }
 
 .options p {
   margin-left: 10px;
   pointer-events: none;
-}
-
-.options:hover {
-  -webkit-box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
-          box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
-}
-
-.options:hover .add-friend {
-  -webkit-box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
-          box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
 }
 
 .add-friend {
@@ -761,7 +787,14 @@ body {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  pointer-events: none;
+  -webkit-transition: .3s ease;
+  transition: .3s ease;
+  cursor: pointer;
+}
+
+.add-friend:hover {
+  -webkit-box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
+          box-shadow: 0 0 10px rgba(128, 128, 128, 0.219), inset 0 0 8px rgba(128, 128, 128, 0.219);
 }
 
 .find-friends {
@@ -1151,7 +1184,10 @@ select:-webkit-autofill:focus {
     display: none;
   }
   .g-name, .l-message-info, .time, .title {
-    display: none;
+    display: none !important;
+  }
+  .g-info {
+    margin: 0 !important;
   }
   .info {
     display: -webkit-box;

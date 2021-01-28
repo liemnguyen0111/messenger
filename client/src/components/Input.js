@@ -108,9 +108,9 @@ class Input extends Component
         this.hide()
     }
 
-    componentDidUpdate()
+    componentDidMount()
     {
-        
+        this.messageInput.style.height = "24px"
     }
     
     render()

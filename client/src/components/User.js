@@ -46,7 +46,6 @@ class User extends Component{
     }
 
     addFriend(){
-        console.log(this.props.id)
         let data = {
             id : this.props.id
         }
@@ -61,7 +60,8 @@ class User extends Component{
         let data = {
             id : this.props.id,
             image : this.props.image[0],
-            name :  `${this.props.name[0]} ${this.props.name[1]}`
+            firstName : this.props.name[0],
+            lastName : this.props.name[1]
         }
         putUser('accept-request', data)
         .then( data => { 

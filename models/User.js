@@ -41,7 +41,7 @@ const User = new Schema({
   }],
   image : {
     type : String,
-    default : 'http://test'
+    default : '../images/defaultUser.jpg'
   },
   createdOn: { type : String , default : new Date(Date.now())},
   updatedOn : { type : String , default : new Date(Date.now())},

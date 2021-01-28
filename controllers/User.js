@@ -35,17 +35,27 @@ module.exports  = {
 
     userInit(user, cb){
         let option = {
-            _id : true,
-            firstName : true,
-            lastName : true,
-            image : true,
-            email : true,
-            address: true,
-            createdOn : true,
-            updatedOn : true
+            // _id : false,
+            // friends : false,
+            // request: false,
+            // pending : false,
+            // firstName : true,
+            // lastName : true,
+            // image : true,
+            // email : true,
+            // address: true,
+            // createdOn : true,
+            // updatedOn : true
         }
-        // console.log(user)
-        cb(user)
+        let group = {
+            _id : true,
+            lastestMessage : true,
+        }
+        console.log('init')
+        User.findOne({_id : user._id})
+        .populate('group')
+        .then(data => {filterUser(data,user._id,cb)})
+        .catch(err => cb(err))
     },
     // Get all users base on request
     getUsers(params, user, cb){
@@ -202,6 +212,127 @@ let randomString = (email,data, key) =>
     return wave
 }
 
+// Filter user info and return only what needs to initialize when user login
+let filterUser = (data,userId, cb) =>{
+
+    let temp = data.group
+    data =  {
+        username : data.username,
+        firstName : data.firstName,
+        lastName : data.lastName,
+        address : data.address,
+        createdOn : data.createdOn,
+        updatedOn : data.updatedOn,
+        email : data.email,
+        image : data.image,
+        group : filterGroup(temp,userId),
+        pendingCount : data.pendingCount,
+        requestCount : data.requestCount
+    }
+    // filterGroup(temp,userId)
+    console.log("filter")
+    cb(data)
+}
+
+// Filter group and return the right data
+let filterGroup = (data,userId) => {
+    // console.log(data)
+    // month variable holds the months
+    let month = ["Jan.", "Feb.","Mar.", 'Apr.', "May", "June", "July", "Aug.", "Sept.","Oct.", "Nov.", "Dec."]
+
+    // Get the other user name as the name of the group
+    let getGroupName = (group) => {
+
+       return group.filter(val => 
+           JSON.stringify(val.uuID) !== JSON.stringify(userId))
+    }
+
+    // Check if the latest message belong to the user
+    let isUser = (val1, val2) => {
+        console.log('is user')
+        return  JSON.stringify(val1) === JSON.stringify(val2)
+    }
+
+    // Date time format AM/PM
+    let formatAMPM = (date) => {
+        var hours = (date.getHours() + 7) % 24;
+        console.log(hours)
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+      }
+    
+    //  Check if the date created are on the same day
+    let sameDate = (date1, date2) =>{
+        return date1.getUTCFullYear() == date2.getUTCFullYear() &&
+        date1.getUTCMonth() == date2.getUTCMonth() &&
+        date1.getUTCDate() == date2.getUTCDate();
+    }
+
+    // If within the same day, return the time, otherwise return date and month
+    let getTime = (date) => {
+       sameDate(date, new Date())
+        if(sameDate(new Date(date), new Date())){
+            return (formatAMPM((date)))
+        }
+        else {
+            if(isCurrentWeek(date))
+            {
+              return date.toUTCString().split(',')[0]
+            }
+            else
+            {
+              return month[date.getUTCMonth()] + " " + date.getUTCDate()
+            }
+        }
+    }
+
+    // Function to check if date is in the current week
+    let isCurrentWeek = (date) => {
+        const todayObj = new Date();
+        const todayDate = todayObj.getDate();
+        const todayDay = todayObj.getDay();
+      
+        // get first date of week
+        const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
+      
+        // get last date of week
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+      
+        // if date is equal or within the first and last dates of the week
+        return date >= firstDayOfWeek && date <= lastDayOfWeek;
+    }
+   
+
+    // create a new set of date for group
+    data = data.reduce((acc, val) => {
+        console.log(val.lastMessage)
+        let user = getGroupName(val.group)[0],
+        latestMessage = val.latestMessage
+        from = isUser(latestMessage.uuID, userId) ? "You: " : ""
+        // `${user.firstName + " " + user.lastName}: `
+        console.log("before")
+        acc.push({
+            id : val._id,
+            groupName : user.firstName + " " + user.lastName,
+            profileImage : user.profileImage,
+            latestMessage : from + latestMessage.message,
+            isRead : isUser(latestMessage.uuID, userId) ? 
+            true : latestMessage.isRead,
+            time : getTime(new Date(latestMessage.time))
+        })
+        console.log("after")
+        return acc
+    },[])
+ 
+
+    return data
+}
 // use to create a new list with status 
 let filterFriends = (list1,friends, request, pending,cb) =>{
     
@@ -284,29 +415,19 @@ let accept = async (id1 , id2, status,cb) => {
     cb(200)
 }
 
-let add = (id1, id2, status, groupId,cb) =>{
-    User.findByIdAndUpdate(  
-        id1, 
-        {
-         $addToSet : { friends : id2, group : groupId}
-        },  (err, res) =>{
-            if(err)  cb(err)
-            if(!status)  add(id2, id1, true, groupId,cb)
-        })  
-
-}
-
 let createGroup = (user1, user2,cb) => {
 
     let users = [
         {
         uuID : user1._id,
-        nickName : `${user1.firstName} ${user1.lastName}`,
+        firstName : user1.firstName,
+        lastName : user1.lastName,
         profileImage : user1.image
         },
         {
         uuID : user2.id,
-        nickName : user2.name,
+        firstName : user2.firstName,
+        lastName : user2.lastName,
         profileImage : user2.image
         }
     ]
@@ -325,7 +446,10 @@ let createGroup = (user1, user2,cb) => {
         else{
         Group.create({
         group : users,
-        message : []
+        messages : [{
+            message : 'Welcome User',
+            isRead: false
+        }]
          }, (err, res) => 
          {
         if(err) console.error(err)
@@ -340,8 +464,10 @@ let createGroup = (user1, user2,cb) => {
 let getGroupId = (id1, id2) => {
 
 }
+
 // remove user from pending/request list 
 let remove = (id1,id2, status,cb) => {
+    console.log(id1, id2)
     User.findByIdAndUpdate(  
         id1, 
         {
@@ -350,6 +476,20 @@ let remove = (id1,id2, status,cb) => {
             if(err) cb(err)
             if(!status) remove(id2, id1, true)
         })  
+}
+
+// Add user id into friend list
+let add = (id1, id2, status, groupId,cb) =>{
+    console.log(id1, id2)
+    User.findByIdAndUpdate(  
+        id1, 
+        {
+         $addToSet : { friends : id2, group : groupId}
+        },  (err, res) =>{
+            if(err)  cb(err)
+            if(!status)  add(id2, id1, true, groupId,cb)
+        })  
+
 }
 
 // Update user info

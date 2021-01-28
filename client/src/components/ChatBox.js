@@ -2,6 +2,7 @@ import React ,  { Component } from "react"
 import UserAPI from '../utils/UserAPI'
 import UserInfo from './UserInfo'
 import FindFriends from './FindFriends'
+import ChatView from './ChatView'
 import Logo from './Logo'
 import Images from './Images'
 import Search from './Search'
@@ -23,22 +24,28 @@ class ChatBox extends Component
             group : 60,
             currentTag : "1",
             messages: [],
-            status : 'chat',
+            status : 'userInfo',
+            chatViewId: '',
+            chatName : '',
             info : {
                 group : []
             }
         }
         
-        this.onClick = this.onClick.bind(this);
+        this.chatView = this.chatView.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.signOut = this.signOut.bind(this);
     }
 
-    onClick(e)
+    chatView(user, id, name)
     {
-        document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
-        document.querySelector(`[data-tag="${e.target.dataset.tag}"]`).classList.add('on-active')
-        this.setState({currentTag : e.target.dataset.tag})
+        if(this.state.chatViewId !== id){
+            this.setState({ status : 'chatView', chatViewId : id, chatName : name})
+            document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
+            document.querySelector(`[data-tag="${user.target.dataset.tag}"]`).classList.add('on-active')
+            this.setState({currentTag : user.target.dataset.tag})
+        }
+    
     }
 
     onSubmit(e)
@@ -71,12 +78,17 @@ class ChatBox extends Component
     componentWillMount(){
   
         userInit()
-        .then(  ({data}) => {
+        .then(({data}) => {
             // console.log('render info')
+            // console.log(data)
             this.setState({ info : data })
+           
             // console.log(this.state)
         })
         .catch(err => console.error(err))
+    }
+    componentDidUpdate(){
+        // console.log(this.state)
     }
     render()
     {
@@ -88,11 +100,11 @@ class ChatBox extends Component
             {/* {console.log('render')} */}
             {/* Profile image and compose new message */}
             <div className="row-2">
-            {console.log('render image')}
             <Images 
             width={this.state.profile} 
             height={this.state.profile} 
             images={[this.state.info.image]}
+            onClick={() => this.setState({status : 'userInfo'})}
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
@@ -102,25 +114,29 @@ class ChatBox extends Component
             <Search   placeholder={'Search for message'}/>
 
             {/* Add friend icon */}
-            <div className="options">
-            <i className="fas fa-user-plus add-friend"></i>
+            <div className="options" >
+            <i className="fas fa-user-plus add-friend"
+            onClick={() => this.setState({status : 'addFriend'})}
+            />
             <p>Add friend</p>
             </div>
             
             {/* Friends list */}
             <div className="row-3">
 
-            {this.state.info["group"].map( (val, index ) =>{
-                      <Friend 
+            {
+            this.state.info["group"].map( (val, index ) =>
+            {
+                      return <Friend 
                       key={index}
-                      val={val}
-                      images={[this.state.image]}
+                      details={val}
                       width={this.state.group} 
                       height={this.state.group}
                       tag={++index}
-                      onClick={this.onClick}/>
-            }) 
-        }
+                      onClick={this.chatView}
+                      /> 
+            })  
+            } 
 
             {/* {[...new Array(30)]
             .map(
@@ -144,12 +160,24 @@ class ChatBox extends Component
 
 
             <div className={`right`}>
-            {/* <UserInfo
+            { this.state.status === 'userInfo'? 
+            <UserInfo
              info = {this.state.info}
              signOut = {this.signOut}
-            /> */}
+            /> 
+            : ""}
 
-            <FindFriends></FindFriends>
+            { this.state.status === 'addFriend'? 
+            <FindFriends/>
+            : ""}
+
+            { this.state.status === 'chatView'? 
+            <ChatView 
+            id={this.state.chatViewId}
+            chatName ={this.state.chatName}
+            />
+            : ""}
+            {/* <FindFriends></FindFriends> */}
             {/* <section className="row-1">
             <Button 
             name='Sign Out'

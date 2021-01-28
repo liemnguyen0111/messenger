@@ -60,11 +60,11 @@ class UserInfo extends Component{
 
     onCheck(){
         return (
-            this.props.info["firstName"]  === this.firstName.innerText &&
-            this.props.info["lastName"]  === this.lastName.innerText &&
-            this.props.info["username"]  === this.username.innerText &&
-            this.props.info["email"]  === this.email.innerText &&
-            this.props.info["address"]  === this.address.innerText 
+            this.props.info["firstName"]  === this.firstName.innerText.trim() &&
+            this.props.info["lastName"]  === this.lastName.innerText.trim() &&
+            this.props.info["username"]  === this.username.innerText.trim() &&
+            this.props.info["email"]  === this.email.innerText.trim() &&
+            this.props.info["address"]  === this.address.innerText.trim() 
         )
     }
 

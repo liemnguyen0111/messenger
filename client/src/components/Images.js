@@ -25,6 +25,7 @@ class Images extends Component
         return ( 
             <div 
             className='images'
+            onClick={this.props.onClick}
             style={{ 
                 height : `${this.props.height}px` ,
                 width : `${this.props.width}px`,

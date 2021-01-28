@@ -4,37 +4,38 @@ import Images from './Images'
 class Friend extends Component
 {
 
-    onClick(e) 
-    {
-       console.log( e.target)
-    }
-
 
     render()
     {
         return ( 
             <div 
-            className='friend'
-            onClick={(e) => this.props.onClick(e)}
+            className={`group ${!this.props.details.isRead? "is-read": ""}`}
+            onClick={(e) => this.props.onClick(e, this.props.details.id, this.props.details.groupName)}
             ref={(f) => { this.f = f;}}
             data-tag={this.props.tag }
             >
             <Images 
-            images={this.props.images}
+            images={[this.props.details.profileImage]}
             width= {this.props.width}
             height={this.props.height}
             ></Images>
             <section className="g-info">
-            <div className="g-name">Nhung con be nhat nheo oawienfaweoifn </div>
-            <section className="l-message-info">
-            <div className="l-message">this is a   </div>
-            <span className='time'> • 12:16 AM</span> 
-            <Images 
-            images={this.props.images}
-            width= {20}
-            height={20}
-            ></Images>
+            <div className="g-name">{this.props.details.groupName}</div>
+            <section className="l-message-wrapper">
+            <div className="l-message-info">
+            <div className="l-message">{this.props.details.latestMessage || "New Friend"}<span/></div>
+            <span className='time'>{" • " + this.props.details.time}</span> 
+            </div>
+            
 
+            {this.props.details.latestMessage && this.props.details.isRead?
+             <Images 
+             images={[this.props.details.profileImage]}
+             width= {20}
+             height={20}
+             ></Images> : ""
+            }
+        
             </section>
            
             </section>
