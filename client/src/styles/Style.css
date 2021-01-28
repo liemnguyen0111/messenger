@@ -790,6 +790,17 @@ body {
 .friend-options-list div {
   margin-left: 10px;
   margin-right: 20px;
+  padding: 5px 15px 5px 15px;
+  border-radius: 10px 10px 0 0;
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  -webkit-transition: .3s ease;
+  transition: .3s ease;
+  cursor: pointer;
+}
+
+.friend-options-list .on-active {
+  background: rgba(128, 128, 128, 0.219);
   border-bottom: 2px solid #49ACF2;
 }
 
@@ -1066,7 +1077,7 @@ body {
   overflow: hidden;
 }
 
-.text textarea:focus, .text textarea :active, .text textarea :hover {
+.text textarea:focus, .text textarea:active, .text textarea:hover {
   outline: none;
 }
 

@@ -658,6 +658,16 @@ body
     div{
         margin-left: 10px;
         margin-right: 20px;
+        padding: 5px 15px 5px 15px;
+        border-radius: 10px 10px 0 0;
+        background: transparent;
+        border-bottom: 2px solid transparent;
+        transition: .3s ease;
+        cursor: pointer;
+    }
+
+    .on-active{
+        background: $dark-color;
         border-bottom: 2px solid $light-color;
     }
 
@@ -669,6 +679,7 @@ body
         height: 2px;
         background: $dark-color;
         bottom: 0;
+      
     }
 }
 
@@ -878,7 +889,7 @@ body
             overflow: hidden;
           }
 
-        &:focus, :active , :hover
+        &:focus, &:active , &:hover
         {
             outline: none;
         }

@@ -14,7 +14,10 @@ class FindFriends extends Component{
         this.state = {
             user : 60,
             view : "all",
-            userList : []
+            userList : [],
+            all : 'on-active',
+            pending : '',
+            request : ''
         }
 
         this.onSearch = this.onSearch.bind(this)
@@ -27,6 +30,7 @@ class FindFriends extends Component{
  
 
     updateView(view){
+        this.setState({all : '', pending : '', request: '', [view] : "on-active"})
         getUsers(view)
         .then(({data}) => {
             this.setState({userList : data[0], ...data[1]})
@@ -50,13 +54,13 @@ class FindFriends extends Component{
         return ( 
         <div className="find-friends">
             <div className="friend-options-list">
-                <div className="all-user"
+                <div className={`all-user ${this.state.all}`}
                 onClick={() => this.updateView('all')}
                 >All</div>
-                <div className="pending-user"
+                <div className={`pending-user ${this.state.pending}`}
                 onClick={() => this.updateView('pending')}
                 >Pending</div>
-                <div className="request-user"
+                <div className={`request-user ${this.state.request}`}
                 onClick={() => this.updateView('request')}
                 >Request</div>
             </div>
