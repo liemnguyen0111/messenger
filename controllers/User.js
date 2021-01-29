@@ -51,9 +51,16 @@ module.exports  = {
             _id : true,
             lastestMessage : true,
         }
-        console.log('init')
-        User.findOne({_id : user._id})
-        .populate('group')
+      
+        User.findById({_id : user._id})
+        .populate({
+            path : 'group',
+            populate : {
+                path: 'group.uuID',
+                model : 'User',
+                select : 'isActive'
+            }
+        })
         .then(data => {filterUser(data,user._id,cb)})
         .catch(err => cb(err))
     },
@@ -75,6 +82,7 @@ module.exports  = {
                 })
                 break;
             case 'pending' :
+                console.log(user.pending)
                 User.find({ _id : user.pending} , option, (err,res) =>{
                     if(err) cb(err)
                    filterFriends(res,user.friends, user.request, user.pending,cb)
@@ -87,11 +95,19 @@ module.exports  = {
                 })
                 break;
             default:
+
                 User.find({ 
-                    $or: [
-                        { firstName: { $regex: params, $options:  'i' } },
-                        { lastName: { $regex: params, $options:  'i' } }
-                      ]
+                   $and : [
+                    {$or: [
+                        { firstName: { $in: params.split(' ') } },
+                        { firstName: { $regex: params, $options : "i" } },
+                        { lastName: { $in: params.split(' ') } },
+                        { lastName: { $regex: params, $options : "i" } }
+                    ]},
+                    {
+                       _id : { $ne : user._id}
+                    }
+                   ]
                 }, option, (err,res) =>{
                     if(err) cb(err)
                     filterFriends(res,user.friends, user.request, user.pending,cb)
@@ -144,7 +160,7 @@ module.exports  = {
 
     // Update user info
     updateUser(type,user, data, cb) {
-       console.log(type)
+  
         switch(type){
             case 'send-request' : 
             request(user._id, data.id, false, cb)
@@ -216,7 +232,10 @@ let randomString = (email,data, key) =>
 let filterUser = (data,userId, cb) =>{
 
     let temp = data.group
+    // console.log(data)
+    // console.log(data.group)
     data =  {
+        id : data._id,
         username : data.username,
         firstName : data.firstName,
         lastName : data.lastName,
@@ -229,8 +248,6 @@ let filterUser = (data,userId, cb) =>{
         pendingCount : data.pendingCount,
         requestCount : data.requestCount
     }
-    // filterGroup(temp,userId)
-    console.log("filter")
     cb(data)
 }
 
@@ -244,19 +261,17 @@ let filterGroup = (data,userId) => {
     let getGroupName = (group) => {
 
        return group.filter(val => 
-           JSON.stringify(val.uuID) !== JSON.stringify(userId))
+           JSON.stringify(val.uuID._id) !== JSON.stringify(userId))
     }
 
     // Check if the latest message belong to the user
     let isUser = (val1, val2) => {
-        console.log('is user')
         return  JSON.stringify(val1) === JSON.stringify(val2)
     }
 
     // Date time format AM/PM
     let formatAMPM = (date) => {
         var hours = (date.getHours() + 7) % 24;
-        console.log(hours)
         var minutes = date.getMinutes();
         var ampm = hours >= 12 ? 'PM' : 'AM';
         hours = hours % 12;
@@ -308,35 +323,60 @@ let filterGroup = (data,userId) => {
         return date >= firstDayOfWeek && date <= lastDayOfWeek;
     }
    
+    // Get active status
+    let getActive = (group, id) => {
+     return group.filter((val) => !isUser( val.uuID._id, id) && val.uuID["isActive"])[0] ? 1 : 0
+    }
 
+    // Return true if id found in list of isRead
+    let isRead = (list) =>{
+        return list.includes(userId)
+    }
+
+    // Get sender name
+    let getSenderName = (group, lastMessage) => {
+        let user = group.filter((val) => !isUser( val.uuID._id, lastMessage.uuID))[0]
+        return user.firstName + ": "
+    }
+
+    // Get images from user who has read
+    let getImages = (group, messages) => {
+         let temp = group.filter(val =>  
+        messages.isRead.includes(val.uuID._id) &&
+         !isUser( val.uuID._id, userId) &&
+         isUser( userId, messages.uuID) 
+         )
+        return temp.map(val => val.profileImage)
+    }
     // create a new set of date for group
     data = data.reduce((acc, val) => {
-        console.log(val.lastMessage)
         let user = getGroupName(val.group)[0],
-        latestMessage = val.latestMessage
-        from = isUser(latestMessage.uuID, userId) ? "You: " : ""
-        // `${user.firstName + " " + user.lastName}: `
-        console.log("before")
+        latestMessage = val.latestMessage,
+        groupLength = val.group.length
+        from = isUser(latestMessage.uuID, userId) ? "You: " : 
+        (groupLength > 2) ? getSenderName(val.group,latestMessage) : ""
+        // console.log(getActive(val.group, userId))
         acc.push({
             id : val._id,
             groupName : user.firstName + " " + user.lastName,
             profileImage : user.profileImage,
             latestMessage : from + latestMessage.message,
-            isRead : isUser(latestMessage.uuID, userId) ? 
-            true : latestMessage.isRead,
+            readImages : getImages(val.group, latestMessage),
+            isRead : isRead(latestMessage.isRead),
+            isYours : isUser(latestMessage.uuID, userId) ,
+            isActive :  getActive(val.group, userId),
             time : getTime(new Date(latestMessage.time))
         })
-        console.log("after")
+
         return acc
     },[])
- 
+    // console.log(data)
 
     return data
 }
 // use to create a new list with status 
 let filterFriends = (list1,friends, request, pending,cb) =>{
     
-    // if(typeof list1 === 'object')  cb([list1])
 
     try {
         list1 = list1.reduce((acc , data)=>{
@@ -386,6 +426,7 @@ let unfriend = (id1 , id2, status,cb) => {
                 },  (err, res) =>{
                     if(err) cb(err)
                     if(!status) unfriend(id2, id1, true,cb)
+                    if(status) cb(200)
                 })   
         })
 }
@@ -400,8 +441,8 @@ let request = (id1 , id2, status,cb) => {
          $addToSet : { [!status? "pending" : "request"] : id2 }
         }, (err, res) =>{
             if(err)  cb(err)
-            if(status)  cb(200) 
             if(!status) request(id2, id1, true,cb)
+            if(status) cb(200)
         })  
 }
 
@@ -409,10 +450,9 @@ let request = (id1 , id2, status,cb) => {
 let accept = async (id1 , id2, status,cb) => {
   
     let group = createGroup(id1,id2, (groupId) => {
-    remove(id1._id,id2.id,false,cb)
+    remove(id1._id,id2.id,false)
     add(id1._id,id2.id,false,groupId,cb)
     })
-    cb(200)
 }
 
 let createGroup = (user1, user2,cb) => {
@@ -447,8 +487,9 @@ let createGroup = (user1, user2,cb) => {
         Group.create({
         group : users,
         messages : [{
+            type : "bot",
             message : 'Welcome User',
-            isRead: false
+            isRead: []
         }]
          }, (err, res) => 
          {
@@ -474,13 +515,15 @@ let remove = (id1,id2, status,cb) => {
          $pull : { [!status? "request" : "pending"] : id2 },
         },  (err, res) =>{
             if(err) cb(err)
-            if(!status) remove(id2, id1, true)
+            if(!status) remove(id2, id1, true,cb)
+            if(cb)
+            if(status) cb(200)
         })  
 }
 
 // Add user id into friend list
 let add = (id1, id2, status, groupId,cb) =>{
-    console.log(id1, id2)
+  
     User.findByIdAndUpdate(  
         id1, 
         {
@@ -488,6 +531,8 @@ let add = (id1, id2, status, groupId,cb) =>{
         },  (err, res) =>{
             if(err)  cb(err)
             if(!status)  add(id2, id1, true, groupId,cb)
+            if(cb)
+            if(status) cb(200)
         })  
 
 }
@@ -499,6 +544,47 @@ let update = (id, data, cb) =>{
     { new : true }, 
     (err ,res) => { 
         if ( err ) cb(err)
+        updateGroup(id,data)
         cb(res)
     })
 }
+
+// Update group after user update their info
+let updateGroup = (id, data) => {
+    Group.findOne({ "group.uuID" : id})
+    .then( doc => {
+
+        doc.group.map(val => {
+ 
+            if(JSON.stringify(val.uuID) === JSON.stringify(id))
+            {
+
+                val["firstName"] = data["firstName"]
+                val["lastName"] = data["lastName"]
+            }
+        })
+       
+        doc.save()
+    })
+    .catch(err => console.error(err))
+}
+
+// Update user status
+let updateStatus = (id,status) => {
+    User.findByIdAndUpdate(id, 
+        { $set : { isActive : status }},
+        { new : true },
+        (err) => { if(err) console.error(err)}
+        )
+}
+
+// Get friends id
+let getFriend = (id, cb) =>{
+    User.findById(id, {friends : true}, (err,res)=>{
+        if(err) cb(false)
+        cb(res)
+    })
+}
+
+module.exports.updateStatus = updateStatus
+module.exports.getFriend = getFriend

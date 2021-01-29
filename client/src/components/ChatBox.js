@@ -1,15 +1,18 @@
 import React ,  { Component } from "react"
+import io from 'socket.io-client'
 import UserAPI from '../utils/UserAPI'
 import UserInfo from './UserInfo'
+import Notification from './Notification'
 import FindFriends from './FindFriends'
 import ChatView from './ChatView'
 import Logo from './Logo'
 import Images from './Images'
 import Search from './Search'
 import Friend from './Friend'
-import Button from './Button'
-import Message from './Message'
-import Input from './Input'
+
+let socket;
+const ENDPOINT = 'localhost:5000'
+socket = io(ENDPOINT)
 
 const { userInit } = UserAPI
 
@@ -39,7 +42,7 @@ class ChatBox extends Component
 
     chatView(user, id, name)
     {
-        if(this.state.chatViewId !== id){
+        if(this.state.chatViewId !== id || this.state.status !== 'chatView'){
             this.setState({ status : 'chatView', chatViewId : id, chatName : name})
             document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
             document.querySelector(`[data-tag="${user.target.dataset.tag}"]`).classList.add('on-active')
@@ -63,6 +66,7 @@ class ChatBox extends Component
 
     signOut(){
         document.querySelector('.chat-box').classList.remove('authorized')
+        socket.disconnect()
         setTimeout(() => {
         this.props.setState({isAuthorized: false})
         localStorage.removeItem('user')
@@ -71,25 +75,65 @@ class ChatBox extends Component
     }
 
     componentDidMount(){
-
-            document.querySelector('.chat-box').classList.add('authorized')
+       this.init()
+        document.querySelector('.chat-box').classList.add('authorized')
+        socket.on('update', msg => {
+            console.log(msg)
+            switch (msg) {
+                case 'userConnect':
+                    this.load()
+                    break;
+                case 'userDisconnect':
+                    this.load()
+                    break;
+                case 'request':
+                    this.load()
+                    break;
+                case 'accept':
+                    this.load()
+                    break;
+                case 'unfriend':
+                    this.load()
+                    break; 
+                case 'reject':
+                    this.load()
+                    break;     
+                case 'userInfo':
+                    this.load()
+                    break;
+                default:
+                    break;
+            }
+        })
     }
 
-    componentWillMount(){
-  
+    init(){
         userInit()
         .then(({data}) => {
-            // console.log('render info')
-            // console.log(data)
             this.setState({ info : data })
-           
-            // console.log(this.state)
+            socket.connect()
+            socket.emit('join', {id : data.id}, err => console.error(err))
         })
         .catch(err => console.error(err))
     }
-    componentDidUpdate(){
-        // console.log(this.state)
+
+    load(){
+        userInit()
+        .then(({data}) => {
+            this.setState({ info : data })
+        })
+        .catch(err => console.error(err))
     }
+
+
+    
+
+    // componentWillMount(){
+      
+    // }
+    // componentDidUpdate(){
+    
+    // }
     render()
     {
         return (
@@ -97,7 +141,6 @@ class ChatBox extends Component
             <div className={`chat-box`}>
             <div className={`left `} >
             <Logo/>
-            {/* {console.log('render')} */}
             {/* Profile image and compose new message */}
             <div className="row-2">
             <Images 
@@ -105,20 +148,26 @@ class ChatBox extends Component
             height={this.state.profile} 
             images={[this.state.info.image]}
             onClick={() => this.setState({status : 'userInfo'})}
+            socket={socket}
+            // notification={true}
+            // notiCount={
+            //     this.state.info.pendingCount +
+            //     this.state.info.requestCount
+            // }
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
             </div>
          
             {/* Search bar */}
-            <Search   placeholder={'Search for message'}/>
+            <Search   placeholder={'Search for message'} onSearch={()=>{}}/>
 
             {/* Add friend icon */}
             <div className="options" >
             <i className="fas fa-user-plus add-friend"
             onClick={() => this.setState({status : 'addFriend'})}
-            />
-            <p>Add friend</p>
+            ><Notification count={this.state.info.requestCount}/></i>
+            <p> Add friend </p>
             </div>
             
             {/* Friends list */}
@@ -138,19 +187,6 @@ class ChatBox extends Component
             })  
             } 
 
-            {/* {[...new Array(30)]
-            .map(
-              (tag, i) => 
-              <Friend 
-              key={i}
-              images={[this.state.image]}
-              width={this.state.group} 
-              height={this.state.group}
-              tag={++i}
-              onClick={this.onClick}
-              />
-                
-            )}  */}
             </div>
 
                 {/* ------- End of left --------- */}
@@ -162,17 +198,23 @@ class ChatBox extends Component
             <div className={`right`}>
             { this.state.status === 'userInfo'? 
             <UserInfo
+            socket={socket}
              info = {this.state.info}
              signOut = {this.signOut}
             /> 
             : ""}
 
             { this.state.status === 'addFriend'? 
-            <FindFriends/>
+            <FindFriends 
+            socket={socket}
+            pendingCount={this.state.info.pendingCount}
+            requestCount={this.state.info.requestCount}
+            />
             : ""}
 
             { this.state.status === 'chatView'? 
             <ChatView 
+            socket={socket}
             id={this.state.chatViewId}
             chatName ={this.state.chatName}
             />

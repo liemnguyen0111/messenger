@@ -1,5 +1,6 @@
 import React ,  { Component } from "react"
 import Images from './Images'
+import Dot from './Dot'
 
 class Friend extends Component
 {
@@ -18,24 +19,40 @@ class Friend extends Component
             images={[this.props.details.profileImage]}
             width= {this.props.width}
             height={this.props.height}
+            isActive={this.props.details.isActive}
             ></Images>
             <section className="g-info">
             <div className="g-name">{this.props.details.groupName}</div>
             <section className="l-message-wrapper">
             <div className="l-message-info">
-            <div className="l-message">{this.props.details.latestMessage || "New Friend"}<span/></div>
+            <div className="l-message">{this.props.details.latestMessage}<span/></div>
             <span className='time'>{" • " + this.props.details.time}</span> 
             </div>
             
 
-            {this.props.details.latestMessage && this.props.details.isRead?
-             <Images 
-             images={[this.props.details.profileImage]}
-             width= {20}
-             height={20}
-             ></Images> : ""
+            {/* {
+            this.props.details.isYours ? 
+            this.props.details.latestMessage && this.props.details.isRead?
+            " ": <Images 
+            images={[this.props.details.profileImage]}
+            width= {20}
+            height={20}
+            ></Images>  : <Dot background={'blue'}/>
             }
-        
+         */}
+         {/* {
+              this.props.details.isYours ? 
+              this.props.details.isRead?
+         } */}
+         {
+             this.props.details.isYours?
+             <Images
+             images={this.props.details.readImages}
+             width={20}
+             height={20}
+             /> :
+             !this.props.details.isRead? <Dot background={'blue'}/> : ''
+         }
             </section>
            
             </section>

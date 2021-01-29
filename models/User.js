@@ -5,6 +5,10 @@ const User = new Schema({
   firstName: String,
   lastName: String,
   age: Number,
+  isActive : {
+    type : Boolean,
+    default : false
+  },
   email : {
     type: String,
     unique : true

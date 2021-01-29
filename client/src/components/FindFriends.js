@@ -1,6 +1,7 @@
 import React , { Component } from 'react'
 import Search from './Search'
 import User from './User'
+import Notification from './Notification'
 import UserAPI from '../utils/UserAPI'
 
 const { getUsers } = UserAPI
@@ -26,6 +27,26 @@ class FindFriends extends Component{
 
     componentDidMount(){
         this.updateView("all")
+        this.props.socket.on('update', msg =>{
+            console.log(msg)
+            switch (msg) {
+                case 'request':
+                    this.updateView(this.state.view)
+                    break;
+                case 'accept':
+                    this.updateView(this.state.view)
+                    break;
+                case 'unfriend':
+                    this.updateView(this.state.view)
+                    break;
+                case 'reject':
+                    console.log('reject')
+                    this.updateView(this.state.view)
+                    break;
+                default:
+                    break;
+            }
+        })
     }
  
 
@@ -34,17 +55,16 @@ class FindFriends extends Component{
         getUsers(view)
         .then(({data}) => {
             this.setState({userList : data[0], ...data[1]})
-            console.log(this.state)
+      
         })
         .catch(err => console.error(err))
-        console.log('update')
     }
 
     onSearch(val){
         getUsers(val? val : 'all')
         .then(({data}) => {
             this.setState({userList : data[0], ...data[1]})
-            console.log(this.state)
+       
         })
         .catch(err => console.error(err))
     }
@@ -52,17 +72,23 @@ class FindFriends extends Component{
     render()
     {
         return ( 
-        <div className="find-friends">
+        <div className="find-friends smooth">
             <div className="friend-options-list">
                 <div className={`all-user ${this.state.all}`}
                 onClick={() => this.updateView('all')}
-                >All</div>
+                >
+                All
+                </div>
                 <div className={`pending-user ${this.state.pending}`}
                 onClick={() => this.updateView('pending')}
-                >Pending</div>
+                >Pending
+                 <Notification count={this.props.pendingCount}/>
+                </div>
                 <div className={`request-user ${this.state.request}`}
                 onClick={() => this.updateView('request')}
-                >Request</div>
+                >Request
+                 <Notification count={this.props.requestCount}/>
+                </div>
             </div>
             <Search
             placeholder={'Search for user'}
@@ -73,6 +99,7 @@ class FindFriends extends Component{
             {
                 this.state.userList.map((user, index) =>{
                   return  <User
+                    socket={this.props.socket}
                     key={index}
                     name={[user.data.firstName, user.data.lastName]}
                     image={[user.data.image]}

@@ -10,9 +10,10 @@ const Group = new Schema({
     }],
     messages : [
         {
+            type : { type : String , default : 'bot'},
             uuID :  { type : Schema.Types.ObjectId, ref : "User"},
             message : { type : String },
-            isRead : { type : Boolean},
+            isRead : [{ type : Schema.Types.ObjectId, ref : "User"}],
             time : { type : Date , default : new Date(Date.now() - 60 * 60 * 7000) }
         }
     ]

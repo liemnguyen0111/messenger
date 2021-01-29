@@ -2,6 +2,11 @@
   overflow: hidden;
 }
 
+body * {
+  -webkit-animation: smooth .1s ease;
+          animation: smooth .1s ease;
+}
+
 body {
   font-family: "Roboto", sans-serif;
   color: white;
@@ -36,6 +41,21 @@ body {
   margin: 5px;
   color: white;
   cursor: pointer;
+  -webkit-transition: .2 ease;
+  transition: .2 ease;
+  overflow: hidden;
+}
+
+@-webkit-keyframes button {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes button {
+  from {
+    opacity: 0;
+  }
 }
 
 .red {
@@ -88,6 +108,13 @@ body {
   z-index: 2;
 }
 
+.images .dot {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
+}
+
 .search {
   position: relative;
   -webkit-box-align: center;
@@ -138,10 +165,8 @@ body {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
   color: gray;
-  -webkit-transition: 2s ease;
-  transition: 2s ease;
-  -webkit-animation: show .2s ease;
-          animation: show .2s ease;
+  -webkit-transition: .5s ease;
+  transition: .5s ease;
 }
 
 @-webkit-keyframes show {
@@ -205,8 +230,8 @@ body {
           backdrop-filter: blur(4px);
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
-  -webkit-transition: 1s ease-out;
-  transition: 1s ease-out;
+  -webkit-transition: .5s ease-out;
+  transition: .5s ease-out;
   overflow: hidden;
 }
 
@@ -265,8 +290,8 @@ body {
 }
 
 .form {
-  -webkit-transition: all .4s ease;
-  transition: all .4s ease;
+  -webkit-transition: all .5s ease;
+  transition: all .5s ease;
 }
 
 .validated {
@@ -341,8 +366,8 @@ body {
   width: 100%;
   overflow: hidden;
   margin: 0 50px;
-  -webkit-transition: all 2s ease;
-  transition: all 2s ease;
+  -webkit-transition: all 1s ease;
+  transition: all 1s ease;
 }
 
 .error-message {
@@ -668,6 +693,9 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0;
+          flex: 1 0;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -700,6 +728,10 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
   margin: 2px 0;
   -webkit-box-align: center;
       -ms-flex-align: center;
@@ -710,6 +742,9 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   max-width: 270px;
   height: 14px;
   overflow: hidden;
@@ -773,6 +808,7 @@ body {
 }
 
 .add-friend {
+  position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -820,15 +856,16 @@ body {
   margin: 10px 0;
 }
 
-.friend-options-list div {
+.friend-options-list .all-user, .friend-options-list .pending-user, .friend-options-list .request-user {
+  position: relative;
   margin-left: 10px;
   margin-right: 20px;
   padding: 5px 15px 5px 15px;
   border-radius: 10px 10px 0 0;
   background: transparent;
   border-bottom: 2px solid transparent;
-  -webkit-transition: .3s ease;
-  transition: .3s ease;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
   cursor: pointer;
 }
 
@@ -884,6 +921,11 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+}
+
+.user-container .user .button {
+  -webkit-animation: button .5s ease-in-out;
+          animation: button .5s ease-in-out;
 }
 
 .add, .accept, .friend {
@@ -1125,9 +1167,7 @@ body {
 }
 
 .like, .send {
-  font-size: 30px !important;
-  -webkit-animation: show .1s ease-in;
-          animation: show .1s ease-in;
+  font-size: 26px !important;
 }
 
 .not-active {
@@ -1136,6 +1176,84 @@ body {
 
 .on-active {
   background: rgba(128, 128, 128, 0.219);
+}
+
+.dot {
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  margin: 5px;
+}
+
+.notification {
+  position: absolute;
+  top: 0;
+  right: -10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: 'Poppins', sans-serif;
+  font-weight: lighter;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background: #cc2828;
+  width: 15px;
+  height: 15px;
+  padding: 2px;
+  font-size: 12px;
+  border-radius: 50%;
+  z-index: 10;
+  -webkit-animation: notification .3s ease-in-out;
+          animation: notification .3s ease-in-out;
+}
+
+@-webkit-keyframes notification {
+  from {
+    opacity: .5;
+    -webkit-transform: translate(-2px, -2px);
+            transform: translate(-2px, -2px);
+  }
+}
+
+@keyframes notification {
+  from {
+    opacity: .5;
+    -webkit-transform: translate(-2px, -2px);
+            transform: translate(-2px, -2px);
+  }
+}
+
+.green {
+  background: #00f800;
+  -webkit-box-shadow: 0 2px 5px 0 #00f800, 0px -2px 5px 0 #00f800;
+          box-shadow: 0 2px 5px 0 #00f800, 0px -2px 5px 0 #00f800;
+}
+
+.smooth {
+  -webkit-animation: smooth .5s ease;
+          animation: smooth .5s ease;
+}
+
+@-webkit-keyframes smooth {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes smooth {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* width */

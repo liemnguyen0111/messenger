@@ -8,8 +8,8 @@ class Input extends Component
         this.state = {
             key : 0,
             message : '',
-            like : 'hide',
-            send : ''
+            like : '',
+            send : 'hide'
         }
 
         // Bind handleKeyUp function to state
@@ -21,7 +21,6 @@ class Input extends Component
     // Storing value from input to message
     onChange(e)
     {
-        // console.log(this.state.key)
         if(this.state.key !== 13)
         this.setState({
             message : e.target.value
@@ -53,11 +52,9 @@ class Input extends Component
     // Then increase or decrease the height base on line of text
     // Maximum height 200px
     handleKeyDown(e) {
-
-        this.state.message ?  this.show() : this.hide()
-       
-        let isMessage = !this.state.message
-        isMessage = !isMessage
+       this.messageInput.value.trim() ?  this.show() : this.hide()
+     
+        let isMessage = this.messageInput.value.trim() ? true : false
 
         if(e.keyCode === 13 && e.shiftKey === false)
         {
@@ -89,8 +86,9 @@ class Input extends Component
 
     handleKeyUp(e)
     {
-        let isMessage = !this.state.message
-        isMessage = !isMessage
+        this.messageInput.value.trim() ?  this.show() : this.hide()
+        let isMessage = this.messageInput.value.trim() ? true : false
+
         if((e.keyCode === 13 && e.shiftKey === false) || !isMessage)
         {
             e.target.style.height =  '24px';

@@ -1,6 +1,5 @@
 import React ,  { Component } from "react"
 import MessageAPI from '../utils/MessageAPI'
-import Button from './Button'
 import Message from './Message'
 import Input from './Input'
 import Search from './Search'
@@ -19,7 +18,7 @@ class ChatView extends Component
             group : 60,
             chatViewId : '',
             search : false,
-            test: 0
+            messages : []
         }
         
         this.onSubmit = this.onSubmit.bind(this);
@@ -28,16 +27,6 @@ class ChatView extends Component
 
     onSubmit(message)
     {
-
-        // this.setState( { messages : [...this.state.messages, 
-        //     {
-            
-        //         isYours : true, 
-        //         message : e,
-        //         image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-        //         time : '12:12 PM' }
-        // ] })
-        // console.log(this.props.id)
         this.setState({ test : this.state.test + 1})
         createMessage(this.props.id, {message: message})
         .then(data => console.log(data))
@@ -45,25 +34,11 @@ class ChatView extends Component
     }
 
 
-
-    componentWillMount(){
-      this.updateMessages(this.props.id)
-    }
-
-    updateMessages(id){
-        // console.log(id)
-        getMessage(id)
-        .then((data) => {
-            console.log(data)
-        })
-        .catch(err => console.error(err))
-    }
-
     render()
     {
         return (
             <>
-            <section className="row-2">
+            <section className="row-2 smooth">
             <Images 
             width={this.state.group} 
             height={this.state.group}
@@ -76,10 +51,10 @@ class ChatView extends Component
             ></i>
             </section>
             {this.state.search ? 
-             <Search/>
+             <Search placeholder={'Search for message'}onSearch={()=>{}}/>
             :""}
             
-            <Message messages={this.state.test}/>
+            <Message id={this.props.id}/>
             <Input onSubmit={this.onSubmit}/>
             </>
         )

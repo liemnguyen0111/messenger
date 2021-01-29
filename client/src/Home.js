@@ -1,17 +1,10 @@
 import React ,  { Component } from "react"
-import io from 'socket.io-client'
 import UserAPI from './utils/UserAPI'
 import ChatBox from './components/ChatBox'
 import Main from './components/Main'
 
 
-let socket;
-const ENDPOINT = 'localhost:5000'
-socket = io(ENDPOINT)
-
-const { isAuthorized, loginUser, 
-    // registerUser, getUserInfo 
-} = UserAPI
+const { isAuthorized, loginUser} = UserAPI
 
 class Home extends Component
 {
@@ -29,8 +22,7 @@ class Home extends Component
 
     componentDidMount()
     {
-        socket.emit('join', {}, err => console.error(err))
-
+    
        isAuthorized()
        .then(() =>
         {

@@ -33,6 +33,7 @@ class User extends Component{
          }
     }
     onClick(){
+        console.log(this.props.status)
         if(this.props.status === "Add Friend") {
             this.addFriend()
         }
@@ -40,9 +41,9 @@ class User extends Component{
             this.acceptFriend()
         }
         if(this.props.status === "Unfriend") {
+           
             this.unfriend()
         }
-        console.log(this.props.status)
     }
 
     addFriend(){
@@ -50,8 +51,8 @@ class User extends Component{
             id : this.props.id
         }
         putUser('send-request', data)
-        .then( data => { 
-            console.log(data)
+        .then( () => { 
+            this.props.socket.emit('request', {id: this.props.id,type:'request'})
         })
         .catch(err => console.error(err))
     }
@@ -64,8 +65,8 @@ class User extends Component{
             lastName : this.props.name[1]
         }
         putUser('accept-request', data)
-        .then( data => { 
-            console.log(data)
+        .then( () => { 
+            this.props.socket.emit('request', {id: this.props.id,type:'accept'})
         })
         .catch(err => console.error(err))
     }
@@ -74,9 +75,11 @@ class User extends Component{
         let data = {
             id : this.props.id
         }
+       
         putUser('reject-request', data)
-        .then( data => { 
-            console.log(data)
+        .then( () => { 
+            console.log('reject')
+            this.props.socket.emit('request', {id: this.props.id,type:'request'})
         })
         .catch(err => console.error(err))
     }
@@ -85,9 +88,11 @@ class User extends Component{
         let data = {
             id : this.props.id
         }
+        console.log('here in unfriend')
         putUser('unfriend', data)
-        .then( data => { 
-            console.log(data)
+        .then( () => { 
+            console.log('unfriend')
+            this.props.socket.emit('request', {id: this.props.id,type:'request'})
         })
         .catch(err => console.error(err))
     }

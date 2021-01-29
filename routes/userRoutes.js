@@ -2,6 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 const jwt = require("jsonwebtoken");
 const User = require('../controllers/User')
+const io = require('../socket/socketIO').io
 const ipInfo = require("ipinfo")
 
 // Get users
@@ -20,6 +21,7 @@ ipInfo(req.body["ivp6"],(err, cLoc) => {
 
     // login user
     User.loginUser(req.body, cLoc , (data) => {
+        
         res.json(data)
     })
 })

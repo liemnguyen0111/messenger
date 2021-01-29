@@ -12,7 +12,7 @@ router.get('/messages/:id', passport.authenticate("jwt"),(req,res) =>{
 
 // Create new message
 router.post('/messages/:id', passport.authenticate("jwt"),(req,res) =>{
-    console.log(req.params)
+    // console.log(req.params)
     Message.createMessage('create',req.body, req.params.id, req.user._id, (data) =>{
         res.json(data)
     })

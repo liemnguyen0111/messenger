@@ -13,7 +13,7 @@ const addUser = (userID, socketID) =>
     else
     {
         
-        updateUserSocketID(getUser(userID), socketID)
+        updateUserSocketID(getUserID(userID), socketID)
         return users[users.length - 1]
     }
 }
@@ -31,20 +31,28 @@ const updateUserSocketID = (User, socketID) =>
     return User
 }
 
-// Get user
-const getUser = (userID) =>
+// Get user using user ID
+const getUserID = (userID) =>
 {
     return users.find(user => user.getUserID() === userID)
 }
 
-// Get all user socket with given userID
-const getAllUsers = (usersID) =>
+
+// Get user using user socket
+const getUserSocket = (socketID) =>
 {
-    return users.filter( user => usersID.includes(user.getUserID()))
+    return users.find(user => user.getSocketID() === socketID)
+}
+
+// Get all user socket with given userID
+const getAllUsers = (usersID,cb) =>
+{
+   cb(users.filter( user => usersID.includes(user.getUserID())))
 }
 
 module.exports.addUser = addUser
 module.exports.checkUser = checkUser
 module.exports.updateUserSocketID = updateUserSocketID
-module.exports.getUser = getUser
+module.exports.getUserID = getUserID
+module.exports.getUserSocket = getUserSocket
 module.exports.getAllUsers = getAllUsers

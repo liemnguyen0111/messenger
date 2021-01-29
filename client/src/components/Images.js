@@ -1,4 +1,6 @@
 import React ,  { Component } from "react"
+import Dot from './Dot'
+import Notification from './Notification'
 // import defaultUser from '../images/defaultUser.jpg'
 
 class Images extends Component
@@ -32,6 +34,8 @@ class Images extends Component
                 minHeight : `${this.props.height}px` ,
                 minWidth : `${this.props.width}px`
             }}>
+                
+            
             {
                 this.props.images.map((v, i) => {
                  return  <img 
@@ -42,6 +46,11 @@ class Images extends Component
 
                 },'')
             }      
+             {this.props.isActive !== undefined ? 
+             (
+              this.props.isActive? 
+             <Dot background={"green"}/> :  <Dot background={"red"}/> ) : ""
+             }
              </div>
          )
     }

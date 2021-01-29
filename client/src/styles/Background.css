@@ -25,8 +25,8 @@
 }
 
 .square:nth-child(1) {
-  top: 71%;
-  left: 14%;
+  top: 37%;
+  left: 70%;
   width: 2.4px;
   height: 2.4px;
   -webkit-animation-delay: 0.33333s;
@@ -34,8 +34,8 @@
 }
 
 .square:nth-child(2) {
-  top: 68%;
-  left: 42%;
+  top: 80%;
+  left: 40%;
   width: 4.8px;
   height: 4.8px;
   -webkit-animation-delay: 0.66667s;
@@ -43,8 +43,8 @@
 }
 
 .square:nth-child(3) {
-  top: 75%;
-  left: 57%;
+  top: 41%;
+  left: 16%;
   width: 7.2px;
   height: 7.2px;
   -webkit-animation-delay: 1s;
@@ -52,8 +52,8 @@
 }
 
 .square:nth-child(4) {
-  top: 41%;
-  left: 43%;
+  top: 18%;
+  left: 44%;
   width: 9.6px;
   height: 9.6px;
   -webkit-animation-delay: 1.33333s;
@@ -61,8 +61,8 @@
 }
 
 .square:nth-child(5) {
-  top: 21%;
-  left: 80%;
+  top: 90%;
+  left: 60%;
   width: 12px;
   height: 12px;
   -webkit-animation-delay: 1.66667s;
@@ -70,8 +70,8 @@
 }
 
 .square:nth-child(6) {
-  top: 20%;
-  left: 67%;
+  top: 27%;
+  left: 70%;
   width: 14.4px;
   height: 14.4px;
   -webkit-animation-delay: 2s;
@@ -79,8 +79,8 @@
 }
 
 .square:nth-child(7) {
-  top: 44%;
-  left: 56%;
+  top: 15%;
+  left: 89%;
   width: 16.8px;
   height: 16.8px;
   -webkit-animation-delay: 2.33333s;
@@ -88,8 +88,8 @@
 }
 
 .square:nth-child(8) {
-  top: 78%;
-  left: 66%;
+  top: 79%;
+  left: 64%;
   width: 19.2px;
   height: 19.2px;
   -webkit-animation-delay: 2.66667s;
@@ -97,8 +97,8 @@
 }
 
 .square:nth-child(9) {
-  top: 37%;
-  left: 89%;
+  top: 12%;
+  left: 34%;
   width: 21.6px;
   height: 21.6px;
   -webkit-animation-delay: 3s;
@@ -106,8 +106,8 @@
 }
 
 .square:nth-child(10) {
-  top: 88%;
-  left: 4%;
+  top: 15%;
+  left: 15%;
   width: 24px;
   height: 24px;
   -webkit-animation-delay: 3.33333s;
@@ -115,8 +115,8 @@
 }
 
 .square:nth-child(11) {
-  top: 40%;
-  left: 17%;
+  top: 22%;
+  left: 46%;
   width: 26.4px;
   height: 26.4px;
   -webkit-animation-delay: 3.66667s;
@@ -124,8 +124,8 @@
 }
 
 .square:nth-child(12) {
-  top: 58%;
-  left: 23%;
+  top: 6%;
+  left: 53%;
   width: 28.8px;
   height: 28.8px;
   -webkit-animation-delay: 4s;
@@ -133,8 +133,8 @@
 }
 
 .square:nth-child(13) {
-  top: 89%;
-  left: 43%;
+  top: 25%;
+  left: 6%;
   width: 31.2px;
   height: 31.2px;
   -webkit-animation-delay: 4.33333s;
@@ -142,8 +142,8 @@
 }
 
 .square:nth-child(14) {
-  top: 43%;
-  left: 25%;
+  top: 28%;
+  left: 68%;
   width: 33.6px;
   height: 33.6px;
   -webkit-animation-delay: 4.66667s;
@@ -151,8 +151,8 @@
 }
 
 .square:nth-child(15) {
-  top: 13%;
-  left: 32%;
+  top: 17%;
+  left: 82%;
   width: 36px;
   height: 36px;
   -webkit-animation-delay: 5s;
@@ -160,8 +160,8 @@
 }
 
 .square:nth-child(16) {
-  top: 3%;
-  left: 51%;
+  top: 20%;
+  left: 7%;
   width: 38.4px;
   height: 38.4px;
   -webkit-animation-delay: 5.33333s;
@@ -169,8 +169,8 @@
 }
 
 .square:nth-child(17) {
-  top: 66%;
-  left: 20%;
+  top: 54%;
+  left: 72%;
   width: 40.8px;
   height: 40.8px;
   -webkit-animation-delay: 5.66667s;
@@ -178,8 +178,8 @@
 }
 
 .square:nth-child(18) {
-  top: 37%;
-  left: 16%;
+  top: 49%;
+  left: 10%;
   width: 43.2px;
   height: 43.2px;
   -webkit-animation-delay: 6s;
@@ -187,8 +187,8 @@
 }
 
 .square:nth-child(19) {
-  top: 43%;
-  left: 77%;
+  top: 64%;
+  left: 51%;
   width: 45.6px;
   height: 45.6px;
   -webkit-animation-delay: 6.33333s;
@@ -196,8 +196,8 @@
 }
 
 .square:nth-child(20) {
-  top: 37%;
-  left: 33%;
+  top: 77%;
+  left: 54%;
   width: 48px;
   height: 48px;
   -webkit-animation-delay: 6.66667s;
@@ -205,8 +205,8 @@
 }
 
 .square:nth-child(21) {
-  top: 90%;
-  left: 74%;
+  top: 36%;
+  left: 24%;
   width: 50.4px;
   height: 50.4px;
   -webkit-animation-delay: 7s;
@@ -214,8 +214,8 @@
 }
 
 .square:nth-child(22) {
-  top: 69%;
-  left: 80%;
+  top: 21%;
+  left: 40%;
   width: 52.8px;
   height: 52.8px;
   -webkit-animation-delay: 7.33333s;
@@ -223,8 +223,8 @@
 }
 
 .square:nth-child(23) {
-  top: 83%;
-  left: 12%;
+  top: 14%;
+  left: 85%;
   width: 55.2px;
   height: 55.2px;
   -webkit-animation-delay: 7.66667s;
@@ -232,8 +232,8 @@
 }
 
 .square:nth-child(24) {
-  top: 44%;
-  left: 52%;
+  top: 69%;
+  left: 41%;
   width: 57.6px;
   height: 57.6px;
   -webkit-animation-delay: 8s;
@@ -241,8 +241,8 @@
 }
 
 .square:nth-child(25) {
-  top: 37%;
-  left: 26%;
+  top: 48%;
+  left: 54%;
   width: 60px;
   height: 60px;
   -webkit-animation-delay: 8.33333s;
@@ -250,8 +250,8 @@
 }
 
 .square:nth-child(26) {
-  top: 47%;
-  left: 29%;
+  top: 1%;
+  left: 38%;
   width: 62.4px;
   height: 62.4px;
   -webkit-animation-delay: 8.66667s;
@@ -259,8 +259,8 @@
 }
 
 .square:nth-child(27) {
-  top: 89%;
-  left: 61%;
+  top: 9%;
+  left: 21%;
   width: 64.8px;
   height: 64.8px;
   -webkit-animation-delay: 9s;
@@ -268,8 +268,8 @@
 }
 
 .square:nth-child(28) {
-  top: 39%;
-  left: 80%;
+  top: 82%;
+  left: 89%;
   width: 67.2px;
   height: 67.2px;
   -webkit-animation-delay: 9.33333s;
@@ -277,8 +277,8 @@
 }
 
 .square:nth-child(29) {
-  top: 90%;
-  left: 26%;
+  top: 50%;
+  left: 73%;
   width: 69.6px;
   height: 69.6px;
   -webkit-animation-delay: 9.66667s;
@@ -286,8 +286,8 @@
 }
 
 .square:nth-child(30) {
-  top: 3%;
-  left: 30%;
+  top: 62%;
+  left: 33%;
   width: 72px;
   height: 72px;
   -webkit-animation-delay: 10s;
@@ -305,26 +305,26 @@
   }
   20% {
     background-color: #586B79;
-    -webkit-transform: translate3d(-59%, 69%, 90px) rotate3d(2, -1, -1, -0.2turn);
-            transform: translate3d(-59%, 69%, 90px) rotate3d(2, -1, -1, -0.2turn);
+    -webkit-transform: translate3d(-64%, 66%, 90px) rotate3d(2, -1, -1, -0.2turn);
+            transform: translate3d(-64%, 66%, 90px) rotate3d(2, -1, -1, -0.2turn);
   }
   40% {
     background-color: #008CF0;
-    -webkit-transform: translate3d(144%, 83%, 50px);
-            transform: translate3d(144%, 83%, 50px);
+    -webkit-transform: translate3d(8%, 66%, 50px);
+            transform: translate3d(8%, 66%, 50px);
   }
   60% {
     border-radius: 30%;
     background-color: lightnen(#004170, 0.5);
     -webkit-box-shadow: 0 1px 8px 0 #49ACF2;
             box-shadow: 0 1px 8px 0 #49ACF2;
-    -webkit-transform: translate3d(-1%, 34%, 10px) rotate3d(-20, 1, -20, 1turn);
-            transform: translate3d(-1%, 34%, 10px) rotate3d(-20, 1, -20, 1turn);
+    -webkit-transform: translate3d(-21%, 60%, 10px) rotate3d(-20, 1, -20, 1turn);
+            transform: translate3d(-21%, 60%, 10px) rotate3d(-20, 1, -20, 1turn);
   }
   80% {
     background-color: #008CF0;
-    -webkit-transform: translate3d(-142%, 7%, 60px) rotate3d(2, -1, -1, -0.2turn);
-            transform: translate3d(-142%, 7%, 60px) rotate3d(2, -1, -1, -0.2turn);
+    -webkit-transform: translate3d(-49%, 78%, 60px) rotate3d(2, -1, -1, -0.2turn);
+            transform: translate3d(-49%, 78%, 60px) rotate3d(2, -1, -1, -0.2turn);
   }
   100% {
     -webkit-transform: translate3d(0, 0, -90px) rotate3d(0, 0, 0, 1turn);
@@ -347,26 +347,26 @@
   }
   20% {
     background-color: #586B79;
-    -webkit-transform: translate3d(-59%, 69%, 90px) rotate3d(2, -1, -1, -0.2turn);
-            transform: translate3d(-59%, 69%, 90px) rotate3d(2, -1, -1, -0.2turn);
+    -webkit-transform: translate3d(-64%, 66%, 90px) rotate3d(2, -1, -1, -0.2turn);
+            transform: translate3d(-64%, 66%, 90px) rotate3d(2, -1, -1, -0.2turn);
   }
   40% {
     background-color: #008CF0;
-    -webkit-transform: translate3d(144%, 83%, 50px);
-            transform: translate3d(144%, 83%, 50px);
+    -webkit-transform: translate3d(8%, 66%, 50px);
+            transform: translate3d(8%, 66%, 50px);
   }
   60% {
     border-radius: 30%;
     background-color: lightnen(#004170, 0.5);
     -webkit-box-shadow: 0 1px 8px 0 #49ACF2;
             box-shadow: 0 1px 8px 0 #49ACF2;
-    -webkit-transform: translate3d(-1%, 34%, 10px) rotate3d(-20, 1, -20, 1turn);
-            transform: translate3d(-1%, 34%, 10px) rotate3d(-20, 1, -20, 1turn);
+    -webkit-transform: translate3d(-21%, 60%, 10px) rotate3d(-20, 1, -20, 1turn);
+            transform: translate3d(-21%, 60%, 10px) rotate3d(-20, 1, -20, 1turn);
   }
   80% {
     background-color: #008CF0;
-    -webkit-transform: translate3d(-142%, 7%, 60px) rotate3d(2, -1, -1, -0.2turn);
-            transform: translate3d(-142%, 7%, 60px) rotate3d(2, -1, -1, -0.2turn);
+    -webkit-transform: translate3d(-49%, 78%, 60px) rotate3d(2, -1, -1, -0.2turn);
+            transform: translate3d(-49%, 78%, 60px) rotate3d(2, -1, -1, -0.2turn);
   }
   100% {
     -webkit-transform: translate3d(0, 0, -90px) rotate3d(0, 0, 0, 1turn);
