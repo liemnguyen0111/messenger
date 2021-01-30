@@ -4,6 +4,7 @@ import MessageAPI from '../utils/MessageAPI'
 import Images from './Images'
 
 const { getMessage } = MessageAPI
+let timer 
 
 class Message extends Component
 {
@@ -11,7 +12,9 @@ class Message extends Component
         super( props );
 
         this.state = {
-            messages : []
+            messages : [],
+            scrolled : false,
+            isMounted : true
         }
 
         this.lastMessage = React.createRef();
@@ -62,40 +65,69 @@ class Message extends Component
 
     componentDidUpdate()
     {
-        if(this.state.messages.length)
-            {  
+     
            if(this.state.messages[this.state.messages.length - 1].isYours)
             {
                this.lastMessage.scrollIntoView();
-            }}
+            }
 
             const scrollTop = this.container.scrollTop
             const current = this.container.scrollHeight - this.container.offsetHeight
             
-            if(current - scrollTop < 200)
+            if((current / scrollTop) < 1.5)
             {
                 this.lastMessage.scrollIntoView();
             }
+            
+            if(!this.state.scrolled){
+               this.lastMessage.scrollIntoView();
+               this.setState({scolled : true})
+            }
+
     }
 
     componentDidMount(){
-        this.updateMessages(this.props.id)
+        getMessage(this.props.id)
+        .then(({data}) => {
+            this.setState({ messages : data})
+            this.props.socket.emit('request', {id: this.props.id,type:'load'})
+        })
+        .catch(err => console.error(err))
+        this.props.socket.on('message', () => {
+            if(this.state.isMounted)
+            this.updateMessages(this.props.id)
+        })
     }
+
     updateMessages(id){
    
         getMessage(id)
         .then(({data}) => {
- 
             this.setState({ messages : data})
-
+            this.props.socket.emit('request', {id: this.props.id,type:'load'})
         })
         .catch(err => console.error(err))
     }
 
+    onScroll(e){
+       
+        e.target.classList.remove('hide-scroll-bar')
+       clearTimeout(timer)
+       timer = setTimeout(() => {
+        e.target.classList.add('hide-scroll-bar')
+       }, 1000);
+    }
+
+    componentWillUnmount(){
+       this.state.isMounted = false
+    }
+
     render(){
         return(<>
-            <div className='messages' 
-            ref={(c) => { this.container = c;}}>
+            <div className='messages hide-scroll-bar' 
+              onScroll={this.onScroll}
+              ref={(c) => { this.container = c;}}>
+          
             {
                 this.state.messages.map((message, index) =>   
                         <div 

@@ -5,12 +5,12 @@ import Dot from './Dot'
 class Friend extends Component
 {
 
-
+// ${!this.props.details.isRead? "is-read": ""}
     render()
     {
         return ( 
             <div 
-            className={`group ${!this.props.details.isRead? "is-read": ""}`}
+            className={`group `}
             onClick={(e) => this.props.onClick(e, this.props.details.id, this.props.details.groupName)}
             ref={(f) => { this.f = f;}}
             data-tag={this.props.tag }
@@ -29,21 +29,6 @@ class Friend extends Component
             <span className='time'>{" • " + this.props.details.time}</span> 
             </div>
             
-
-            {/* {
-            this.props.details.isYours ? 
-            this.props.details.latestMessage && this.props.details.isRead?
-            " ": <Images 
-            images={[this.props.details.profileImage]}
-            width= {20}
-            height={20}
-            ></Images>  : <Dot background={'blue'}/>
-            }
-         */}
-         {/* {
-              this.props.details.isYours ? 
-              this.props.details.isRead?
-         } */}
          {
              this.props.details.isYours?
              <Images
@@ -51,8 +36,10 @@ class Friend extends Component
              width={20}
              height={20}
              /> :
-             !this.props.details.isRead? <Dot background={'blue'}/> : ''
+             (this.props.currentActive !== this.props.details.id) ?
+             (!this.props.details.isRead? <Dot background={'blue'}/> : '') : ''
          }
+
             </section>
            
             </section>

@@ -14,17 +14,27 @@ app.use(express.json())
 app.use(passport.initialize())
 app.use(passport.session())
 
-// Serve any static files
-app.use(express.static(join(__dirname, 'client/build')))
-
 // Import routes
 app.use(require('./routes'))
 
-// Handle React routing, return all requests to React app
+// // Serve any static files
+// app.use(express.static(join(__dirname, 'client/build')))
+
+// // Handle React routing, return all requests to React app
 // app.get('*', (req, res) =>
 // {
-//     app.sendFile(join(__dirname, 'client/public', 'index.html'))
+//     res.sendFile(join(__dirname, 'client/build', 'index.html'))
 // })
+
+if (process.env.NODE_ENV === 'production') {
+    // Serve any static files
+    app.use(express.static(join(__dirname, 'client/build')));
+      
+    // Handle React routing, return all requests to React app
+    app.get('*', function(req, res) {
+      res.sendFile(join(__dirname, 'client/build', 'index.html'));
+    });
+}
 
 // Create PORTS
 const PORT =  process.env.PORT || 5000

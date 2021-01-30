@@ -2,7 +2,7 @@ import React , { Component } from 'react'
 import Button from './Button'
 import UserAPI from '../utils/UserAPI'
 
-const { registerUser } = UserAPI
+const { putUser, postUser } = UserAPI
 
 class Models extends Component{
 
@@ -77,7 +77,7 @@ class Models extends Component{
         const publicIp = require("react-public-ip");
         const ipv6 = await publicIp.v6() || "";
 
-        this.props.login({
+        putUser('login',{
             username : username,
             password : password,
             ipv6 :  ipv6
@@ -138,7 +138,7 @@ class Models extends Component{
         button.classList.add('disabled')
         console.log(button)
         this.form.style.display = 'none'
-        registerUser({
+        postUser({
             data : {
                 firstName : firstName,
                 lastName : lastName,

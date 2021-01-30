@@ -1,4 +1,5 @@
 import React , { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import UserAPI from '../utils/UserAPI'
 import Images from './Images'
 import Button from './Button'
@@ -81,6 +82,16 @@ class UserInfo extends Component{
         val = val.trim()
         return /\s/g.test(val)
     }
+
+       // Shallow compare, only update when receive new props
+       shouldComponentUpdate(nextProps, nextState){
+        return shallowCompare(this, nextProps,nextState)
+    }
+
+    componentDidUpdate(){
+        this.disabled()
+    }
+
     render(){
         return(
            <div className="user-info smooth">

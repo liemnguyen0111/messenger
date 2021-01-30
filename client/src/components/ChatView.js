@@ -29,7 +29,9 @@ class ChatView extends Component
     {
         this.setState({ test : this.state.test + 1})
         createMessage(this.props.id, {message: message})
-        .then(data => console.log(data))
+        .then(() => {
+            this.props.socket.emit('request', {id: this.props.id,type:'message'})
+        })
         .catch( err => console.error(err))
     }
 
@@ -54,7 +56,14 @@ class ChatView extends Component
              <Search placeholder={'Search for message'}onSearch={()=>{}}/>
             :""}
             
-            <Message id={this.props.id}/>
+            <Message 
+            id={this.props.id} 
+            socket={this.props.socket} 
+            uuID={this.props.uuID}
+            load={this.props.load}
+            // view={this.props.view}
+            // onActive={this.props.onActive}
+            />
             <Input onSubmit={this.onSubmit}/>
             </>
         )

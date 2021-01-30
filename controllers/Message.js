@@ -28,6 +28,11 @@ module.exports  = {
 
 // Get group messages from provided id
 let getMessage = (groupId, userId,cb) =>{
+    Group.findById({_id : groupId}, {messages : true})
+    .limit(200)
+    .skip(1)
+    .then(data=> console.log("res", data))
+
     Group.findById({_id : groupId})
     .populate('User')
     .then(({group, messages}) => {
@@ -111,7 +116,6 @@ let filterMessage = (group, messages, userId, cb) => {
 
     // Get all profile images that had read the message
     messages = messages.reduce((acc, val) => {
-
         acc.push({
             message : val.message,
             image : getImage(group, val),
@@ -156,3 +160,11 @@ let updateIsRead = (groupId,userId) => {
     })
     .catch(err => console.error(err))
 }
+
+let getUsers = (groupId,cb) => {
+    Group.findById({ _id : groupId}, {"group.uuID" : true}, (err,res) =>{
+       cb(res)
+    })
+}
+
+module.exports.getUsers = getUsers

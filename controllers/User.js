@@ -33,63 +33,56 @@ const jwt = require("jsonwebtoken");
   
 module.exports  = {
 
+    // Initialize user data when first logged in
     userInit(user, cb){
-        let option = {
-            // _id : false,
-            // friends : false,
-            // request: false,
-            // pending : false,
-            // firstName : true,
-            // lastName : true,
-            // image : true,
-            // email : true,
-            // address: true,
-            // createdOn : true,
-            // updatedOn : true
-        }
-        let group = {
-            _id : true,
-            lastestMessage : true,
-        }
       
-        User.findById({_id : user._id})
-        .populate({
-            path : 'group',
-            populate : {
-                path: 'group.uuID',
-                model : 'User',
-                select : 'isActive'
-            }
-        })
-        .then(data => {filterUser(data,user._id,cb)})
-        .catch(err => cb(err))
+        try{
+            User.findById({_id : user._id})
+            .populate({
+                path : 'group',
+                populate : {
+                    path: 'group.uuID',
+                    model : 'User',
+                    select : 'isActive'
+                }
+            })
+            .then(data => {filterUser(data,user._id,cb)})
+            .catch(err => cb(err))
+        } catch { err => cb(404)}
+    
     },
+
     // Get all users base on request
-    getUsers(params, user, cb){
+    getUsers(params,page,limit,value, user, cb){
       
+        // Option to only getting the fields that are set to true
         let option = {
             _id : true,
             firstName : true,
             lastName : true,
             image : true
         }
-
+        console.log(params,page,limit,value)
+        try {
         switch(params){
             case 'all' :
-                User.find({ _id : {$ne : user._id }},option, (err,res) =>{
+                User.find({ _id : {$ne : user._id }},option, 
+                    {limit : parseInt(limit), skip : (page * 10) }, (err,res) =>{
                     if(err) cb(err)
                     filterFriends(res,user.friends, user.request, user.pending,cb)
                 })
                 break;
             case 'pending' :
-                console.log(user.pending)
-                User.find({ _id : user.pending} , option, (err,res) =>{
+                User.find({ _id : user.pending} , option,
+                    {limit : parseInt(limit), skip : (page * 10)}, (err,res) =>{
                     if(err) cb(err)
                    filterFriends(res,user.friends, user.request, user.pending,cb)
                 })
                     break;
             case 'request' :
-                User.find( { _id : user.request} , option, (err,res) =>{
+                User.find( { _id : user.request} , option, 
+                    {limit : parseInt(limit), skip : (page * 10)},
+                    (err,res) =>{
                     if(err) cb(err)
                     filterFriends(res,user.friends, user.request, user.pending,cb)
                 })
@@ -99,25 +92,29 @@ module.exports  = {
                 User.find({ 
                    $and : [
                     {$or: [
-                        { firstName: { $in: params.split(' ') } },
-                        { firstName: { $regex: params, $options : "i" } },
-                        { lastName: { $in: params.split(' ') } },
-                        { lastName: { $regex: params, $options : "i" } }
+                        { firstName: { $in: value.split(' ') } },
+                        { firstName: { $regex: value, $options : "i" } },
+                        { lastName: { $in: value.split(' ') } },
+                        { lastName: { $regex: value, $options : "i" } }
                     ]},
                     {
                        _id : { $ne : user._id}
                     }
                    ]
-                }, option, (err,res) =>{
+                }, option, {limit : 10, skip : page * 10 }, (err,res) =>{
                     if(err) cb(err)
                     filterFriends(res,user.friends, user.request, user.pending,cb)
                 })
-        }
+        }} catch { err => cb(404)}
     },
+
     // Add new user 
     addUser(data, cb) {
+        // Create new user
         User.register(new User(data["data"]), data["password"], (err) => 
         {
+            // Callback if error, otherwise authenticate user with 
+            // a json web token
             if(err) {cb(err)}
             else
             { User.authenticate()(
@@ -134,11 +131,12 @@ module.exports  = {
 
     // Login
     loginUser(data, cloc, cb) {
-        // console.log(cloc)
+        // Authenticate user
         User.authenticate()(
             data["username"],
             data["password"],
             (err, user) => {
+                // Callback if error, otherwise find and update
                 if(err) { cb(err) }
                 else { 
                     // Set log in record after user signin
@@ -158,7 +156,7 @@ module.exports  = {
         )
     },
 
-    // Update user info
+    // Update user info on request
     updateUser(type,user, data, cb) {
   
         switch(type){
@@ -184,18 +182,19 @@ module.exports  = {
 
     // Update user password
     updateUserPassword(email,cb){
-        // console.log(email)
-        // let temp = email["email"]
         User.findOne(email, (err, user) =>
         {
-            // console.log(user)
+            
         })
     },
+
+    // Use to check if user existed with the provided email
+    // If not, send an verification email with link
+    // to activate an account
     checkUser(email,cb) {
         User.findOne(email, (err, user) => {
             if(user)
             {
-                // cb(user)
                let a = randomString(email,user.username, user._id)
                cb({a, session})
             }
@@ -207,8 +206,11 @@ module.exports  = {
     }
 }
 
+// Use to hold all new register user 
+// Will be remove once the account activated
 let session = []
 
+// Create random string base on the data provided
 let randomString = (email,data, key) =>
 {
     data += key + Date.now()
@@ -232,8 +234,7 @@ let randomString = (email,data, key) =>
 let filterUser = (data,userId, cb) =>{
 
     let temp = data.group
-    // console.log(data)
-    // console.log(data.group)
+    // Return only the selected fields
     data =  {
         id : data._id,
         username : data.username,
@@ -248,12 +249,13 @@ let filterUser = (data,userId, cb) =>{
         pendingCount : data.pendingCount,
         requestCount : data.requestCount
     }
+
     cb(data)
 }
 
 // Filter group and return the right data
 let filterGroup = (data,userId) => {
-    // console.log(data)
+
     // month variable holds the months
     let month = ["Jan.", "Feb.","Mar.", 'Apr.', "May", "June", "July", "Aug.", "Sept.","Oct.", "Nov.", "Dec."]
 
@@ -355,7 +357,7 @@ let filterGroup = (data,userId) => {
         groupLength = val.group.length
         from = isUser(latestMessage.uuID, userId) ? "You: " : 
         (groupLength > 2) ? getSenderName(val.group,latestMessage) : ""
-        // console.log(getActive(val.group, userId))
+
         acc.push({
             id : val._id,
             groupName : user.firstName + " " + user.lastName,
@@ -370,13 +372,12 @@ let filterGroup = (data,userId) => {
 
         return acc
     },[])
-    // console.log(data)
 
     return data
 }
-// use to create a new list with status 
+
+// use to create a new list with current user status 
 let filterFriends = (list1,friends, request, pending,cb) =>{
-    
 
     try {
         list1 = list1.reduce((acc , data)=>{
@@ -389,7 +390,6 @@ let filterFriends = (list1,friends, request, pending,cb) =>{
             if(request.includes(data._id)){  
         
                 acc.push({data , status : 'Accept'})
-                // console.log(data)
             }
             if(pending.includes(data._id)){  
                 acc.push({data , status : 'Pending'})
@@ -401,9 +401,10 @@ let filterFriends = (list1,friends, request, pending,cb) =>{
             return acc
         },[])
         User.count({}, (err, res ) => 
-        cb(list1, {userCount : res, 
-            pendingCount: pending.length, 
-            requestCount : request.length})
+        cb(list1, {
+            all : res, 
+            pending: pending.length, 
+            request : request.length})
         )
     } catch (error) {
         filterFriends([list1], request, pending,cb)
@@ -414,11 +415,13 @@ let filterFriends = (list1,friends, request, pending,cb) =>{
 // Unfriend
 let unfriend = (id1 , id2, status,cb) => {
 
-    //   Find group id and remove them from both user
+    //  Find the group that belong to the users
       Group.find({
         $and : [{ "group.uuID" : id1},
                 { "group.uuID" : id2}]
         }, (err, res) =>{
+
+            // Find the user and remove the group id
             User.findByIdAndUpdate(  
                 id1, 
                 {
@@ -435,6 +438,7 @@ let unfriend = (id1 , id2, status,cb) => {
 // Friend request
 let request = (id1 , id2, status,cb) => {
   
+    // Update current status of two users 
     User.findByIdAndUpdate(  
         id1, 
         {
@@ -447,14 +451,17 @@ let request = (id1 , id2, status,cb) => {
 }
 
 // Friend accept
-let accept = async (id1 , id2, status,cb) => {
+let accept = (id1 , id2, status,cb) => {
   
-    let group = createGroup(id1,id2, (groupId) => {
+    // Create new group, remove the pending status
+    // then add the two users to friends list
+    createGroup(id1,id2, (groupId) => {
     remove(id1._id,id2.id,false)
     add(id1._id,id2.id,false,groupId,cb)
     })
 }
 
+// Create group 
 let createGroup = (user1, user2,cb) => {
 
     let users = [
@@ -501,14 +508,9 @@ let createGroup = (user1, user2,cb) => {
 
 }
 
-// Get group id
-let getGroupId = (id1, id2) => {
-
-}
-
 // remove user from pending/request list 
 let remove = (id1,id2, status,cb) => {
-    console.log(id1, id2)
+    // console.log(id1, id2)
     User.findByIdAndUpdate(  
         id1, 
         {
@@ -553,12 +555,10 @@ let update = (id, data, cb) =>{
 let updateGroup = (id, data) => {
     Group.findOne({ "group.uuID" : id})
     .then( doc => {
-
         doc.group.map(val => {
  
             if(JSON.stringify(val.uuID) === JSON.stringify(id))
             {
-
                 val["firstName"] = data["firstName"]
                 val["lastName"] = data["lastName"]
             }
@@ -586,5 +586,7 @@ let getFriend = (id, cb) =>{
     })
 }
 
+// Export for others to use
+// - (SocketIO.js)
 module.exports.updateStatus = updateStatus
 module.exports.getFriend = getFriend

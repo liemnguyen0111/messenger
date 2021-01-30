@@ -656,7 +656,7 @@ body
 .is-read{
     background: $dark-color;
     .l-message {
-        color: white !important;
+        color: white ;
         font-weight: bold;
     }
 }
@@ -756,7 +756,9 @@ body
     overflow: auto;
 
     // flex-direction: column;
-
+    .user *{
+        transition: .5s ease;
+    }
     .user{
         background: $dark-color;
         display: flex;
@@ -765,7 +767,7 @@ body
         align-items: center;
         margin: 5px 0;
         padding: 5px;
-
+        
         .user-name {
             text-overflow: ellipsis;
             overflow: hidden;
@@ -857,7 +859,8 @@ body
     flex: 1;
     overflow: auto;
     transition:all 2s ease;
-     border-radius: 10px;
+    scroll-behavior: smooth;
+    border-radius: 10px;
 
 
     .images
@@ -1009,7 +1012,7 @@ body
 
 .on-active
 {
-    background: $dark-color;
+    background: $dark-color !important;
 }
 
 .dot{
@@ -1017,6 +1020,7 @@ body
     height: 10px;
     width: 10px;
     margin: 5px;
+    transition: .5s ease;
 }
 
 .notification{
@@ -1028,14 +1032,18 @@ body
     font-weight: lighter;
     justify-content: center;
     align-items: center;
+    text-align: center;
     background: $danger-red;
     width: 15px;
     height: 15px;
     padding: 2px;
-    font-size: 12px;
+    font-size: 60%;
     border-radius: 50%;
     z-index: 10;
     animation: notification .3s ease-in-out;
+    div{
+        // margin: auto;
+    }
     
 }
 
@@ -1079,7 +1087,7 @@ body
   ::-webkit-scrollbar-thumb {
     border-radius: 500px;
     background: #888; 
-
+    transition: 2s ease;
   }
   
   /* Handle on hover */
@@ -1087,6 +1095,18 @@ body
     background: #555; 
   }
 
+.hide-scroll-bar{
+    transition: 2s ease !important;
+
+    &::-webkit-scrollbar-thumb,
+    &::-webkit-scrollbar-track,
+    &::-webkit-scrollbar
+    {
+        // display: none !important;
+        transition: 2s ease !important;
+        background: transparent !important; 
+    }
+}
 //   autofill styling ------------ 
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 

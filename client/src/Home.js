@@ -4,7 +4,7 @@ import ChatBox from './components/ChatBox'
 import Main from './components/Main'
 
 
-const { isAuthorized, loginUser} = UserAPI
+const { getUser } = UserAPI
 
 class Home extends Component
 {
@@ -16,14 +16,13 @@ class Home extends Component
             isAuthorized : false
         }
         
-        this.loginUser = loginUser
         this.setState = this.setState.bind(this)
     }
 
     componentDidMount()
     {
     
-       isAuthorized()
+       getUser('authenticate')
        .then(() =>
         {
             this.setState({ isAuthorized : true })
@@ -44,7 +43,6 @@ class Home extends Component
                 isAuthorized = {this.state.isAuthorized}
                 /> : 
                 <Main
-                login={this.loginUser}
                 setState= {this.setState}
                 />
             }

@@ -106,7 +106,6 @@ class Main extends Component
             <div className="welcome">
             <i className="fas fa-comments"/>
             Welcome to <span>ChatBox</span></div>
-            {/* <SignIn/> */}
             <Models 
             login={this.props.login} 
             current = {list[this.state.current]} 

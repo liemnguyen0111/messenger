@@ -33,7 +33,6 @@ class User extends Component{
          }
     }
     onClick(){
-        console.log(this.props.status)
         if(this.props.status === "Add Friend") {
             this.addFriend()
         }
@@ -51,7 +50,8 @@ class User extends Component{
             id : this.props.id
         }
         putUser('send-request', data)
-        .then( () => { 
+        .then( (data) => { 
+            console.log(data)
             this.props.socket.emit('request', {id: this.props.id,type:'request'})
         })
         .catch(err => console.error(err))
