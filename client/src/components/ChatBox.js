@@ -1,15 +1,20 @@
 import React ,  { Component } from "react"
+import io from 'socket.io-client'
 import UserAPI from '../utils/UserAPI'
 import UserInfo from './UserInfo'
+import Notification from './Notification'
+import FindFriends from './FindFriends'
+import ChatView from './ChatView'
 import Logo from './Logo'
 import Images from './Images'
 import Search from './Search'
 import Friend from './Friend'
-import Button from './Button'
-import Message from './Message'
-import Input from './Input'
 
-const { userInit } = UserAPI
+let socket;
+const ENDPOINT = 'localhost:5000'
+socket = io(ENDPOINT)
+
+const { getUser } = UserAPI
 
 class ChatBox extends Component
 {
@@ -20,41 +25,49 @@ class ChatBox extends Component
         this.state = {
             profile : 40,
             group : 60,
-            currentTag : "1",
+            currentActive : '',
             messages: [],
-            status : 'chat',
+            status : 'userInfo',
+            chatViewId: '',
+            chatName : '',
+            onActive : false,
             info : {
                 group : []
             }
         }
         
-        this.onClick = this.onClick.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
+        this.chatView = this.chatView.bind(this);
+        // this.onSubmit = this.onSubmit.bind(this);
         this.signOut = this.signOut.bind(this);
+        this.load = this.load.bind(this)
+
     }
 
-    onClick(e)
-    {
-        document.querySelector(`[data-tag="${this.state.currentTag}"]`).classList.remove('on-active')
-        document.querySelector(`[data-tag="${e.target.dataset.tag}"]`).classList.add('on-active')
-        this.setState({currentTag : e.target.dataset.tag})
+    componentDidUpdate(){
+        if(this.state.status !== 'chatView' && this.state.currentActive){
+            document.querySelector(`[data-tag="${this.state.currentActive}"]`).classList.remove('on-active')
+            this.setState({currentActive : ''})
+        }
     }
-
-    onSubmit(e)
+    chatView(user, id, name)
     {
-
-        this.setState( { messages : [...this.state.messages, 
-            {
-            
-                isYours : true, 
-                message : e,
-                image: ['https://media-exp1.licdn.com/dms/image/C5635AQHUdpBWD4hx9A/profile-framedphoto-shrink_200_200/0/1596193249735?e=1611370800&v=beta&t=mpp847MX2q6W77EUPj7zMWXYkzvgHRPxMILqTZS2530'],
-                time : '12:12 PM' }
-        ] })
+        console.log(user.target)
+        if(this.state.currentActive)
+        {
+            document.querySelector(`[data-tag="${this.state.currentActive}"]`).classList.remove('on-active')
+            user.target.classList.add('on-active')
+            this.setState({currentActive : id})
+        }
+        else{
+            user.target.classList.add('on-active')
+            this.setState({currentActive : id})
+        }
+        this.setState({ status : 'chatView', chatViewId : id, chatName : name, onActive : true}) 
     }
 
     signOut(){
         document.querySelector('.chat-box').classList.remove('authorized')
+        socket.disconnect()
         setTimeout(() => {
         this.props.setState({isAuthorized: false})
         localStorage.removeItem('user')
@@ -63,20 +76,67 @@ class ChatBox extends Component
     }
 
     componentDidMount(){
+       this.init()
+        document.querySelector('.chat-box').classList.add('authorized')
+        
+        socket.on('load', () => {
+            this.load()
+        })
 
-            document.querySelector('.chat-box').classList.add('authorized')
+        socket.on('update', msg => {
+            switch (msg) {
+                case 'userConnect':
+                    this.load()
+                    break;
+                case 'userDisconnect':
+                    this.load()
+                    break;
+                case 'request':
+                    this.load()
+                    break;
+                case 'accept':
+                    this.load()
+                    break;
+                case 'unfriend':
+                    this.load()
+                    break; 
+                case 'reject':
+                    this.load()
+                    break;     
+                case 'userInfo':
+                    this.load()
+                    break;
+                default:
+                        // this.load()
+                    break;
+            }
+        })
     }
 
-    componentWillMount(){
-  
-        userInit()
-        .then(  ({data}) => {
-            console.log('render info')
+    init(){
+        getUser('init')
+        .then(({data}) => {
             this.setState({ info : data })
-            console.log(this.state)
+    
+            socket.connect()
+            socket.emit('join', {id : data.id}, err => console.error(err))
+            socket.on('re-join', () => 
+            socket.emit('re-join', (this.state.info.id), () => {console.log('done')} ))
         })
         .catch(err => console.error(err))
     }
+
+    load(){
+ 
+            getUser('init')
+            .then(({data}) => {
+                this.setState({ info : data })
+            })
+            .catch(err => console.error(err))
+    }
+
+
+    
     render()
     {
         return (
@@ -84,56 +144,57 @@ class ChatBox extends Component
             <div className={`chat-box`}>
             <div className={`left `} >
             <Logo/>
-            {/* {console.log('render')} */}
             {/* Profile image and compose new message */}
             <div className="row-2">
-            {console.log('render image')}
             <Images 
             width={this.state.profile} 
             height={this.state.profile} 
             images={[this.state.info.image]}
+            onClick={() => 
+            this.setState({
+            status : 'userInfo', 
+            onActive : false})}
+            socket={socket}
+            // notification={true}
+            // notiCount={
+            //     this.state.info.pendingCount +
+            //     this.state.info.requestCount
+            // }
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
             </div>
          
             {/* Search bar */}
-            <Search/>
+            <Search   placeholder={'Search for message'} onSearch={()=>{}}/>
 
             {/* Add friend icon */}
-            <div className="options">
-            <i className="fas fa-user-plus add-friend"></i>
-            <p>Add friend</p>
+            <div className="options" >
+            <i className="fas fa-user-plus add-friend"
+            onClick={() => this.setState({status : 'addFriend'})}
+            ><Notification count={this.state.info.requestCount}/></i>
+            <p> Add friend </p>
             </div>
             
             {/* Friends list */}
             <div className="row-3">
 
-            {this.state.info["group"].map( (val, index ) =>{
-                      <Friend 
+            {
+            this.state.info["group"].map( (val, index ) =>
+            {
+               
+                      return <Friend 
                       key={index}
-                      val={val}
-                      images={[this.state.image]}
+                      details={val}
                       width={this.state.group} 
                       height={this.state.group}
-                      tag={++index}
-                      onClick={this.onClick}/>
-            }) 
-        }
+                      tag={val.id}
+                      onClick={this.chatView}
+                      currentActive={this.state.currentActive}
+                      /> 
+            })  
+            } 
 
-            {/* {[...new Array(30)]
-            .map(
-              (tag, i) => 
-              <Friend 
-              key={i}
-              images={[this.state.image]}
-              width={this.state.group} 
-              height={this.state.group}
-              tag={++i}
-              onClick={this.onClick}
-              />
-                
-            )}  */}
             </div>
 
                 {/* ------- End of left --------- */}
@@ -143,10 +204,34 @@ class ChatBox extends Component
 
 
             <div className={`right`}>
+            { this.state.status === 'userInfo'? 
             <UserInfo
+             socket={socket}
              info = {this.state.info}
              signOut = {this.signOut}
+            /> 
+            : ""}
+
+            { this.state.status === 'addFriend'? 
+            <FindFriends 
+            socket={socket}
+            pendingCount={this.state.info.pendingCount}
+            requestCount={this.state.info.requestCount}
             />
+            : ""}
+
+            { this.state.status === 'chatView'? 
+            <ChatView 
+            socket={socket}
+            id={this.state.chatViewId}
+            uuID={this.state.info.id}
+            chatName ={this.state.chatName}
+            load={this.load}
+            view={this.state.status}
+            onActive={this.state.onActive}
+            />
+            : ""}
+            {/* <FindFriends></FindFriends> */}
             {/* <section className="row-1">
             <Button 
             name='Sign Out'

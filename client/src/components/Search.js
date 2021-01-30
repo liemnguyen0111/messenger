@@ -16,6 +16,7 @@ class Search extends Component
     
     onChange()
     {
+        this.props.onSearch(this.searchInput.value)
         this.searchInput.value? this.show() : this.hide()
     }
 
@@ -36,6 +37,7 @@ class Search extends Component
             hide : 'hide'
         })
         this.searchInput.value = ''
+        this.props.onSearch(this.searchInput.value)
     }
 
     render()
@@ -44,7 +46,7 @@ class Search extends Component
          <div className='search'>
         <input 
         type="text"
-        placeholder='Search'
+        placeholder={this.props.placeholder}
         ref={(input) => { this.searchInput = input;}}
         onChange={()=> this.onChange()}
         /> 

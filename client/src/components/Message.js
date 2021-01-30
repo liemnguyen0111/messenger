@@ -1,10 +1,21 @@
 import React , { Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
+import MessageAPI from '../utils/MessageAPI'
 import Images from './Images'
+
+const { getMessage } = MessageAPI
+let timer 
 
 class Message extends Component
 {
     constructor( props ) {
         super( props );
+
+        this.state = {
+            messages : [],
+            scrolled : false,
+            isMounted : true
+        }
 
         this.lastMessage = React.createRef();
         this.container = React.createRef();
@@ -47,30 +58,78 @@ class Message extends Component
 
     // }
 
+    // Shallow compare, only update when receive new props
+    shouldComponentUpdate(nextProps, nextState){
+        return shallowCompare(this, nextProps,nextState)
+    }
+
     componentDidUpdate()
     {
-         if(this.props.messages[this.props.messages.length - 1].isYours)
+     
+           if(this.state.messages[this.state.messages.length - 1].isYours)
             {
                this.lastMessage.scrollIntoView();
             }
 
             const scrollTop = this.container.scrollTop
             const current = this.container.scrollHeight - this.container.offsetHeight
-            // console.log(scrollTop, current)
-            if(current - scrollTop < 200)
+            
+            if((current / scrollTop) < 1.5)
             {
                 this.lastMessage.scrollIntoView();
             }
+            
+            if(!this.state.scrolled){
+               this.lastMessage.scrollIntoView();
+               this.setState({scolled : true})
+            }
+
+    }
+
+    componentDidMount(){
+        getMessage(this.props.id)
+        .then(({data}) => {
+            this.setState({ messages : data})
+            this.props.socket.emit('request', {id: this.props.id,type:'load'})
+        })
+        .catch(err => console.error(err))
+        this.props.socket.on('message', () => {
+            if(this.state.isMounted)
+            this.updateMessages(this.props.id)
+        })
+    }
+
+    updateMessages(id){
+   
+        getMessage(id)
+        .then(({data}) => {
+            this.setState({ messages : data})
+            this.props.socket.emit('request', {id: this.props.id,type:'load'})
+        })
+        .catch(err => console.error(err))
+    }
+
+    onScroll(e){
+       
+        e.target.classList.remove('hide-scroll-bar')
+       clearTimeout(timer)
+       timer = setTimeout(() => {
+        e.target.classList.add('hide-scroll-bar')
+       }, 1000);
+    }
+
+    componentWillUnmount(){
+       this.state.isMounted = false
     }
 
     render(){
         return(<>
-        {console.log('render')}
-            <div className='messages' 
-            ref={(c) => { this.container = c;}}>
+            <div className='messages hide-scroll-bar' 
+              onScroll={this.onScroll}
+              ref={(c) => { this.container = c;}}>
+          
             {
-               
-                this.props.messages.map((message, index) =>
+                this.state.messages.map((message, index) =>   
                         <div 
                         className={message.isYours? 'y-message' : 'f-message'}
                         key={index}
@@ -82,7 +141,7 @@ class Message extends Component
                               height={40} 
                               images={message.image}
                               />: ''    
-                    }
+                        }
                         <div className="message" title={message.time}>
 
                             {message.message.split(/\n/g).map((val, index) =>
@@ -96,7 +155,7 @@ class Message extends Component
                             </div>
                         </div> 
 
-                    )
+                    ) 
                
             }
             <div  ref={(last) => { this.lastMessage = last;}}></div>

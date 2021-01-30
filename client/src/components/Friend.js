@@ -1,39 +1,44 @@
 import React ,  { Component } from "react"
 import Images from './Images'
+import Dot from './Dot'
 
 class Friend extends Component
 {
 
-    onClick(e) 
-    {
-       console.log( e.target)
-    }
-
-
+// ${!this.props.details.isRead? "is-read": ""}
     render()
     {
         return ( 
             <div 
-            className='friend'
-            onClick={(e) => this.props.onClick(e)}
+            className={`group `}
+            onClick={(e) => this.props.onClick(e, this.props.details.id, this.props.details.groupName)}
             ref={(f) => { this.f = f;}}
             data-tag={this.props.tag }
             >
             <Images 
-            images={this.props.images}
+            images={[this.props.details.profileImage]}
             width= {this.props.width}
             height={this.props.height}
+            isActive={this.props.details.isActive}
             ></Images>
             <section className="g-info">
-            <div className="g-name">Nhung con be nhat nheo oawienfaweoifn </div>
-            <section className="l-message-info">
-            <div className="l-message">this is a   </div>
-            <span className='time'> • 12:16 AM</span> 
-            <Images 
-            images={this.props.images}
-            width= {20}
-            height={20}
-            ></Images>
+            <div className="g-name">{this.props.details.groupName}</div>
+            <section className="l-message-wrapper">
+            <div className="l-message-info">
+            <div className="l-message">{this.props.details.latestMessage}<span/></div>
+            <span className='time'>{" • " + this.props.details.time}</span> 
+            </div>
+            
+         {
+             this.props.details.isYours?
+             <Images
+             images={this.props.details.readImages}
+             width={20}
+             height={20}
+             /> :
+             (this.props.currentActive !== this.props.details.id) ?
+             (!this.props.details.isRead? <Dot background={'blue'}/> : '') : ''
+         }
 
             </section>
            
