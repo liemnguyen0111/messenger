@@ -18,11 +18,11 @@ app.use(passport.session())
 app.use(require('./routes'))
 
 // Serve any static files
-app.use(express.static(join(__dirname, 'client/build')))
+app.use(express.static(join(__dirname, 'client', 'build')))
 
 // Handle React routing, return all requests to React app
 app.get("*", (req, res) => {
-  res.sendfile(join(__dirname, "client", "build", "index.html"))
+  res.sendFile(join(__dirname, "client", "build", "index.html"))
 })
 
 // if (process.env.NODE_ENV === 'production') {
