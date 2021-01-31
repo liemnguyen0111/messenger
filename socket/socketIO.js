@@ -64,16 +64,16 @@ io.on('connection', socket =>
     })
   
     socket.on('message',  ({id,status}) =>{
-        onUserMessage(id, (socketList)=>{
-         
+        onUserMessage(id,socket.id, status, (socketList)=>{
+      
             socketList.forEach(element => {
-                io.to(element).emit("message", status)
+                io.to(element).emit("message", {id,status})
             });
         })
     })
 
-    socket.on('request',  ({id}) =>{
-        console.log(id)
+    socket.on('request',  ({id, type}) =>{
+        console.log(id , type)
         onUserRequest(id, socket.id, (socketList)=>{
      
             socketList.forEach(element => {

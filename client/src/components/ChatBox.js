@@ -11,7 +11,7 @@ import Search from './Search'
 import Friend from './Friend'
 
 const { getUser } = UserAPI
-const { connect, reconnect , disconnect, onReconnect, onUserConnect, updateLatestMessage, onRequest } = SocketIO
+const { connect, reconnect , disconnect, onReconnect, onUserConnect, updateLatestMessage, updateMessage, onRequest } = SocketIO
 
 class ChatBox extends Component
 {
@@ -50,25 +50,19 @@ class ChatBox extends Component
     chatView(user, id, name)
     {
 
-        // if(this.state.currentActive !== id){
-        //     console.log(this.state.currentActive , id)
-        //     console.log('update')
-         
-        // }
-
         if(this.state.currentActive)
         {
             document.querySelector(`[data-tag="${this.state.currentActive}"]`).classList.remove('on-active')
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
-            // updateMessage(id,200)
+            // updateMessage(id, 200)
         }
         else{
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
           
         }
-        // updateMessage(id,200)
+    
         this.setState({ status : 'chatView', chatViewId : id, chatName : name, onActive : true}) 
       
     }
@@ -87,19 +81,6 @@ class ChatBox extends Component
     componentDidMount(){
        this.init()
         document.querySelector('.chat-box').classList.add('authorized')
-        // Listen to onload and refetching data
-        // socket.on('load', () => {
-        //     this.load()
-        // })
-
-        // Listen on rejoin and emit to join again
-        // socket.on('re-join', () => 
-        // {
-        //     socket.emit('join', ({id : this.state.info.id}))
-        // })
-
-        // Listen to new update and reload friendlist with latest message
-        // socket.on('update', msg => { if( msg === 'user') this.load()})
     }
 
     init(){
@@ -122,7 +103,6 @@ class ChatBox extends Component
 
                 if(val === 'succeed')
                 {
-                    console.log('succeed')
                     entry = 0
                 }
 
@@ -132,10 +112,12 @@ class ChatBox extends Component
 
         // On user connect/disconnect, update view with current active status
         onUserConnect(()=> this.load())
-        onRequest((type) => { this.load()})
-        updateLatestMessage((status) => {
-            console.log('status ' , status)
-            if(status === 200) this.load()
+        onRequest(() => { this.load()})
+        updateLatestMessage(({status}) => {
+
+            if(status === 200) {
+                this.load()
+            }
         })
 
     }
@@ -191,7 +173,6 @@ class ChatBox extends Component
             {
             this.state.info["group"].map( (val, index ) =>
             {
-               
                       return <Friend 
                       key={index}
                       details={val}
@@ -231,7 +212,6 @@ class ChatBox extends Component
     
             { this.state.status === 'chatView'? 
             <ChatView 
-            // socket={socket}
             id={this.state.chatViewId}
             uuID={this.state.info.id}
             chatName ={this.state.chatName}

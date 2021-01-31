@@ -1,11 +1,16 @@
 import React ,  { Component } from "react"
 import Images from './Images'
 import Dot from './Dot'
+import socketIO from '../utils/SocketIO'
 
+const {updateMessage} = socketIO
 class Friend extends Component
 {
 
-// ${!this.props.details.isRead? "is-read": ""}
+    shouldComponentUpdate(nextProps, nextState){
+        return nextProps.details.currentActive === this.props.details.currentActive
+    }
+
     render()
     {
         return ( 
@@ -28,8 +33,9 @@ class Friend extends Component
             <div className="l-message">{this.props.details.latestMessage}<span/></div>
             <span className='time'>{" • " + this.props.details.time}</span> 
             </div>
-            
+
          {
+           
              this.props.details.isYours?
              <Images
              images={this.props.details.readImages}

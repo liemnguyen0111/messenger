@@ -17,7 +17,7 @@ module.exports  = {
 
         switch (params) {
             case "create":
-              createMessage(message,groupId,userId,cb)
+                createNewMessage(message,groupId,userId,cb)
                 break;
             default:
                 cb('invalid')
@@ -154,10 +154,11 @@ let filterMessage = (group, messages, userId,maxCount, cb) => {
 }
 
 // Create new message
-let createMessage = (message, groupId, userId, cb) =>{
+let createNewMessage = (message, groupId, userId, cb) =>{
     message["uuID"] = `${userId}`
     message["isRead"] = [userId]
     message["type"] = "User"
+    message['time'] = new Date(Date.now() - 60 * 60 * 7000)
     Group.findByIdAndUpdate(
         {_id : groupId},
         {$push : { messages : message}},
@@ -192,3 +193,4 @@ let getUsers = (groupId,cb) => {
 }
 
 module.exports.getUsers = getUsers
+module.exports.updateIsRead = updateIsRead

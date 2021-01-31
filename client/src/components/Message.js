@@ -31,7 +31,7 @@ class Message extends Component
 
     componentDidUpdate()
     {
-     
+    
         const scrollTop = this.container.scrollTop
         const current = this.container.scrollHeight - this.container.offsetHeight
 
@@ -59,24 +59,25 @@ class Message extends Component
     }
 
     componentDidMount(){
-   
         getMessage(this.props.id, 'page=0')
         .then(( {data : {messages :messages}, data: {maxCount : maxCount}}) => {
-            this.setState({ messages : messages, maxPage : maxCount})
+
             updateMessage(this.props.id,200)
+            this.setState({ messages : messages, maxPage : maxCount})
             this.lastMessage.scrollIntoView()
             this.container.classList.add('smooth-scroll')
         })
         .catch(err => console.error(err))
 
-        updateLatestMessage((status) => {
-            console.log(status)
-            if(this.state.isMounted && status === 202)
-            this.getLastMessage(this.props.id)
+        updateLatestMessage(({status, id}) => {
+            
+            if(this.state.isMounted && status === 202 && this.props.id === id)
+            this.getLastMessage(id)
         })
     }
 
     updateMessages(id){
+        console.log(id, this.props.id)
         getMessage(id, `page=${this.state.page}&latest=false`)
         .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
         this.setState({ messages : messages, maxPage : maxCount})
@@ -85,11 +86,13 @@ class Message extends Component
     }
 
     getLastMessage(id){
-      
-        console.log('get get')
+        console.log(id, this.props.id)
         getMessage(id, `page=${this.state.page}&latest=true`)
         .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
-        updateMessage(id,200)
+        if(this.state.isMounted){
+            updateMessage(id,200)
+        }
+       
         this.setState({ messages : [...this.state.messages, ...messages ], maxPage : maxCount})
         if(messages[0].isYours) this.lastMessage.scrollIntoView();
         })
@@ -110,9 +113,10 @@ class Message extends Component
     }
 
     componentWillUnmount(){
-        this.setState({ isMounted : false, page : 0})
-    //    this.state.isMounted = false
-    //    this.state.page = 0
+        // this.setState({ isMounted : false, page : 0})
+       this.state.isMounted = false
+       this.state.page = 0
+    //    console.log('unmount')
     }
 
     render(){
@@ -128,7 +132,7 @@ class Message extends Component
                         className={message.isYours? 'y-message' : 'f-message'}
                         key={index}
                         >
-                        {console.log(message)}
+                 
                         {!message.isYours? 
                               <Images 
                               width={40} 

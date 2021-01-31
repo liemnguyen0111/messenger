@@ -20,7 +20,8 @@ class ChatView extends Component
             group : 60,
             chatViewId : '',
             search : false,
-            messages : []
+            messages : [],
+            id : 0
         }
         
         this.onSubmit = this.onSubmit.bind(this);
@@ -38,12 +39,16 @@ class ChatView extends Component
         .catch( err => console.error(err))
     }
 
+    componentWillUnmount(){
+        console.log('unmount')
+    }
 
     render()
     {
         return (
             <>
-            <section className="row-2 smooth">
+            <section className="row-2 smooth"
+            >
             <Images 
             width={this.state.group} 
             height={this.state.group}
@@ -59,7 +64,7 @@ class ChatView extends Component
              <Search placeholder={'Search for message'}onSearch={()=>{}}/>
             :""}
 
-            <Message id={this.props.id}/>
+            <Message id={this.props.id} key={this.props.id}/>
             <Input onSubmit={this.onSubmit}/>
             </>
         )

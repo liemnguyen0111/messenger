@@ -1,6 +1,6 @@
 
 const { updateStatus, getFriend } = require('../controllers/User')
-const { getUsers } = require('../controllers/Message')
+const { getUsers, updateIsRead } = require('../controllers/Message')
 // User class is used to create a new user everytime user enter chatbox and remove after
 class UClass 
 {
@@ -63,8 +63,16 @@ class UClass
         } 
     }
     // Get socket list of users whose belong to the provided groupId
-    getSocketListFromGroup(groupId,cb){
-   
+    getSocketListFromGroup(groupId,socketId, status,cb){
+        if(status === 200){
+            let userId = this.users.filter( user => user.socketId === socketId)[0]
+            if(userId)
+            {
+                console.log(userId)
+                updateIsRead(groupId, userId["userId"])
+            }
+        }
+
         getUsers(groupId, ({group}) => {
             let socketList = []
             group.map( user => socketList = [...socketList, ...this.getUserWithId(user.uuID)])

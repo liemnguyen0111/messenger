@@ -553,18 +553,22 @@ let update = (id, data, cb) =>{
 
 // Update group after user update their info
 let updateGroup = (id, data) => {
-    Group.findOne({ "group.uuID" : id})
+    Group.find({ "group.uuID" : id})
     .then( doc => {
-        doc.group.map(val => {
- 
-            if(JSON.stringify(val.uuID) === JSON.stringify(id))
-            {
-                val["firstName"] = data["firstName"]
-                val["lastName"] = data["lastName"]
-            }
+      
+        doc.map(val => {
+        
+            val.group.map( user => {
+                if(JSON.stringify(user.uuID) === JSON.stringify(id))
+                {
+                    user["firstName"] = data["firstName"]
+                    user["lastName"] = data["lastName"]
+                }
+            })
+            val.save()
         })
        
-        doc.save()
+        // doc.save()
     })
     .catch(err => console.error(err))
 }
