@@ -41,8 +41,8 @@ class UserInfo extends Component{
 
         if(!this.checkSpaceBetween(this.username.innerText)){
         putUser('update-info', userInfo)
-        .then(data => {
-            this.props.socket.emit('request', {id: null,type:'userInfo'})
+        .then(() => {
+            this.props.socket.emit('request', {id: this.props.info.id,type:'userInfo'})
             this.errorMessage.style.display = 'none'
         })
         .catch(err => console.error(err))

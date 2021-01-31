@@ -37,36 +37,21 @@ class FindFriends extends Component{
     componentDidMount(){
         this.updateView(`all`,0)
 
-        this.props.socket.on('update', msg =>{
-            console.log(msg)
-            switch (msg) {
-                case 'request':
-                    this.updateOnEmit()
-                    // this.updateView(this.state.view,'update')
-                    break;
-                case 'accept':
-                    this.updateOnEmit()
-                    // this.updateView(this.state.view,'update')
-                    break;
-                case 'unfriend':
-                    this.updateOnEmit()
-                    // this.updateView(this.state.view,'update')
-                    break;
-                case 'reject':
-                    this.updateOnEmit()
-                    // this.updateView(this.state.view,'update')
-                    break;
-                default:
-                    break;
-            }
-        })
+        // this.props.socket.on('update', msg =>{
+ 
+        //     switch (msg) {
+        //         case 'user':
+        //             this.updateOnEmit()
+        //         default:
+        //             break;
+        //     }
+        // })
     }
  
 
     updateView = (view,page) => {
   
         this.setState({view : view})
-        // `${view}/${page}/10`
             getUser('users',`view=${view}&page=${page}&limit=10`)
             .then(({data}) => {
         
@@ -82,6 +67,7 @@ class FindFriends extends Component{
 
     updateOnEmit(){
      
+        console.log('receive request')
             getUser('users',
             `view=${this.state.view}&page=0&limit=${10 + (10 * this.state.page)}`)
             .then(({data}) => {
@@ -205,7 +191,7 @@ class FindFriends extends Component{
             {
                 this.state.userList.map((user, index) =>{
                   return  <User
-                    socket={this.props.socket}
+                    // socket={this.props.socket}
                     key={index}
                     name={[user.data.firstName, user.data.lastName]}
                     image={[user.data.image]}

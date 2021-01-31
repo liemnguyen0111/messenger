@@ -2,10 +2,10 @@ const { Group } = require('../models')
 
 module.exports  = {
     // Get group messages from provided id
-    getMessage(params,groupId,userId,cb){
+    getMessage(params,groupId,userId,page,cb){
         switch (params) {
             case "get":
-              getMessage(groupId,userId,cb)
+              getMessage(groupId,userId,page,cb)
                 break;
             default:
                 cb('invalid')
@@ -27,25 +27,38 @@ module.exports  = {
 }
 
 // Get group messages from provided id
-let getMessage = (groupId, userId,cb) =>{
-    Group.findById({_id : groupId}, {messages : true})
-    .limit(200)
-    .skip(1)
-    .then(data=> console.log("res", data))
+let getMessage = (groupId, userId, page,cb) =>{
+    // Group.findById({_id : groupId}, {messages : true})
+    // .limit(10)
+    // .skip(1)
+    // .then(data=> {})
 
     Group.findById({_id : groupId})
     .populate('User')
     .then(({group, messages}) => {
+        // console.log
+        let maxCount = messages.length
+        if(messages.length - (30 + (5 * page)) > 0)
+        {
+            messages = messages.slice(messages.length - (30 + (5 * page)), messages.length )
+        }
+        else {
+            messages = messages.slice(0, messages.length )
+        }
+      
         updateIsRead(groupId,userId)
-        filterMessage(group,messages,userId,cb)
+        filterMessage(group,messages,userId,maxCount,cb)
     })
     .catch(err => cb(err))
 }
 
 // Filter out message  
 // and return only what needed to be appears on screen
-let filterMessage = (group, messages, userId, cb) => {
+let filterMessage = (group, messages, userId,maxCount, cb) => {
 
+        // month variable holds the months
+        let month = ["Jan.", "Feb.","Mar.", 'Apr.', "May", "June", "July", "Aug.", "Sept.","Oct.", "Nov.", "Dec."]
+        
      // Check if the message belong to the user
      let isUser = (val1, val2) => {
         return  JSON.stringify(val1) === JSON.stringify(val2)
@@ -126,7 +139,9 @@ let filterMessage = (group, messages, userId, cb) => {
     return acc
     },[])
  
-    cb(messages)
+    // Calculate the max page user can get to
+    maxCount = Math.ceil((maxCount - 30) / 5)
+    cb({messages, maxCount})
 }
 
 // Create new message

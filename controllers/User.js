@@ -400,7 +400,7 @@ let filterFriends = (list1,friends, request, pending,cb) =>{
             
             return acc
         },[])
-        User.count({}, (err, res ) => 
+        User.countDocuments({}, (err, res ) => 
         cb(list1, {
             all : res, 
             pending: pending.length, 
@@ -570,19 +570,23 @@ let updateGroup = (id, data) => {
 }
 
 // Update user status
-let updateStatus = (id,status) => {
+let updateStatus = (id,status,cb) => {
     User.findByIdAndUpdate(id, 
         { $set : { isActive : status }},
         { new : true },
-        (err) => { if(err) console.error(err)}
+        (err,res) => { 
+            if(err) cb(err) 
+            else cb(res)
+        }
         )
 }
 
 // Get friends id
 let getFriend = (id, cb) =>{
-    User.findById(id, {friends : true}, (err,res)=>{
-        if(err) cb(false)
-        cb(res)
+  
+     User.findById(id, {friends : true}, (err,res)=>{
+        if(err) cb(err)
+        else cb(res)
     })
 }
 

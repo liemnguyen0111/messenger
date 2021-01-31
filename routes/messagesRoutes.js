@@ -5,7 +5,8 @@ const Message = require('../controllers/Message')
 
 // Get messages
 router.get('/messages/:id', passport.authenticate("jwt"),(req,res) =>{
-    Message.getMessage('get', req.params.id, req.user._id, (data) =>{
+    console.log(req.query)
+    Message.getMessage('get', req.params.id, req.user._id, req.query["page"], (data) =>{
         res.json(data)
     })
 })

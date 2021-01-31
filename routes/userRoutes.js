@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require('../controllers/User')
 const ipInfo = require("ipinfo")
 
+
 // Get users info base on request
 router.get('/user/:request', passport.authenticate("jwt"), (req, res) =>{
 
@@ -21,9 +22,7 @@ router.get('/user/:request', passport.authenticate("jwt"), (req, res) =>{
             })
             break;
         case 'authenticate' :
-            authenticate((auth) => {
-                res.json(auth)
-            })
+            res.json(200)
             break;
         default:
             break;
@@ -33,37 +32,35 @@ router.get('/user/:request', passport.authenticate("jwt"), (req, res) =>{
 // Register route
 router.post('/register/user', (req, res) =>
 {   
-  
+ 
     User.addUser(req.body, (data) => {
         res.json(data)
     })
 })
 
-// Login route
+// update route
 router.put('/user/:request', passport.authenticate("jwt"), (req, res ) =>
 {
- console.log(req.query)
-//  res.json(200)
+
  switch (req.params.request) {
-     case "login":
-         // Use user ip to keep a record of where the account has logged.
-        ipInfo(req.body["ivp6"],(err, cLoc) => {
-         // login user
-         User.loginUser(req.body, cLoc , (data) => {
-         res.json(data)
-         })
-         })
-         break;
       case 'update':     
             User.updateUser(req.query["type"], req.user, req.body, (data) =>
             {
+               console.log( req.query)
                 res.json(200)
             })
      default:
          break;
  }
+})
 
-    
+// Login route
+router.put('/user/authenticate/login', (req, res) => {
+    ipInfo(req.body["ivp6"],(err, cLoc) => {
+        User.loginUser(req.body, cLoc , (data) => {
+        res.json(data)
+        })
+        })
 })
 
 // Currently not in use
@@ -72,10 +69,10 @@ router.delete('user/:id', (req,res) =>{
 })
 
 // Authenticate with callback
-const authenticate = (passport.authenticate("jwt"), (cb) => {
-    console.log('e')
-    cb(passport.authenticate("jwt"))
-}) 
+// const authenticate = (passport.authenticate("jwt"), (cb) => {
+//     console.log('e')
+//     cb(passport.authenticate("jwt"))
+// }) 
 
 
 

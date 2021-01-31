@@ -30,7 +30,7 @@ class ChatView extends Component
         this.setState({ test : this.state.test + 1})
         createMessage(this.props.id, {message: message})
         .then(() => {
-            this.props.socket.emit('request', {id: this.props.id,type:'message'})
+            // this.props.socket.emit('request', {id: this.props.id ,type:'load'})
         })
         .catch( err => console.error(err))
     }
@@ -58,7 +58,7 @@ class ChatView extends Component
             
             <Message 
             id={this.props.id} 
-            socket={this.props.socket} 
+            // socket={this.props.socket} 
             uuID={this.props.uuID}
             load={this.props.load}
             // view={this.props.view}

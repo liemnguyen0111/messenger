@@ -1020,7 +1020,6 @@ body {
   overflow: auto;
   -webkit-transition: all 2s ease;
   transition: all 2s ease;
-  scroll-behavior: smooth;
   border-radius: 10px;
 }
 
@@ -1034,6 +1033,30 @@ body {
   display: -ms-flexbox;
   display: flex;
   margin-bottom: 20px;
+  -webkit-animation: slow 1s ease;
+          animation: slow 1s ease;
+}
+
+@-webkit-keyframes slow {
+  from {
+    -webkit-transform: translate(-50px, -50px);
+            transform: translate(-50px, -50px);
+  }
+  to {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
+}
+
+@keyframes slow {
+  from {
+    -webkit-transform: translate(-50px, -50px);
+            transform: translate(-50px, -50px);
+  }
+  to {
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+  }
 }
 
 .message {
@@ -1043,6 +1066,8 @@ body {
   max-width: 500px;
   overflow-wrap: break-word;
   word-break: break-all;
+  -webkit-animation: slow 1s ease;
+          animation: slow 1s ease;
 }
 
 .f-message {

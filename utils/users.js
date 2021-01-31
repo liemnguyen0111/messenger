@@ -1,17 +1,72 @@
+
+const { updateStatus, getFriend } = require('../controllers/User')
 // User class is used to create a new user everytime user enter chatbox and remove after
-class User 
+class UClass 
 {
-    constructor(userID, socketID){
-        this.userID = userID;
-        this.socketID = socketID;
+    constructor(){
+        this.users = []
     }
 
-    getUserID(){ return this.userID }
-    getSocketID(){ return this.socketID }
-    setSocketID(socketID) 
-    {
-        this.socketID = socketID
+    // This method will allow to get all the socket that belong to the user 
+    // with the provided userId
+    getUserWithId(userId){
+        return this.users.filter(a => a.userId === userId ).map(b => b.socketId)
+    }
+
+    // This method will allow to get all the socket that belong to the user 
+    // with the provided socketId
+    getUserWithSocket(userSocketId){
+        return  this.users.filter( a => a.userId === this.users.find(b=> b.socketId === userSocketId).userId).map(c => c.socketId )
+    }
+
+    // All user to the list with provided userId and socketId
+    addUser(userId, socketId,cb){
+        this.users.push({
+            userId : userId,
+            socketId : socketId
+        })
+    updateStatus(userId, true, 
+    ()=>  cb(`userId: ${userId} and \nSocketId: ${socketId} successfully connected!`))
+
+    }
+
+    // Remove the disconnected socket from user
+    removeSocket(socketId,cb){
+        let userId = this.users.filter( user => user.socketId === socketId)
+        this.users = this.users.filter(user => user.socketId !== socketId)
+        if(userId[0])
+        {
+            let list = this.users.filter( user => user.userId === userId[0]["userId"])
+            if(list.length < 1)
+            {
+                updateStatus(userId[0]["userId"], false, 
+                ()=>  cb(`userId: ${userId[0]["userId"]} successfully disconnected!`))
+            }
+  
+        }
+       
+    }
+
+    // Get a list of socket whose friend' belong to the user
+    getSocketList(socketId,cb){
+        let userId = this.users.filter( user => user.socketId === socketId)[0]
+
+        if(userId)
+        {
+            let usersSocket = this.getUserWithSocket(socketId)
+     
+            getFriend(userId["userId"], ({friends}) => {
+                console.log(friends)
+            friends.map(val => usersSocket = [...usersSocket, ...this.getUserWithId(String(val))])
+            cb([...usersSocket])
+            })
+        } 
+    }
+
+    // Check if user already added in
+    checkUser(userId){
+        return 
     }
 }
 
-module.exports = User
+module.exports = UClass

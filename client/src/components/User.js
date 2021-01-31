@@ -46,13 +46,9 @@ class User extends Component{
     }
 
     addFriend(){
-        let data = {
-            id : this.props.id
-        }
-        putUser('send-request', data)
-        .then( (data) => { 
-            console.log(data)
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
+        putUser('update','type=send-request',{ id : this.props.id})
+        .then( () => { 
+            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
         })
         .catch(err => console.error(err))
     }
@@ -64,9 +60,9 @@ class User extends Component{
             firstName : this.props.name[0],
             lastName : this.props.name[1]
         }
-        putUser('accept-request', data)
+        putUser('update','type=accept-request',data)
         .then( () => { 
-            this.props.socket.emit('request', {id: this.props.id,type:'accept'})
+            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
         })
         .catch(err => console.error(err))
     }
@@ -76,10 +72,9 @@ class User extends Component{
             id : this.props.id
         }
        
-        putUser('reject-request', data)
+        putUser('update','type=reject-request',data)
         .then( () => { 
-            console.log('reject')
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
+            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
         })
         .catch(err => console.error(err))
     }
@@ -88,11 +83,10 @@ class User extends Component{
         let data = {
             id : this.props.id
         }
-        console.log('here in unfriend')
-        putUser('unfriend', data)
+
+        putUser('update','type=unfriend',data)
         .then( () => { 
-            console.log('unfriend')
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
+            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
         })
         .catch(err => console.error(err))
     }
