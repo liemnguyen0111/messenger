@@ -2,11 +2,6 @@
   overflow: hidden;
 }
 
-body * {
-  -webkit-animation: smooth .1s ease;
-          animation: smooth .1s ease;
-}
-
 body {
   font-family: "Roboto", sans-serif;
   color: white;
@@ -1005,6 +1000,14 @@ body {
   cursor: pointer;
 }
 
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.unset-scroll {
+  scroll-behavior: unset;
+}
+
 .messages {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1020,7 +1023,6 @@ body {
   overflow: auto;
   -webkit-transition: all 2s ease;
   transition: all 2s ease;
-  scroll-behavior: smooth;
   border-radius: 10px;
 }
 
@@ -1033,6 +1035,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  opacity: 0;
   margin-bottom: 20px;
 }
 
@@ -1265,7 +1268,6 @@ body {
   }
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 5px;
   border-radius: 500px;
@@ -1291,6 +1293,7 @@ body {
 }
 
 .hide-scroll-bar::-webkit-scrollbar-thumb, .hide-scroll-bar::-webkit-scrollbar-track, .hide-scroll-bar::-webkit-scrollbar {
+  display: none !important;
   -webkit-transition: 2s ease !important;
   transition: 2s ease !important;
   background: transparent !important;
@@ -1387,5 +1390,13 @@ select:-webkit-autofill:focus {
     max-width: 65px;
     font-size: 12px;
   }
+}
+
+.unavailable {
+  background: #535353;
+  color: gray !important;
+  border-radius: 50%;
+  padding: 5px;
+  pointer-events: none;
 }
 /*# sourceMappingURL=Style.css.map */

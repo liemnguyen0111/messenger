@@ -1,10 +1,12 @@
 import React , { Component } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
 import UserAPI from '../utils/UserAPI'
+import socketIO from '../utils/SocketIO'
 import Images from './Images'
 import Button from './Button'
 
 const { putUser } = UserAPI
+const { connect } = socketIO
 class UserInfo extends Component{
 
     constructor( props ) {
@@ -38,12 +40,13 @@ class UserInfo extends Component{
             email : this.email.innerText,
             address : this.address.innerText
         }
-
+        console.log('save')
         if(!this.checkSpaceBetween(this.username.innerText)){
-        putUser('update-info', userInfo)
-        .then(data => {
-            this.props.socket.emit('request', {id: null,type:'userInfo'})
+            console.log('save1')
+        putUser('update','type=update-info', userInfo)
+        .then(() => {
             this.errorMessage.style.display = 'none'
+            connect([this.props.info.id, 10])
         })
         .catch(err => console.error(err))
         } else { 

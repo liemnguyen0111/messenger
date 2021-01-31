@@ -1,10 +1,11 @@
 import React , { Component } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
+import socketIO from '../utils/SocketIO'
 import MessageAPI from '../utils/MessageAPI'
 import Images from './Images'
 
 const { getMessage } = MessageAPI
-let timer 
+const { updateMessage, updateLatestMessage } = socketIO
 
 class Message extends Component
 {
@@ -13,50 +14,15 @@ class Message extends Component
 
         this.state = {
             messages : [],
-            scrolled : false,
-            isMounted : true
+            isMounted : true,
+            page : 0,
+            current : 0
         }
 
         this.lastMessage = React.createRef();
         this.container = React.createRef();
+        this.onScroll = this.onScroll.bind(this)
     }
-
-    // componentDidUpdate(prevProps, prevState)
-    // {
-       
-    //     if(prevState.messages !== this.props.messages)
-    //     {
-    //         console.log('update')
-    //         this.setState({messages : this.props.messages})
-    //         console.log(this.state.messages)
-    //         // if(this.props.messages[this.props.messages.length - 1].isYours)
-    //         // {
-    //         //    this.lastMessage.scrollIntoView();
-    //         // }
-
-    //         // const scrollTop = this.container.scrollTop
-    //         // const current = this.container.scrollHeight - this.container.offsetHeight
-    //         // // console.log(scrollTop, current)
-    //         // if(current - scrollTop < 200)
-    //         // {
-    //         //     this.lastMessage.scrollIntoView();
-    //         // }
-
-    //     }
-    // }
-
-    // componentWillMount()
-    // {
-    //     console.log('will mount')
-    //     this.setState({messages : this.props.messages})
-    // }
-
-    // componentWillReceiveProps()
-    // {
-    //     console.log('receive props')
-    //     this.setState({messages : this.props.messages})
-
-    // }
 
     // Shallow compare, only update when receive new props
     shouldComponentUpdate(nextProps, nextState){
@@ -65,76 +31,108 @@ class Message extends Component
 
     componentDidUpdate()
     {
-     
-           if(this.state.messages[this.state.messages.length - 1].isYours)
-            {
-               this.lastMessage.scrollIntoView();
-            }
+    
+        const scrollTop = this.container.scrollTop
+        const current = this.container.scrollHeight - this.container.offsetHeight
 
-            const scrollTop = this.container.scrollTop
-            const current = this.container.scrollHeight - this.container.offsetHeight
-            
-            if((current / scrollTop) < 1.5)
-            {
-                this.lastMessage.scrollIntoView();
-            }
-            
-            if(!this.state.scrolled){
-               this.lastMessage.scrollIntoView();
-               this.setState({scolled : true})
-            }
+        // Keep scroll top at current position when feeding more messages
+        if(this.state.page > 0 && this.container.scrollTop < 1){
+            this.container.classList.remove('smooth-scroll')
+            this.container.classList.add('unset-scroll')
+            this.container.scrollTop =  this.container.scrollHeight - this.state.current
+            this.container.classList.remove('unset-scroll')
+            this.container.classList.add('smooth-scroll')
+        }
 
+        // Keep a record of previous scroll top position
+        this.setState({current : this.container.scrollHeight })
+    
+        // Get midle position of current client height
+        let mid = current / 2
+
+        // If scroll top is more than 50% of the client height, scroll to bottom
+        if(scrollTop > mid )
+        {
+            this.lastMessage.scrollIntoView();
+        }  
+       
     }
 
     componentDidMount(){
-        getMessage(this.props.id)
-        .then(({data}) => {
-            this.setState({ messages : data})
-            this.props.socket.emit('request', {id: this.props.id,type:'load'})
+        getMessage(this.props.id, 'page=0')
+        .then(( {data : {messages :messages}, data: {maxCount : maxCount}}) => {
+
+            updateMessage(this.props.id,200)
+            this.setState({ messages : messages, maxPage : maxCount})
+            this.lastMessage.scrollIntoView()
+            this.container.classList.add('smooth-scroll')
         })
         .catch(err => console.error(err))
-        this.props.socket.on('message', () => {
-            if(this.state.isMounted)
-            this.updateMessages(this.props.id)
+
+        updateLatestMessage(({status, id}) => {
+            
+            if(this.state.isMounted && status === 202 && this.props.id === id)
+            this.getLastMessage(id)
         })
     }
 
     updateMessages(id){
-   
-        getMessage(id)
-        .then(({data}) => {
-            this.setState({ messages : data})
-            this.props.socket.emit('request', {id: this.props.id,type:'load'})
+        console.log(id, this.props.id)
+        getMessage(id, `page=${this.state.page}&latest=false`)
+        .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
+        this.setState({ messages : messages, maxPage : maxCount})
+        })
+        .catch(err => console.error(err))
+    }
+
+    getLastMessage(id){
+        console.log(id, this.props.id)
+        getMessage(id, `page=${this.state.page}&latest=true`)
+        .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
+        if(this.state.isMounted){
+            updateMessage(id,200)
+        }
+       
+        this.setState({ messages : [...this.state.messages, ...messages ], maxPage : maxCount})
+        if(messages[0].isYours) this.lastMessage.scrollIntoView();
         })
         .catch(err => console.error(err))
     }
 
     onScroll(e){
-       
-        e.target.classList.remove('hide-scroll-bar')
-       clearTimeout(timer)
-       timer = setTimeout(() => {
-        e.target.classList.add('hide-scroll-bar')
-       }, 1000);
+  
+       if(this.container.scrollTop < 1){
+           if(this.state.page < this.state.maxPage)
+           {
+                 this.setState({page : this.state.page  + 1 })
+                 this.updateMessages(this.props.id)
+           }
+      
+       }
+
     }
 
     componentWillUnmount(){
+        // this.setState({ isMounted : false, page : 0})
        this.state.isMounted = false
+       this.state.page = 0
+    //    console.log('unmount')
     }
 
     render(){
         return(<>
-            <div className='messages hide-scroll-bar' 
+            <div className='messages' 
               onScroll={this.onScroll}
-              ref={(c) => { this.container = c;}}>
+              ref={(c) => { this.container = c}}>
           
             {
                 this.state.messages.map((message, index) =>   
                         <div 
+                        style = {{ opacity : 1}}
                         className={message.isYours? 'y-message' : 'f-message'}
                         key={index}
                         >
-
+                 
                         {!message.isYours? 
                               <Images 
                               width={40} 

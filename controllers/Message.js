@@ -2,10 +2,10 @@ const { Group } = require('../models')
 
 module.exports  = {
     // Get group messages from provided id
-    getMessage(params,groupId,userId,cb){
+    getMessage(params,groupId,userId,query,cb){
         switch (params) {
             case "get":
-              getMessage(groupId,userId,cb)
+              getMessage(groupId,userId,query,cb)
                 break;
             default:
                 cb('invalid')
@@ -17,7 +17,7 @@ module.exports  = {
 
         switch (params) {
             case "create":
-              createMessage(message,groupId,userId,cb)
+                createNewMessage(message,groupId,userId,cb)
                 break;
             default:
                 cb('invalid')
@@ -27,25 +27,46 @@ module.exports  = {
 }
 
 // Get group messages from provided id
-let getMessage = (groupId, userId,cb) =>{
-    Group.findById({_id : groupId}, {messages : true})
-    .limit(200)
-    .skip(1)
-    .then(data=> console.log("res", data))
+let getMessage = (groupId, userId, query,cb) =>{
+    // Group.findById({_id : groupId}, {messages : true})
+    // .limit(10)
+    // .skip(1)
+    // .then(data=> {})
 
     Group.findById({_id : groupId})
     .populate('User')
     .then(({group, messages}) => {
+        let maxCount = messages.length
+        console.log(query)
+        if(query["latest"] === 'true'){
+       
+            console.log('get latest')
+            messages  = [messages[messages.length - 1]]
+        }
+        else{
+            if(messages.length - (30 + (5 * query["page"])) > 0)
+            {
+                messages = messages.slice(messages.length - (30 + (5 * query["page"])), messages.length )
+            }
+            else {
+                messages = messages.slice(0, messages.length )
+            }
+        }
+    
+        
         updateIsRead(groupId,userId)
-        filterMessage(group,messages,userId,cb)
+        filterMessage(group,messages,userId,maxCount,cb)
     })
     .catch(err => cb(err))
 }
 
 // Filter out message  
 // and return only what needed to be appears on screen
-let filterMessage = (group, messages, userId, cb) => {
+let filterMessage = (group, messages, userId,maxCount, cb) => {
 
+        // month variable holds the months
+        let month = ["Jan.", "Feb.","Mar.", 'Apr.', "May", "June", "July", "Aug.", "Sept.","Oct.", "Nov.", "Dec."]
+        
      // Check if the message belong to the user
      let isUser = (val1, val2) => {
         return  JSON.stringify(val1) === JSON.stringify(val2)
@@ -117,6 +138,7 @@ let filterMessage = (group, messages, userId, cb) => {
     // Get all profile images that had read the message
     messages = messages.reduce((acc, val) => {
         acc.push({
+            type : val.type,
             message : val.message,
             image : getImage(group, val),
             isYours : isUser(val.uuID, userId) ,
@@ -126,14 +148,17 @@ let filterMessage = (group, messages, userId, cb) => {
     return acc
     },[])
  
-    cb(messages)
+    // Calculate the max page user can get to
+    maxCount = Math.ceil((maxCount - 30) / 5)
+    cb({messages, maxCount})
 }
 
 // Create new message
-let createMessage = (message, groupId, userId, cb) =>{
+let createNewMessage = (message, groupId, userId, cb) =>{
     message["uuID"] = `${userId}`
     message["isRead"] = [userId]
     message["type"] = "User"
+    message['time'] = new Date(Date.now() - 60 * 60 * 7000)
     Group.findByIdAndUpdate(
         {_id : groupId},
         {$push : { messages : message}},
@@ -168,3 +193,4 @@ let getUsers = (groupId,cb) => {
 }
 
 module.exports.getUsers = getUsers
+module.exports.updateIsRead = updateIsRead

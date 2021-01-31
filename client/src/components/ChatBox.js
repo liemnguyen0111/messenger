@@ -1,5 +1,5 @@
 import React ,  { Component } from "react"
-import io from 'socket.io-client'
+import SocketIO from '../utils/SocketIO'
 import UserAPI from '../utils/UserAPI'
 import UserInfo from './UserInfo'
 import Notification from './Notification'
@@ -10,11 +10,8 @@ import Images from './Images'
 import Search from './Search'
 import Friend from './Friend'
 
-let socket;
-const ENDPOINT = 'localhost:5000'
-socket = io(ENDPOINT)
-
 const { getUser } = UserAPI
+const { connect, reconnect , disconnect, onReconnect, onUserConnect, updateLatestMessage, updateMessage, onRequest } = SocketIO
 
 class ChatBox extends Component
 {
@@ -33,14 +30,15 @@ class ChatBox extends Component
             onActive : false,
             info : {
                 group : []
-            }
+            },
+            entry : 0
         }
         
         this.chatView = this.chatView.bind(this);
         // this.onSubmit = this.onSubmit.bind(this);
         this.signOut = this.signOut.bind(this);
         this.load = this.load.bind(this)
-
+        
     }
 
     componentDidUpdate(){
@@ -51,23 +49,28 @@ class ChatBox extends Component
     }
     chatView(user, id, name)
     {
-        console.log(user.target)
+
         if(this.state.currentActive)
         {
             document.querySelector(`[data-tag="${this.state.currentActive}"]`).classList.remove('on-active')
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
+            // updateMessage(id, 200)
         }
         else{
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
+          
         }
+    
         this.setState({ status : 'chatView', chatViewId : id, chatName : name, onActive : true}) 
+      
     }
 
     signOut(){
         document.querySelector('.chat-box').classList.remove('authorized')
-        socket.disconnect()
+        console.log('disconnecty')
+        disconnect()
         setTimeout(() => {
         this.props.setState({isAuthorized: false})
         localStorage.removeItem('user')
@@ -78,52 +81,45 @@ class ChatBox extends Component
     componentDidMount(){
        this.init()
         document.querySelector('.chat-box').classList.add('authorized')
-        
-        socket.on('load', () => {
-            this.load()
-        })
-
-        socket.on('update', msg => {
-            switch (msg) {
-                case 'userConnect':
-                    this.load()
-                    break;
-                case 'userDisconnect':
-                    this.load()
-                    break;
-                case 'request':
-                    this.load()
-                    break;
-                case 'accept':
-                    this.load()
-                    break;
-                case 'unfriend':
-                    this.load()
-                    break; 
-                case 'reject':
-                    this.load()
-                    break;     
-                case 'userInfo':
-                    this.load()
-                    break;
-                default:
-                        // this.load()
-                    break;
-            }
-        })
     }
 
     init(){
         getUser('init')
         .then(({data}) => {
             this.setState({ info : data })
-    
-            socket.connect()
-            socket.emit('join', {id : data.id}, err => console.error(err))
-            socket.on('re-join', () => 
-            socket.emit('re-join', (this.state.info.id), () => {console.log('done')} ))
+
+            let entry = 0
+            let res = data.id
+            reconnect()
+            connect([res , entry ])
+            onReconnect((val)=> {
+                
+                if(entry < 10 && val !== 'succeed')
+                {
+                        console.log('conencting')
+                        connect([res , entry ])
+                        entry += 1
+                }
+
+                if(val === 'succeed')
+                {
+                    entry = 0
+                }
+
+            })
         })
         .catch(err => console.error(err))
+
+        // On user connect/disconnect, update view with current active status
+        onUserConnect(()=> this.load())
+        onRequest(() => { this.load()})
+        updateLatestMessage(({status}) => {
+
+            if(status === 200) {
+                this.load()
+            }
+        })
+
     }
 
     load(){
@@ -153,13 +149,8 @@ class ChatBox extends Component
             onClick={() => 
             this.setState({
             status : 'userInfo', 
-            onActive : false})}
-            socket={socket}
-            // notification={true}
-            // notiCount={
-            //     this.state.info.pendingCount +
-            //     this.state.info.requestCount
-            // }
+            onActive : false
+            })}
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
@@ -182,7 +173,6 @@ class ChatBox extends Component
             {
             this.state.info["group"].map( (val, index ) =>
             {
-               
                       return <Friend 
                       key={index}
                       details={val}
@@ -206,7 +196,7 @@ class ChatBox extends Component
             <div className={`right`}>
             { this.state.status === 'userInfo'? 
             <UserInfo
-             socket={socket}
+            //  socket={socket}
              info = {this.state.info}
              signOut = {this.signOut}
             /> 
@@ -214,49 +204,21 @@ class ChatBox extends Component
 
             { this.state.status === 'addFriend'? 
             <FindFriends 
-            socket={socket}
+            // socket={socket}
             pendingCount={this.state.info.pendingCount}
             requestCount={this.state.info.requestCount}
             />
             : ""}
-
+    
             { this.state.status === 'chatView'? 
             <ChatView 
-            socket={socket}
             id={this.state.chatViewId}
             uuID={this.state.info.id}
             chatName ={this.state.chatName}
-            load={this.load}
             view={this.state.status}
             onActive={this.state.onActive}
             />
             : ""}
-            {/* <FindFriends></FindFriends> */}
-            {/* <section className="row-1">
-            <Button 
-            name='Sign Out'
-            type='sign-out'
-            width = {90}
-            height = {30}
-            onClick={this.signOut}
-            />
-            </section> */}
-        
-            {/* <Logo/> */}
-            {/* <section className="row-2">
-            <Images 
-            width={this.state.group} 
-            height={this.state.group}
-            images={[this.state.image,this.state.image]}/>
-            <div className="r-g-name">Nhung con be nhat nheo</div>
-
-            <i className="fas fa-phone-alt call"></i>
-            <i className="fas fa-video video"></i>
-            <i className="fas fa-search m-search"></i>
-            </section> */}
-            {/* <Search></Search>  */}
-            {/* <Message messages={this.state.info.group}/> */}
-            {/* <Input onSubmit={this.onSubmit}/> */}
 
             </div>
             </div>

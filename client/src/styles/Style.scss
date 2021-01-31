@@ -4,10 +4,6 @@
     overflow: hidden;
 }
 
-body * {
-    animation: smooth .1s ease;
-}
-
 body
 {
     font-family :$font-roboto;
@@ -849,7 +845,13 @@ body
     }   
 
 }
+.smooth-scroll{
+    scroll-behavior: smooth;
+}
 
+.unset-scroll{
+    scroll-behavior: unset;
+}
 .messages
 {
     // background: red;
@@ -859,9 +861,8 @@ body
     flex: 1;
     overflow: auto;
     transition:all 2s ease;
-    scroll-behavior: smooth;
     border-radius: 10px;
-
+  
 
     .images
     {
@@ -876,19 +877,21 @@ body
 .f-message, .y-message
 {
     display: flex;
-    // flex: 1;
+    opacity: 0;
     margin-bottom: 20px;
 }
 
+
+
 .message
 {
-    // backdrop-filter: blur(4px);
     display: inline-block;
     padding: 10px;
     border-radius: 20px;
     max-width: 500px;
     overflow-wrap: break-word;
     word-break: break-all;
+
 }
 .f-message { 
     // background: green;
@@ -1071,8 +1074,8 @@ body
         opacity: 1;
     }
 }
-// Scroll bar styling
-/* width */
+// // Scroll bar styling
+// /* width */
 ::-webkit-scrollbar {
     width: 5px;
     border-radius: 500px;
@@ -1102,7 +1105,7 @@ body
     &::-webkit-scrollbar-track,
     &::-webkit-scrollbar
     {
-        // display: none !important;
+        display: none !important;
         transition: 2s ease !important;
         background: transparent !important; 
     }
@@ -1201,4 +1204,10 @@ select:-webkit-autofill:focus {
   }
 
 
-
+.unavailable{
+    background: rgb(83, 83, 83);
+    color: gray !important;
+    border-radius: 50%;
+    padding: 5px;
+    pointer-events: none;
+}

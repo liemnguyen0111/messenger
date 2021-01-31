@@ -400,7 +400,7 @@ let filterFriends = (list1,friends, request, pending,cb) =>{
             
             return acc
         },[])
-        User.count({}, (err, res ) => 
+        User.countDocuments({}, (err, res ) => 
         cb(list1, {
             all : res, 
             pending: pending.length, 
@@ -553,36 +553,44 @@ let update = (id, data, cb) =>{
 
 // Update group after user update their info
 let updateGroup = (id, data) => {
-    Group.findOne({ "group.uuID" : id})
+    Group.find({ "group.uuID" : id})
     .then( doc => {
-        doc.group.map(val => {
- 
-            if(JSON.stringify(val.uuID) === JSON.stringify(id))
-            {
-                val["firstName"] = data["firstName"]
-                val["lastName"] = data["lastName"]
-            }
+      
+        doc.map(val => {
+        
+            val.group.map( user => {
+                if(JSON.stringify(user.uuID) === JSON.stringify(id))
+                {
+                    user["firstName"] = data["firstName"]
+                    user["lastName"] = data["lastName"]
+                }
+            })
+            val.save()
         })
        
-        doc.save()
+        // doc.save()
     })
     .catch(err => console.error(err))
 }
 
 // Update user status
-let updateStatus = (id,status) => {
+let updateStatus = (id,status,cb) => {
     User.findByIdAndUpdate(id, 
         { $set : { isActive : status }},
         { new : true },
-        (err) => { if(err) console.error(err)}
+        (err,res) => { 
+            if(err) cb(err) 
+            else cb(res)
+        }
         )
 }
 
 // Get friends id
 let getFriend = (id, cb) =>{
-    User.findById(id, {friends : true}, (err,res)=>{
-        if(err) cb(false)
-        cb(res)
+  
+     User.findById(id, {friends : true}, (err,res)=>{
+        if(err) cb(err)
+        else cb(res)
     })
 }
 

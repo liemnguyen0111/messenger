@@ -1,7 +1,5 @@
 import React ,  { Component } from "react"
 import Dot from './Dot'
-import Notification from './Notification'
-// import defaultUser from '../images/defaultUser.jpg'
 
 class Images extends Component
 {

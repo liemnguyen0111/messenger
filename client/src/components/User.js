@@ -1,8 +1,10 @@
 import React , { Component } from 'react'
+import socketIO from '../utils/SocketIO'
 import UserAPI from '../utils/UserAPI'
 import Images from './Images'
 import Button from './Button'
 
+const { sendRequest } = socketIO
 const { putUser } = UserAPI
 
 class User extends Component{
@@ -46,14 +48,8 @@ class User extends Component{
     }
 
     addFriend(){
-        let data = {
-            id : this.props.id
-        }
-        putUser('send-request', data)
-        .then( (data) => { 
-            console.log(data)
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
-        })
+        putUser('update','type=send-request',{ id : this.props.id})
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -64,10 +60,8 @@ class User extends Component{
             firstName : this.props.name[0],
             lastName : this.props.name[1]
         }
-        putUser('accept-request', data)
-        .then( () => { 
-            this.props.socket.emit('request', {id: this.props.id,type:'accept'})
-        })
+        putUser('update','type=accept-request',data)
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -76,11 +70,8 @@ class User extends Component{
             id : this.props.id
         }
        
-        putUser('reject-request', data)
-        .then( () => { 
-            console.log('reject')
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
-        })
+        putUser('update','type=reject-request',data)
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -88,12 +79,9 @@ class User extends Component{
         let data = {
             id : this.props.id
         }
-        console.log('here in unfriend')
-        putUser('unfriend', data)
-        .then( () => { 
-            console.log('unfriend')
-            this.props.socket.emit('request', {id: this.props.id,type:'request'})
-        })
+
+        putUser('update','type=unfriend',data)
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
