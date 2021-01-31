@@ -4,11 +4,14 @@ const http = require('http')
 const socketIO = require('socket.io')
 
 // Import methods from users_methods
-const { addUser, removeSocket, onUserConnect } = require('../utils/users_methods')
-// Import methods from Users model
-const  { updateStatus, getFriend }  = require('../controllers/User')
-// Import methods from Messages model 
-const  { getUsers }  = require('../controllers/Message')
+const { 
+    addUser, 
+    removeSocket, 
+    onUserConnect,
+    onUserMessage,
+    onUserRequest
+} = require('../utils/users_methods')
+
 
 // Cors was enabled by default on socket.io version 2.3.0 and below
 // With newer version ^2.4.0, we now have to explicitly enable it
@@ -36,9 +39,7 @@ io.on('connection', socket =>
             addUser(id[0], socket.id,(res) =>{
           
                 if(res){
-                console.log(res)
             // Then update user current active status to true
-                //update('userConnect',id, 'success')
             onUserConnect(socket.id, (socketList)=>{
                 // console.log(socketList)
                 socketList.forEach(element => {
@@ -62,23 +63,25 @@ io.on('connection', socket =>
             })   
     })
   
-    // On friend request
-    // socket.on('request',  ({id, type}) =>{
+    socket.on('message',  ({id,status}) =>{
+        onUserMessage(id, (socketList)=>{
+         
+            socketList.forEach(element => {
+                io.to(element).emit("message", status)
+            });
+        })
+    })
+
+    socket.on('request',  ({id}) =>{
+        console.log(id)
+        onUserRequest(id, socket.id, (socketList)=>{
      
-        
-    //     // if(id && getAll().length){
-    //     //     // Handle request if user exist in User container
-    //     //     // handleRequest(id,type,socket)
-    //     //     console.log(id && getAll().length)
-    //     // }
-    //     // else{
-    //     //     console.log('rejoin')
-    //     //     // Otherwise ask everyone whose active to rejoin
-    //     //     socket.broadcast.emit('re-join')
-    //     //     socket.emit("re-join")
-           
-    //     // }
-    // })
+            socketList.forEach(element => {
+                io.to(element).emit("request")
+            });
+        })
+    })
+
 
     // On disconnect
     socket.on('disconnect', () => {

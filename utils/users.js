@@ -1,5 +1,6 @@
 
 const { updateStatus, getFriend } = require('../controllers/User')
+const { getUsers } = require('../controllers/Message')
 // User class is used to create a new user everytime user enter chatbox and remove after
 class UClass 
 {
@@ -10,7 +11,7 @@ class UClass
     // This method will allow to get all the socket that belong to the user 
     // with the provided userId
     getUserWithId(userId){
-        return this.users.filter(a => a.userId === userId ).map(b => b.socketId)
+        return this.users.filter(a => String(a.userId) === String(userId) ).map(b => b.socketId)
     }
 
     // This method will allow to get all the socket that belong to the user 
@@ -56,11 +57,27 @@ class UClass
             let usersSocket = this.getUserWithSocket(socketId)
      
             getFriend(userId["userId"], ({friends}) => {
-                console.log(friends)
             friends.map(val => usersSocket = [...usersSocket, ...this.getUserWithId(String(val))])
             cb([...usersSocket])
             })
         } 
+    }
+    // Get socket list of users whose belong to the provided groupId
+    getSocketListFromGroup(groupId,cb){
+   
+        getUsers(groupId, ({group}) => {
+            let socketList = []
+            group.map( user => socketList = [...socketList, ...this.getUserWithId(user.uuID)])
+            cb(socketList)
+        })
+    }
+
+      // Get socket list of users whose belong to the provided groupId
+      getSocketListFromUser(userId,socketId,cb){
+        
+        let user1 = this.getUserWithId(userId)
+        let user2 = this.getUserWithSocket(socketId)
+        cb([...user1, ...user2])
     }
 
     // Check if user already added in

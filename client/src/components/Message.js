@@ -1,10 +1,11 @@
 import React , { Component } from 'react'
 import shallowCompare from 'react-addons-shallow-compare'
+import socketIO from '../utils/SocketIO'
 import MessageAPI from '../utils/MessageAPI'
 import Images from './Images'
 
 const { getMessage } = MessageAPI
-let timer 
+const { updateMessage, updateLatestMessage } = socketIO
 
 class Message extends Component
 {
@@ -13,9 +14,9 @@ class Message extends Component
 
         this.state = {
             messages : [],
-            scrolled : false,
             isMounted : true,
-            page : 0
+            page : 0,
+            current : 0
         }
 
         this.lastMessage = React.createRef();
@@ -34,103 +35,100 @@ class Message extends Component
         const scrollTop = this.container.scrollTop
         const current = this.container.scrollHeight - this.container.offsetHeight
 
+        // Keep scroll top at current position when feeding more messages
+        if(this.state.page > 0 && this.container.scrollTop < 1){
+            this.container.classList.remove('smooth-scroll')
+            this.container.classList.add('unset-scroll')
+            this.container.scrollTop =  this.container.scrollHeight - this.state.current
+            this.container.classList.remove('unset-scroll')
+            this.container.classList.add('smooth-scroll')
+        }
+
+        // Keep a record of previous scroll top position
+        this.setState({current : this.container.scrollHeight })
+    
+        // Get midle position of current client height
+        let mid = current / 2
+
+        // If scroll top is more than 50% of the client height, scroll to bottom
+        if(scrollTop > mid )
+        {
+            this.lastMessage.scrollIntoView();
+        }  
        
-           if(scrollTop < 500){
-            this.container.scrollTop = 30
-           }
-           else
-           {
-            if(this.state.messages[this.state.messages.length - 1].isYours)
-            {
-                if(scrollTop > 200)
-                {
-                    this.lastMessage.scrollIntoView();
-                }
-              
-            }
-
-            
-            if(scrollTop > 200)
-            {
-                this.lastMessage.scrollIntoView();
-            }
-            
-            if(!this.state.scrolled){
-               this.lastMessage.scrollIntoView();
-               this.setState({scolled : true})
-            }
-            // this.lastMessage.scrollIntoView();
-            // console.log('scroll')
-           }
-
-         
-
     }
 
     componentDidMount(){
+   
         getMessage(this.props.id, 'page=0')
         .then(( {data : {messages :messages}, data: {maxCount : maxCount}}) => {
-
             this.setState({ messages : messages, maxPage : maxCount})
-           
-            this.container.scrollTop = this.container.scrollHeight - this.container.offsetHeight
-            this.container.style.behavior = "smooth"
-            // this.props.socket.emit('request', {id: this.props.id,type:'load'})
+            updateMessage(this.props.id,200)
+            this.lastMessage.scrollIntoView()
+            this.container.classList.add('smooth-scroll')
         })
         .catch(err => console.error(err))
-        // this.props.socket.on('load', () => {
-        //     if(this.state.isMounted)
-        //     this.updateMessages(this.props.id)
-        // })
+
+        updateLatestMessage((status) => {
+            console.log(status)
+            if(this.state.isMounted && status === 202)
+            this.getLastMessage(this.props.id)
+        })
     }
 
     updateMessages(id){
-   
-        getMessage(id, `page=${this.state.page}`)
+        getMessage(id, `page=${this.state.page}&latest=false`)
         .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
-       
-            this.setState({ messages : messages, maxPage : maxCount})
-          
-            // this.props.socket.emit('request', {id: this.props.id ,type:'load'})
+        this.setState({ messages : messages, maxPage : maxCount})
+        })
+        .catch(err => console.error(err))
+    }
+
+    getLastMessage(id){
+      
+        console.log('get get')
+        getMessage(id, `page=${this.state.page}&latest=true`)
+        .then(({data : {messages :messages}, data: {maxCount : maxCount}}) => {
+        updateMessage(id,200)
+        this.setState({ messages : [...this.state.messages, ...messages ], maxPage : maxCount})
+        if(messages[0].isYours) this.lastMessage.scrollIntoView();
         })
         .catch(err => console.error(err))
     }
 
     onScroll(e){
-   
-       if(e.target.scrollTop < .001){
+  
+       if(this.container.scrollTop < 1){
            if(this.state.page < this.state.maxPage)
            {
-            this.setState({page : ++this.state.page})
-            this.updateMessages(this.props.id)
+                 this.setState({page : this.state.page  + 1 })
+                 this.updateMessages(this.props.id)
            }
       
        }
-        e.target.classList.remove('hide-scroll-bar')
-       clearTimeout(timer)
-       timer = setTimeout(() => {
-        e.target.classList.add('hide-scroll-bar')
-       }, 1000);
+
     }
 
     componentWillUnmount(){
-       this.state.isMounted = false
-       this.state.page = 0
+        this.setState({ isMounted : false, page : 0})
+    //    this.state.isMounted = false
+    //    this.state.page = 0
     }
 
     render(){
         return(<>
-            <div className='messages hide-scroll-bar' 
+            <div className='messages' 
               onScroll={this.onScroll}
-              ref={(c) => { this.container = c;}}>
+              ref={(c) => { this.container = c}}>
           
             {
                 this.state.messages.map((message, index) =>   
                         <div 
+                        style = {{ opacity : 1}}
                         className={message.isYours? 'y-message' : 'f-message'}
                         key={index}
                         >
-
+                        {console.log(message)}
                         {!message.isYours? 
                               <Images 
                               width={40} 

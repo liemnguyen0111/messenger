@@ -2,10 +2,10 @@ const { Group } = require('../models')
 
 module.exports  = {
     // Get group messages from provided id
-    getMessage(params,groupId,userId,page,cb){
+    getMessage(params,groupId,userId,query,cb){
         switch (params) {
             case "get":
-              getMessage(groupId,userId,page,cb)
+              getMessage(groupId,userId,query,cb)
                 break;
             default:
                 cb('invalid')
@@ -27,7 +27,7 @@ module.exports  = {
 }
 
 // Get group messages from provided id
-let getMessage = (groupId, userId, page,cb) =>{
+let getMessage = (groupId, userId, query,cb) =>{
     // Group.findById({_id : groupId}, {messages : true})
     // .limit(10)
     // .skip(1)
@@ -36,16 +36,24 @@ let getMessage = (groupId, userId, page,cb) =>{
     Group.findById({_id : groupId})
     .populate('User')
     .then(({group, messages}) => {
-        // console.log
         let maxCount = messages.length
-        if(messages.length - (30 + (5 * page)) > 0)
-        {
-            messages = messages.slice(messages.length - (30 + (5 * page)), messages.length )
+        console.log(query)
+        if(query["latest"] === 'true'){
+       
+            console.log('get latest')
+            messages  = [messages[messages.length - 1]]
         }
-        else {
-            messages = messages.slice(0, messages.length )
+        else{
+            if(messages.length - (30 + (5 * query["page"])) > 0)
+            {
+                messages = messages.slice(messages.length - (30 + (5 * query["page"])), messages.length )
+            }
+            else {
+                messages = messages.slice(0, messages.length )
+            }
         }
-      
+    
+        
         updateIsRead(groupId,userId)
         filterMessage(group,messages,userId,maxCount,cb)
     })
@@ -130,6 +138,7 @@ let filterMessage = (group, messages, userId,maxCount, cb) => {
     // Get all profile images that had read the message
     messages = messages.reduce((acc, val) => {
         acc.push({
+            type : val.type,
             message : val.message,
             image : getImage(group, val),
             isYours : isUser(val.uuID, userId) ,

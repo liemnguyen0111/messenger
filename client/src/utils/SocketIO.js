@@ -7,9 +7,11 @@ const SocketIO = {
     disconnect : () =>  socket.disconnect() ,
     reconnect : () => socket.connect() ,
     connect : (userID) =>  socket.emit('join', { id : userID }),
-    updateMessage : (groupID) =>  socket.emit('updateView', { id: groupID, type : 'message' }),
-    updateLatestMessage : (groupID) =>  socket.emit('updateView', {id : groupID, type : 'latestMessage'}),
-    onMessage : () => socket.on('message'),
+    sendRequest : (userID, type) => socket.emit('request',{ id : userID , type : type }),
+    updateMessage : (groupID,status) =>  socket.emit('message', { id: groupID , status: status }),
+    updateLatestMessage : (cb) =>  socket.on('message',cb),
+    onMessage : (cb) => socket.on('message',cb),
+    onRequest : (cb) => socket.on('request',cb),
     onReconnect : (cb) => socket.on('reconnect',cb),
     onUserConnect : (cb) => socket.on('userConnect',cb)
 }

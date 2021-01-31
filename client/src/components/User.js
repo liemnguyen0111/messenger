@@ -1,8 +1,10 @@
 import React , { Component } from 'react'
+import socketIO from '../utils/SocketIO'
 import UserAPI from '../utils/UserAPI'
 import Images from './Images'
 import Button from './Button'
 
+const { sendRequest } = socketIO
 const { putUser } = UserAPI
 
 class User extends Component{
@@ -47,9 +49,7 @@ class User extends Component{
 
     addFriend(){
         putUser('update','type=send-request',{ id : this.props.id})
-        .then( () => { 
-            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
-        })
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -61,9 +61,7 @@ class User extends Component{
             lastName : this.props.name[1]
         }
         putUser('update','type=accept-request',data)
-        .then( () => { 
-            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
-        })
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -73,9 +71,7 @@ class User extends Component{
         }
        
         putUser('update','type=reject-request',data)
-        .then( () => { 
-            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
-        })
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 
@@ -85,9 +81,7 @@ class User extends Component{
         }
 
         putUser('update','type=unfriend',data)
-        .then( () => { 
-            // this.props.socket.emit('request', {id: this.props.id,type:'user'})
-        })
+        .then( () => sendRequest(this.props.id) )
         .catch(err => console.error(err))
     }
 

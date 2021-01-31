@@ -11,7 +11,7 @@ import Search from './Search'
 import Friend from './Friend'
 
 const { getUser } = UserAPI
-const { connect, reconnect , disconnect, onReconnect, onUserConnect } = SocketIO
+const { connect, reconnect , disconnect, onReconnect, onUserConnect, updateLatestMessage, onRequest } = SocketIO
 
 class ChatBox extends Component
 {
@@ -38,7 +38,7 @@ class ChatBox extends Component
         // this.onSubmit = this.onSubmit.bind(this);
         this.signOut = this.signOut.bind(this);
         this.load = this.load.bind(this)
-
+        
     }
 
     componentDidUpdate(){
@@ -49,18 +49,28 @@ class ChatBox extends Component
     }
     chatView(user, id, name)
     {
-        console.log(user.target, id)
+
+        // if(this.state.currentActive !== id){
+        //     console.log(this.state.currentActive , id)
+        //     console.log('update')
+         
+        // }
+
         if(this.state.currentActive)
         {
             document.querySelector(`[data-tag="${this.state.currentActive}"]`).classList.remove('on-active')
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
+            // updateMessage(id,200)
         }
         else{
             user.target.classList.add('on-active')
             this.setState({currentActive : id})
+          
         }
+        // updateMessage(id,200)
         this.setState({ status : 'chatView', chatViewId : id, chatName : name, onActive : true}) 
+      
     }
 
     signOut(){
@@ -122,6 +132,11 @@ class ChatBox extends Component
 
         // On user connect/disconnect, update view with current active status
         onUserConnect(()=> this.load())
+        onRequest((type) => { this.load()})
+        updateLatestMessage((status) => {
+            console.log('status ' , status)
+            if(status === 200) this.load()
+        })
 
     }
 
@@ -152,7 +167,8 @@ class ChatBox extends Component
             onClick={() => 
             this.setState({
             status : 'userInfo', 
-            onActive : false})}
+            onActive : false
+            })}
             />
             <p className="title">Chat-Box</p>
             <i className="default-size fas fa-edit compose-message"/>
@@ -219,7 +235,6 @@ class ChatBox extends Component
             id={this.state.chatViewId}
             uuID={this.state.info.id}
             chatName ={this.state.chatName}
-            load={this.load}
             view={this.state.status}
             onActive={this.state.onActive}
             />

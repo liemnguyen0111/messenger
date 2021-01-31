@@ -18,7 +18,11 @@ const users = {
     removeSocket : (socketId,cb) => 
             container.removeSocket(socketId,cb),
     onUserConnect : (socketId,cb) => 
-            container.getSocketList(socketId,cb)
+            container.getSocketList(socketId,cb),   
+    onUserMessage : (groupId,cb) => 
+            container.getSocketListFromGroup(groupId,cb),
+     onUserRequest : (userId,socketId,cb) => 
+            container.getSocketListFromUser(userId,socketId,cb)
     
     
 }

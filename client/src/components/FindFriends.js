@@ -1,11 +1,12 @@
 import React , { Component } from 'react'
 import Search from './Search'
-import shallowCompare from 'react-addons-shallow-compare'
 import User from './User'
 import Notification from './Notification'
 import UserAPI from '../utils/UserAPI'
+import socketIO from '../utils/SocketIO'
 
 const { getUser } = UserAPI
+const { onRequest } = socketIO
 
 class FindFriends extends Component{
 
@@ -36,16 +37,7 @@ class FindFriends extends Component{
 
     componentDidMount(){
         this.updateView(`all`,0)
-
-        // this.props.socket.on('update', msg =>{
- 
-        //     switch (msg) {
-        //         case 'user':
-        //             this.updateOnEmit()
-        //         default:
-        //             break;
-        //     }
-        // })
+        onRequest((type) => this.updateOnRequest())
     }
  
 
@@ -65,7 +57,7 @@ class FindFriends extends Component{
        
     }
 
-    updateOnEmit(){
+    updateOnRequest(){
      
         console.log('receive request')
             getUser('users',
@@ -79,21 +71,8 @@ class FindFriends extends Component{
             })
             .catch(err => console.error(err))
     }
-    // componentWillUpdate(){
-    //     getUsers(`${this.state.view}/${this.state.page}`)
-    //     .then(({data}) => {
-    
-    //         this.setState({
-    //             userList : [...this.state.userList, ...data[0]], ...data[1],
-    //             maxPage : Math.ceil(data[1][this.state.view] / 10)
-    //         })
- 
-    //     })
-    //     .catch(err => console.error(err))
-    // }
     
     onSearch(val){
-        // val? `${val}/0` : `${this.state.view}/0`
         getUser('users',`view=${val? 'default' : this.state.view}&value=${val?  val : this.state.view}&page=0&limit=10`)
         .then(({data}) => {
             this.setState({userList : data[0], ...data[1]})
@@ -108,34 +87,14 @@ class FindFriends extends Component{
   
         let scrollDown = current - scrollTop
         if(this.state.page < this.state.maxPage){
-            // console.log(scrollDown)
+         
             if(scrollDown < 1 && !this.state.disabledScroll){
-                console.log('update')
-                this.setState({ page : ++this.state.page})
+                this.setState({ page : this.state.page + 1})
                 this.updateView(this.state.view, this.state.page)
             }}
         
     }
 
-    // filter(newList, oldList){
-        
-    //     for(let props in oldList){
-    //         // if(oldList[props].data.id )
-    //         let a = newList.findIndex(t => 
-    //             // console.log(t.data.id)
-    //             // t.data.id === oldList[props].data.id
-    //             )
-    //         console.log(oldList[props].data.id)
-    //     }
-    //     // newList = newList.filter((val, index, self) => 
-    //     // index === self.findIndex((t) => 
-    //     // val.data.id === t.data.id
-    //     // ))
-    //     // let list1 = newList.slice(0,10),
-    //     // list2 = newList.slice(10,newList.length - 1)
-    //     // return [...list2,...list1]
-    //     return newList
-    // }
     reset(){
         this.setState({userList : [], page : 0, disabledScroll : true})
     }

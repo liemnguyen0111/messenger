@@ -2,11 +2,6 @@
   overflow: hidden;
 }
 
-body * {
-  -webkit-animation: smooth .1s ease;
-          animation: smooth .1s ease;
-}
-
 body {
   font-family: "Roboto", sans-serif;
   color: white;
@@ -1005,6 +1000,14 @@ body {
   cursor: pointer;
 }
 
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.unset-scroll {
+  scroll-behavior: unset;
+}
+
 .messages {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1032,31 +1035,8 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  opacity: 0;
   margin-bottom: 20px;
-  -webkit-animation: slow 1s ease;
-          animation: slow 1s ease;
-}
-
-@-webkit-keyframes slow {
-  from {
-    -webkit-transform: translate(-50px, -50px);
-            transform: translate(-50px, -50px);
-  }
-  to {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0);
-  }
-}
-
-@keyframes slow {
-  from {
-    -webkit-transform: translate(-50px, -50px);
-            transform: translate(-50px, -50px);
-  }
-  to {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0);
-  }
 }
 
 .message {
@@ -1066,8 +1046,6 @@ body {
   max-width: 500px;
   overflow-wrap: break-word;
   word-break: break-all;
-  -webkit-animation: slow 1s ease;
-          animation: slow 1s ease;
 }
 
 .f-message {
@@ -1290,7 +1268,6 @@ body {
   }
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 5px;
   border-radius: 500px;
@@ -1316,6 +1293,7 @@ body {
 }
 
 .hide-scroll-bar::-webkit-scrollbar-thumb, .hide-scroll-bar::-webkit-scrollbar-track, .hide-scroll-bar::-webkit-scrollbar {
+  display: none !important;
   -webkit-transition: 2s ease !important;
   transition: 2s ease !important;
   background: transparent !important;
@@ -1412,5 +1390,13 @@ select:-webkit-autofill:focus {
     max-width: 65px;
     font-size: 12px;
   }
+}
+
+.unavailable {
+  background: #535353;
+  color: gray !important;
+  border-radius: 50%;
+  padding: 5px;
+  pointer-events: none;
 }
 /*# sourceMappingURL=Style.css.map */
